@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yazaki Test Portal — Phase 1 UI Audit</title>
+<style>
+  :root {
+    color-scheme: light;
+    --teal: #008C95;
+    --teal-light: #dff2f3;
+    --charcoal: #2B2B2B;
+    --red: #ed1c24;
+    --blue: #264ae5;
+    --blue-light: #e6eaff;
+    --gray-dark: #1a1f2e;
+    --gray-mid: #474e5c;
+    --gray: #6c717e;
+    --gray-light: #a9acb3;
+    --gray-pale: #f4f5f7;
+    --border: #ced0d3;
+    --white: #ffffff;
+    --success: #2a9d3c;
+    --success-bg: #e8f7ea;
+    --warning: #d4730a;
+    --warning-bg: #fef3e2;
+    --danger: #c0202a;
+    --danger-bg: #fdeaea;
+    --info-bg: #e6eaff;
+    --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--gray-dark);
+    background: var(--gray-pale);
+    line-height: 1.55;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #ffffff;
+    border-bottom: 3px solid var(--red);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 24px;
+    height: 52px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+
+  .nav-brand {
+    font-size: 13px;
+    font-weight: 700;
+    color: #008C95;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-right: 32px;
+    flex-shrink: 0;
+  }
+  .nav-brand span { color: var(--red); }
+
+  nav a {
+    color: #5a6070;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 0 14px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: color .15s, border-color .15s;
+    flex-shrink: 0;
+  }
+  nav a:hover { color: #008C95; border-color: #008C95; }
+
+  /* ── HERO ── */
+  .hero {
+    background: #ffffff;
+    border-left: 5px solid #008C95;
+    border-bottom: 1px solid #e2e4e8;
+    padding: 40px 40px 36px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: #2B2B2B;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: #5a6070;
+    max-width: 640px;
+    margin-bottom: 28px;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    color: #2B2B2B;
+  }
+  .hero-stat .num.red { color: var(--red); }
+  .hero-stat .num.blue { color: #008C95; }
+  .hero-stat .lbl {
+    font-size: 11px;
+    color: #6c717e;
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  section { margin-bottom: 56px; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2B2B2B;
+    margin-bottom: 4px;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 0 24px;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .badge-critical { background: var(--danger-bg); color: var(--danger); border: 1px solid #f5b8bb; }
+  .badge-high     { background: var(--warning-bg); color: var(--warning); border: 1px solid #f5d9b0; }
+  .badge-medium   { background: #fff8e1; color: #9a6c00; border: 1px solid #f5e09a; }
+  .badge-low      { background: var(--success-bg); color: var(--success); border: 1px solid #b3e8ba; }
+  .badge-info     { background: var(--info-bg); color: var(--blue); border: 1px solid #c0ccf8; }
+  .badge-navy     { background: #e8eaf6; color: #2B2B2B; border: 1px solid #c5c9ea; }
+
+  .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+  .dot-critical { background: var(--danger); }
+  .dot-high     { background: var(--warning); }
+  .dot-medium   { background: #d4a800; }
+  .dot-low      { background: var(--success); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .card-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .card-grid-2 { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .card-grid-3 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2B2B2B;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .card-meta {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 10px;
+  }
+  .card-body {
+    font-size: 13px;
+    color: var(--gray-mid);
+    line-height: 1.6;
+  }
+
+  .card-accent-left {
+    border-left: 4px solid var(--border);
+  }
+  .card-accent-critical { border-left-color: var(--danger); }
+  .card-accent-high     { border-left-color: var(--warning); }
+  .card-accent-medium   { border-left-color: #d4a800; }
+  .card-accent-low      { border-left-color: var(--success); }
+  .card-accent-info     { border-left-color: var(--blue); }
+
+  /* ── ISSUE ROWS ── */
+  .issue-list { display: flex; flex-direction: column; gap: 10px; }
+  .issue-row {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: start;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .issue-id {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-light);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+    min-width: 36px;
+  }
+  .issue-content .issue-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-dark);
+    margin-bottom: 4px;
+  }
+  .issue-content .issue-detail {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .issue-detail code {
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    background: var(--gray-pale);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0 4px;
+    color: #2B2B2B;
+  }
+
+  /* ── TEMPLATES GRID ── */
+  .template-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .template-header {
+    background: linear-gradient(135deg, #006870, #008C95);
+    color: #fff;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .template-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255,255,255,.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .template-header-text .label {
+    font-size: 10px;
+    color: rgba(255,255,255,.5);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 2px;
+  }
+  .template-header-text .name {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .template-body { padding: 16px 18px; }
+  .template-desc { font-size: 13px; color: var(--gray-mid); margin-bottom: 14px; }
+  .template-blocks { display: flex; flex-direction: column; gap: 4px; }
+  .tb {
+    background: var(--gray-pale);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--gray-mid);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tb::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--border); flex-shrink: 0; }
+  .tb.tb-primary { background: var(--info-bg); border-color: #c0ccf8; }
+  .tb.tb-primary::before { background: var(--blue); }
+  .tb.tb-accent { background: #fff0f0; border-color: #f5b8bb; }
+  .tb.tb-accent::before { background: var(--red); }
+  .template-priority {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--gray);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ── BUILDING BLOCKS TABLE ── */
+  .bb-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    border: 1px solid var(--border);
+  }
+  .bb-table th {
+    background: var(--gray-pale);
+    color: var(--gray-mid);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .bb-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .bb-table tr:last-child td { border-bottom: none; }
+  .bb-table tr:hover td { background: var(--gray-pale); }
+  .bb-id { font-weight: 700; color: #008C95; font-size: 12px; }
+  .bb-name { font-weight: 600; color: var(--gray-dark); }
+  .bb-purpose { color: var(--gray-mid); }
+  .bb-state { color: var(--gray); font-size: 12px; font-style: italic; }
+
+  /* ── DATA GRID PROBLEMS ── */
+  .dg-problem {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 14px;
+    align-items: start;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .dg-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: #008C95;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .dg-title { font-size: 13px; font-weight: 600; color: var(--gray-dark); margin-bottom: 4px; }
+  .dg-desc  { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* ── RESPONSIVE RISK BAR ── */
+  .risk-row {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px 14px 0;
+    display: grid;
+    grid-template-columns: 8px 1fr;
+    gap: 18px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .risk-bar { align-self: stretch; border-radius: 0; }
+  .risk-bar.critical { background: var(--danger); }
+  .risk-bar.high     { background: var(--warning); }
+  .risk-bar.medium   { background: #d4a800; }
+  .risk-body { padding-right: 18px; }
+  .risk-title { font-size: 13px; font-weight: 600; color: var(--gray-dark); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .risk-detail { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* ── QUESTIONS ── */
+  .q-group { margin-bottom: 24px; }
+  .q-group-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #008C95;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #008C95;
+  }
+  .q-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .q-list li {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px 14px 10px 36px;
+    font-size: 13px;
+    color: var(--gray-mid);
+    position: relative;
+    line-height: 1.5;
+    box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  }
+  .q-list li::before {
+    content: "?";
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--info-bg);
+    color: var(--blue);
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 16px;
+    text-align: center;
+  }
+  .q-list li em {
+    font-style: normal;
+    font-size: 11px;
+    color: var(--gray-light);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ── DIRECTION CARDS ── */
+  .direction-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  .direction-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    border: 1px solid var(--border);
+  }
+  .dir-header {
+    padding: 22px 22px 18px;
+    position: relative;
+  }
+  .dir-header-A { background: linear-gradient(135deg, #006870 0%, #008C95 100%); }
+  .dir-header-B { background: linear-gradient(135deg, #2B2B2B 0%, #454545 100%); }
+  .dir-header-C { background: linear-gradient(135deg, #8a1c1c 0%, #3a0808 100%); }
+  .dir-letter {
+    font-size: 48px;
+    font-weight: 900;
+    color: rgba(255,255,255,.15);
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    line-height: 1;
+  }
+  .dir-eyebrow { font-size: 10px; color: rgba(255,255,255,.5); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+  .dir-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .dir-pitch { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.5; }
+  .dir-body { background: var(--white); padding: 20px 22px; }
+  .dir-section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gray-light); margin-bottom: 8px; }
+  .dir-traits { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+  .dir-trait {
+    font-size: 12px;
+    color: var(--gray-mid);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .dir-trait::before { content: "—"; position: absolute; left: 0; color: var(--gray-light); }
+  .dir-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .dir-pro-list, .dir-con-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .dir-pro-list li, .dir-con-list li {
+    font-size: 11px;
+    line-height: 1.45;
+    padding-left: 14px;
+    position: relative;
+    color: var(--gray-mid);
+  }
+  .dir-pro-list li::before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+  .dir-con-list li::before { content: "↑"; position: absolute; left: 0; color: var(--warning); font-weight: 700; }
+  .dir-effort {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--gray);
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .effort-dots { display: flex; gap: 3px; }
+  .effort-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+  .effort-dot.filled { background: #008C95; }
+  .dir-cta {
+    margin-top: 14px;
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    letter-spacing: .02em;
+  }
+  .dir-cta-A { background: var(--info-bg); color: var(--blue); }
+  .dir-cta-B { background: #008C95; color: #fff; }
+  .dir-cta-C { background: #fdeaea; color: var(--danger); }
+
+  /* ── SUMMARY CALLOUTS ── */
+  .callout {
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-good  { background: var(--success-bg); border: 1px solid #b3e8ba; color: #1a5e25; }
+  .callout-bad   { background: var(--danger-bg);  border: 1px solid #f5b8bb; color: #7a1219; }
+  .callout-warn  { background: var(--warning-bg); border: 1px solid #f5d9b0; color: #6b3a00; }
+  .callout-note  { background: var(--info-bg);    border: 1px solid #c0ccf8; color: #1a2e8a; }
+
+  /* ── SWATCH ROW ── */
+  .swatch-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+  .swatch { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .swatch-chip { width: 52px; height: 52px; border-radius: 8px; border: 1px solid rgba(0,0,0,.08); }
+  .swatch-name { font-size: 10px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .swatch-hex  { font-size: 10px; color: var(--gray-light); font-family: monospace; }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    background: #2B2B2B;
+    color: rgba(255,255,255,.4);
+    font-size: 11px;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 3px solid var(--red);
+  }
+
+  /* ── UTIL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 680px) { .two-col, .dir-pros-cons { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">Yazaki <span>Test Portal</span></span>
+  <a href="#audit">Audit</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#templates">Templates</a>
+  <a href="#blocks">Building Blocks</a>
+  <a href="#responsive">Responsive</a>
+  <a href="#usability">Usability</a>
+  <a href="#visual">Visual</a>
+  <a href="#datagrid">Data Grids</a>
+  <a href="#questions">Open Questions</a>
+  <a href="#directions">Directions</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Phase 1 — UI Audit Report</div>
+  <h1>Yazaki Test Portal<br>UI/UX Design Audit</h1>
+  <p class="hero-sub">Based on full review of custom-variables.scss, module_ui, module_testingportal, Custom-Datagrid.scss, and Atlas Core theme layers.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num red">8</div><div class="lbl">Responsive Risks</div></div>
+    <div class="hero-stat"><div class="num red">8</div><div class="lbl">Usability Issues</div></div>
+    <div class="hero-stat"><div class="num red">7</div><div class="lbl">Visual Gaps</div></div>
+    <div class="hero-stat"><div class="num">8</div><div class="lbl">Grid Problems</div></div>
+    <div class="hero-stat"><div class="num blue">5</div><div class="lbl">Page Templates</div></div>
+    <div class="hero-stat"><div class="num blue">10</div><div class="lbl">Building Blocks</div></div>
+    <div class="hero-stat"><div class="num">3</div><div class="lbl">Design Directions</div></div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ── SECTION 1: AUDIT SUMMARY ── -->
+<section id="audit">
+  <div class="section-label">Section 01</div>
+  <div class="section-title">UI Audit Summary</div>
+  <div class="section-sub">What's working, what's broken, and what to preserve.</div>
+  <div class="section-divider"></div>
+
+  <p style="font-size:13px;color:var(--gray-mid);margin-bottom:20px;">The application has a solid structural foundation — Atlas UI Core, Open Sans, and a coherent brand-color variable system — but the custom layer has grown through incremental, page-specific additions without enforcing consistent patterns.</p>
+
+  <div class="two-col" style="margin-bottom:20px;">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--success);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">✓ Preserve</div>
+      <div class="callout callout-good"><span class="callout-icon">🧱</span><div>Sidebar + topbar navigation layout is structurally sound.</div></div>
+      <div class="callout callout-good"><span class="callout-icon">📊</span><div><code style="font-family:monospace;font-size:11px;background:#e8f7ea;border-radius:3px;padding:0 4px;">Custom-Datagrid.scss</code> is well-built — sticky headers, column resizing, and a clean pagination bar are already correct.</div></div>
+      <div class="callout callout-good"><span class="callout-icon">🗂️</span><div>The flyout/drawer pattern uses <code style="font-family:monospace;font-size:11px;background:#e8f7ea;border-radius:3px;padding:0 4px;">slide-right</code> animation correctly and anchors right.</div></div>
+      <div class="callout callout-good"><span class="callout-icon">💳</span><div><code style="font-family:monospace;font-size:11px;background:#e8f7ea;border-radius:3px;padding:0 4px;">TestDetailsLegBox</code> shadow card style is modern and should be extended system-wide.</div></div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">✗ Critical Problems</div>
+      <div class="callout callout-bad"><span class="callout-icon">📏</span><div><code style="font-family:monospace;font-size:11px;background:#fdeaea;border-radius:3px;padding:0 4px;">min-width: 1400px</code> on the detail panel is the primary cause of double horizontal scrolling.</div></div>
+      <div class="callout callout-bad"><span class="callout-icon">🔀</span><div>Six competing button class systems exist with no clear primary/secondary/destructive hierarchy.</div></div>
+      <div class="callout callout-bad"><span class="callout-icon">🎨</span><div>Undocumented teal (<code style="font-family:monospace;font-size:11px;background:#fdeaea;border-radius:3px;padding:0 4px;">#2B6977</code>, <code style="font-family:monospace;font-size:11px;background:#fdeaea;border-radius:3px;padding:0 4px;">#559FAE</code>) used in 6+ places without a brand role.</div></div>
+      <div class="callout callout-bad"><span class="callout-icon">🔄</span><div>Two parallel theme modules (<code style="font-family:monospace;font-size:11px;background:#fdeaea;border-radius:3px;padding:0 4px;">module_ui</code>, <code style="font-family:monospace;font-size:11px;background:#fdeaea;border-radius:3px;padding:0 4px;">module_testingportal</code>) duplicate home, flyout, and request list styles.</div></div>
+    </div>
+  </div>
+
+  <!-- Current color palette -->
+  <div style="font-size:12px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Current Color System (from custom-variables.scss)</div>
+  <div class="swatch-row">
+    <div class="swatch"><div class="swatch-chip" style="background:#020557;"></div><div class="swatch-name">Navy</div><div class="swatch-hex">#020557</div></div>
+    <div class="swatch"><div class="swatch-chip" style="background:#264ae5;"></div><div class="swatch-name">Primary</div><div class="swatch-hex">#264ae5</div></div>
+    <div class="swatch"><div class="swatch-chip" style="background:#ed1c24;"></div><div class="swatch-name">Yazaki Red</div><div class="swatch-hex">#ed1c24</div></div>
+    <div class="swatch"><div class="swatch-chip" style="background:#ffa31a;"></div><div class="swatch-name">Default Btn</div><div class="swatch-hex">#ffa31a</div></div>
+    <div class="swatch"><div class="swatch-chip" style="background:#2B6977;border:1px solid #ccc;"></div><div class="swatch-name">Teal (orphan)</div><div class="swatch-hex">#2B6977</div></div>
+    <div class="swatch"><div class="swatch-chip" style="background:#f38824;border:1px solid #ccc;"></div><div class="swatch-name">Action (orphan)</div><div class="swatch-hex">#f38824</div></div>
+    <div class="swatch"><div class="swatch-chip" style="background:#3cb33d;"></div><div class="swatch-name">Success</div><div class="swatch-hex">#3cb33d</div></div>
+    <div class="swatch"><div class="swatch-chip" style="background:#f8f8f8;border:1px solid #ccc;"></div><div class="swatch-name">BG Gray</div><div class="swatch-hex">#f8f8f8</div></div>
+  </div>
+</section>
+
+<!-- ── SECTION 2: PAGE PATTERNS ── -->
+<section id="patterns">
+  <div class="section-label">Section 02</div>
+  <div class="section-title">Major Recurring Page Patterns</div>
+  <div class="section-sub">Six distinct layout patterns identified across the application.</div>
+  <div class="section-divider"></div>
+  <div class="card-grid card-grid-2">
+
+    <div class="card card-accent-left card-accent-high">
+      <div class="card-title">1 — Home / Launch Screen <span class="badge badge-medium">Medium Risk</span></div>
+      <div class="card-meta">Evidence: <code>_home.scss</code> · both modules</div>
+      <div class="card-body">Fixed-padding tile grid with image backgrounds and hover-expand effect. Static 100px left/right padding hard-coded. No responsive grid wrapping. Hover-only descriptions are invisible to touch users.</div>
+    </div>
+
+    <div class="card card-accent-left card-accent-critical">
+      <div class="card-title">2 — Request / Test List (Master-Detail) <span class="badge badge-critical">Critical</span></div>
+      <div class="card-meta">Evidence: <code>_requestlist.scss</code> · <code>.RequestDataContainer</code></div>
+      <div class="card-body">Left list panel (min 275px) + right detail panel fixed at <strong>min-width: 1400px</strong>. The detail panel contains a 76vh scroll container with both axes scrollable. Zero responsive collapse behavior defined.</div>
+    </div>
+
+    <div class="card card-accent-left card-accent-critical">
+      <div class="card-title">3 — Test Details (Complex Hierarchy) <span class="badge badge-critical">Critical</span></div>
+      <div class="card-meta">Evidence: <code>_maindesign.scss</code> · <code>.TestDetails-Container</code></div>
+      <div class="card-body">Request → Test Legs → Spec Chapters → Resources/Schedules. Each level adds cumulative left margin (50px, 40px…). Nested scroll confirmed. <code>EditSpecChapter-detail</code> hard-coded at 920px wide.</div>
+    </div>
+
+    <div class="card card-accent-left card-accent-high">
+      <div class="card-title">4 — Data Grid Pages <span class="badge badge-high">High Risk</span></div>
+      <div class="card-meta">Evidence: <code>Custom-Datagrid.scss</code> · <code>.MyGrid2Style</code> · <code>.RQ-search</code></div>
+      <div class="card-body">Full-width grid with sticky headers and pagination. Three different wrapper classes override the same grid differently. Grid forced to <code>min-width: 91vw</code>. No column-hiding strategy for tablet.</div>
+    </div>
+
+    <div class="card card-accent-left card-accent-medium">
+      <div class="card-title">5 — Flyout / Right-Panel Drawer <span class="badge badge-medium">Medium Risk</span></div>
+      <div class="card-meta">Evidence: <code>_flyoutpage.scss</code> · <code>_modal-slider.scss</code></div>
+      <div class="card-body">Right-anchored 500–600px panel with slide animation. Two duplicate implementations. Panel hides its own title (<code>h4 {display: none}</code>). At 768px tablet the panel fills nearly the whole screen.</div>
+    </div>
+
+    <div class="card card-accent-left card-accent-high">
+      <div class="card-title">6 — Admin / Edit Spec Chapter Form <span class="badge badge-high">High Risk</span></div>
+      <div class="card-meta">Evidence: <code>_SpecChapterEdit.scss</code></div>
+      <div class="card-body">Multi-column form with embedded data grid. Uses <code>top: -50px</code> positioning hacks to align sections. Fixed widths: 920px, 1300px, 400px. Entirely non-responsive.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION 3: PAGE TEMPLATES ── -->
+<section id="templates">
+  <div class="section-label">Section 03</div>
+  <div class="section-title">Page Template Opportunities</div>
+  <div class="section-sub">Five Mendix Page Templates ranked by reuse value.</div>
+  <div class="section-divider"></div>
+  <div class="card-grid card-grid-3">
+
+    <div class="template-card">
+      <div class="template-header" style="background:linear-gradient(135deg,#006870,#008C95);">
+        <div class="template-icon">📋</div>
+        <div class="template-header-text">
+          <div class="label">PT-1 · Highest Priority</div>
+          <div class="name">Data Grid Page</div>
+        </div>
+      </div>
+      <div class="template-body">
+        <div class="template-desc">Any searchable, filterable list of records. Most reused pattern in the application.</div>
+        <div class="template-blocks">
+          <div class="tb tb-accent">Page Header BB</div>
+          <div class="tb tb-primary">Filter Toolbar BB</div>
+          <div class="tb tb-primary">Data Grid (column-left-wrap)</div>
+          <div class="tb">Pagination Bar</div>
+        </div>
+        <div class="template-priority"><span class="badge badge-critical">★ Highest</span> replaces MyGrid2Style, RQ-search, GridContainer</div>
+      </div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-header" style="background:linear-gradient(135deg,#004d6b,#006870);">
+        <div class="template-icon">⇌</div>
+        <div class="template-header-text">
+          <div class="label">PT-2 · High Priority</div>
+          <div class="name">Master-Detail List</div>
+        </div>
+      </div>
+      <div class="template-body">
+        <div class="template-desc">Selectable record list on the left, detail panel on the right. Fixes the biggest usability pain.</div>
+        <div class="template-blocks">
+          <div class="tb tb-primary">Left Panel (280px, scrollable)</div>
+          <div class="tb">Search / Filter</div>
+          <div class="tb tb-primary">Right Panel (flex-grow)</div>
+          <div class="tb tb-accent">Detail Header BB</div>
+          <div class="tb">Tabbed / Sectioned content</div>
+        </div>
+        <div class="template-priority"><span class="badge badge-high">★ High</span> solves 1400px overflow</div>
+      </div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-header" style="background:linear-gradient(135deg,#2B2B2B,#454545);">
+        <div class="template-icon">🗂</div>
+        <div class="template-header-text">
+          <div class="label">PT-3 · High Priority</div>
+          <div class="name">Detail / Record Page</div>
+        </div>
+      </div>
+      <div class="template-body">
+        <div class="template-desc">General read/edit screens — not the complex Test Details page.</div>
+        <div class="template-blocks">
+          <div class="tb tb-accent">Record Header BB</div>
+          <div class="tb tb-primary">Metadata Section BB</div>
+          <div class="tb">Content Sections (label + value)</div>
+          <div class="tb tb-primary">Action Footer BB</div>
+        </div>
+        <div class="template-priority"><span class="badge badge-high">★ High</span> 2-col desktop, 1-col tablet</div>
+      </div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-header" style="background:linear-gradient(135deg,#2e0d0d,#1a0505);">
+        <div class="template-icon">⚙️</div>
+        <div class="template-header-text">
+          <div class="label">PT-4 · Medium Priority</div>
+          <div class="name">Admin / Management</div>
+        </div>
+      </div>
+      <div class="template-body">
+        <div class="template-desc">Admin Center, task assignment, user/role management pages.</div>
+        <div class="template-blocks">
+          <div class="tb tb-accent">Page Header BB + Create action</div>
+          <div class="tb tb-primary">Search + Filter Toolbar BB</div>
+          <div class="tb">Management Grid (row actions)</div>
+          <div class="tb">Pagination Bar</div>
+        </div>
+        <div class="template-priority"><span class="badge badge-info">★ Medium</span></div>
+      </div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-header" style="background:linear-gradient(135deg,#0d2e1a,#051208);">
+        <div class="template-icon">📈</div>
+        <div class="template-header-text">
+          <div class="label">PT-5 · Medium Priority</div>
+          <div class="name">Overview / Dashboard</div>
+        </div>
+      </div>
+      <div class="template-body">
+        <div class="template-desc">Home screen, summary pages, KPI dashboards.</div>
+        <div class="template-blocks">
+          <div class="tb tb-accent">Page Header BB</div>
+          <div class="tb tb-primary">KPI Card Row BB (3–4 cards)</div>
+          <div class="tb">Primary list or chart (left)</div>
+          <div class="tb">Secondary info panel (right)</div>
+        </div>
+        <div class="template-priority"><span class="badge badge-info">★ Medium</span> replaces TileWrapper</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION 4: BUILDING BLOCKS ── -->
+<section id="blocks">
+  <div class="section-label">Section 04</div>
+  <div class="section-title">Building Block Opportunities</div>
+  <div class="section-sub">Ten reusable Mendix Building Blocks to create in the custom UI module.</div>
+  <div class="section-divider"></div>
+  <table class="bb-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Building Block</th>
+        <th>Purpose</th>
+        <th>Current State</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="bb-id">BB-1</td><td class="bb-name">Page Header</td><td class="bb-purpose">Consistent page title, subtitle, and primary action placement</td><td class="bb-state">Different on every page</td></tr>
+      <tr><td class="bb-id">BB-2</td><td class="bb-name">Section Header</td><td class="bb-purpose">Titled divider between content regions with optional action</td><td class="bb-state">One-off inline styling per use</td></tr>
+      <tr><td class="bb-id">BB-3</td><td class="bb-name">Search + Filter Toolbar</td><td class="bb-purpose">Search input + filter dropdowns in a consistent row</td><td class="bb-state">3 different implementations: .RQ-search, .RequestFilterContainer, .MyGrid2Style</td></tr>
+      <tr><td class="bb-id">BB-4</td><td class="bb-name">Status Badge / Indicator</td><td class="bb-purpose">Semantic colored pill for record status (approved / pending / rejected)</td><td class="bb-state">Bootstrap labels used inconsistently + custom tab badges</td></tr>
+      <tr><td class="bb-id">BB-5</td><td class="bb-name">Summary / KPI Card</td><td class="bb-purpose">Metric value + label + trend indicator in a card surface</td><td class="bb-state">Partially implemented as .TileContainer — home only</td></tr>
+      <tr><td class="bb-id">BB-6</td><td class="bb-name">Detail Field Pair</td><td class="bb-purpose">Label + read-only value row for detail pages</td><td class="bb-state">.Review-Label / .Review-Data exist but aren't Building Blocks</td></tr>
+      <tr><td class="bb-id">BB-7</td><td class="bb-name">Action Footer (Modal)</td><td class="bb-purpose">Primary + secondary button row pinned to modal/flyout bottom</td><td class="bb-state">Each modal defines its own — no shared definition</td></tr>
+      <tr><td class="bb-id">BB-8</td><td class="bb-name">Empty State</td><td class="bb-purpose">Icon + message + optional CTA for empty lists/grids</td><td class="bb-state">Not defined anywhere in the theme</td></tr>
+      <tr><td class="bb-id">BB-9</td><td class="bb-name">Data Grid Wrapper</td><td class="bb-purpose">Standard container applying column-left-wrap styles + search/filter/pagination</td><td class="bb-state">Applied inconsistently via 3 different wrapper classes</td></tr>
+      <tr><td class="bb-id">BB-10</td><td class="bb-name">Flyout / Drawer Panel</td><td class="bb-purpose">Right-anchored sliding panel with header, scrollable body, action footer</td><td class="bb-state">Duplicated across _flyoutpage.scss and _modal-slider.scss</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ── SECTION 5: RESPONSIVE RISKS ── -->
+<section id="responsive">
+  <div class="section-label">Section 05</div>
+  <div class="section-title">Top Responsive Risks</div>
+  <div class="section-sub">Ordered by severity — what will break most visibly at tablet widths.</div>
+  <div class="section-divider"></div>
+
+  <div class="risk-row"><div class="risk-bar critical"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-critical">Critical</span> Risk 1 — <code style="font-size:12px;font-family:monospace;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.RequestDataContainer { min-width: 1400px }</code></div><div class="risk-detail">Forces the entire detail panel to 1400px regardless of viewport. On a 1024px landscape tablet it overflows by 376px — creating page-level horizontal scrolling before any grid content is reached.</div></div></div>
+
+  <div class="risk-row"><div class="risk-bar critical"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-critical">Critical</span> Risk 2 — Nested Scroll Containers</div><div class="risk-detail"><code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.ScrollContainer</code> has overflow-x/y auto at 76vh. Inside it, <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.widget-datagrid-content</code> has overflow-y auto. Outer container scrolls, inner grid scrolls — disorienting and inaccessible on touch.</div></div></div>
+
+  <div class="risk-row"><div class="risk-bar high"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-high">High</span> Risk 3 — Tab Container Fixed Viewport Width</div><div class="risk-detail"><code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.tab-bordered { min-width: 93vw; max-width: 93vw }</code> — at 768px portrait tablet this forces the content area to 714px, then content inside can still overflow that.</div></div></div>
+
+  <div class="risk-row"><div class="risk-bar high"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-high">High</span> Risk 4 — Cumulative Left Margins on Test Details Hierarchy</div><div class="risk-detail">The tree uses stacking left margins (50px, 40px…) that work at desktop. At tablet widths, the starting container is narrower and the content pushes off-screen without any breakpoint adjustment.</div></div></div>
+
+  <div class="risk-row"><div class="risk-bar medium"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-medium">Medium</span> Risk 5 — Home Tile Wrapper Fixed Padding</div><div class="risk-detail"><code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.TileWrapper { padding-left: 100px; padding-right: 100px }</code> — consumes 200px on an iPad mini portrait (768px), leaving only 568px for tiles expected to be ~300px wide each.</div></div></div>
+
+  <div class="risk-row"><div class="risk-bar medium"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-medium">Medium</span> Risk 6 — Flyout Panel at 600px on Tablet</div><div class="risk-detail">At 768px portrait, the flyout's 600px width leaves only 168px of backdrop — effectively full-screen without acknowledging it. Should adapt to a smaller width or full-width bottom sheet on tablet.</div></div></div>
+
+  <div class="risk-row"><div class="risk-bar medium"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-medium">Medium</span> Risk 7 — Navigation at Mobile Breakpoints</div><div class="risk-detail">No hamburger menu or collapsed navigation state is defined for mobile. The custom topbar overrides do not reference any responsive breakpoints, and the Atlas tablet layout file is not leveraged.</div></div></div>
+
+  <div class="risk-row"><div class="risk-bar medium"></div><div class="risk-body"><div class="risk-title"><span class="badge badge-medium">Medium</span> Risk 8 — Fixed-Width Form Containers</div><div class="risk-detail"><code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">EditSpecChapter-detail: 920px</code>, <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">AssignTestTypeContainer: 500px</code>, <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">Create-Edit: 350px</code> — all fixed, none responsive.</div></div></div>
+</section>
+
+<!-- ── SECTION 6: USABILITY ISSUES ── -->
+<section id="usability">
+  <div class="section-label">Section 06</div>
+  <div class="section-title">Top Usability Issues</div>
+  <div class="section-sub">Problems that affect how users accomplish tasks — independent of visual style.</div>
+  <div class="section-divider"></div>
+  <div class="issue-list">
+
+    <div class="issue-row">
+      <div class="issue-id">U-1</div>
+      <div class="issue-content">
+        <div class="issue-title">Double horizontal scrolling on Test Details</div>
+        <div class="issue-detail">Users scroll horizontally to see the full detail panel, then scroll horizontally again inside the embedded data grid. The single highest-priority fix.</div>
+      </div>
+      <div><span class="badge badge-critical">Critical</span></div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-id">U-2</div>
+      <div class="issue-content">
+        <div class="issue-title">No visual hierarchy between Request / Test Leg / Spec Chapter levels</div>
+        <div class="issue-detail">Only left-margin indentation communicates hierarchy. No containers, lines, or color cues distinguish levels. <code>LegContainer</code> is <code>rgb(216,216,216)</code>; <code>BatchSupervisorContainer</code> is <code>rgb(245,245,245)</code> — similar enough to be meaningless.</div>
+      </div>
+      <div><span class="badge badge-critical">Critical</span></div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-id">U-3</div>
+      <div class="issue-content">
+        <div class="issue-title">Button intent is ambiguous — no primary action hierarchy</div>
+        <div class="issue-detail">The global <code>.btn</code> override makes every button a ghost. Primary actions are not visually distinct from secondary or destructive. Six competing button patterns exist with no semantic roles.</div>
+      </div>
+      <div><span class="badge badge-critical">Critical</span></div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-id">U-4</div>
+      <div class="issue-content">
+        <div class="issue-title">Status and state indicators have no shared vocabulary</div>
+        <div class="issue-detail">Tab badges use Yazaki Red. UserRole text uses orange. Status fields use neither. No application-wide "approved = green / pending = amber / rejected = red" badge pattern.</div>
+      </div>
+      <div><span class="badge badge-high">High</span></div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-id">U-5</div>
+      <div class="issue-content">
+        <div class="issue-title">Flyout panel hides its own title</div>
+        <div class="issue-detail"><code>h4 { display: none }</code> — when a flyout opens, there is no visible heading. Users have no quick reference for what record they are viewing.</div>
+      </div>
+      <div><span class="badge badge-high">High</span></div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-id">U-6</div>
+      <div class="issue-content">
+        <div class="issue-title">Home tile descriptions invisible on touch devices</div>
+        <div class="issue-detail"><code>.TileDescription { opacity: 0 }</code> until hover. On tablet, hover does not fire reliably. Tile descriptions are effectively hidden from touch users.</div>
+      </div>
+      <div><span class="badge badge-medium">Medium</span></div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-id">U-7</div>
+      <div class="issue-content">
+        <div class="issue-title">Search placement is inconsistent across pages</div>
+        <div class="issue-detail"><code>.SearchContainerCollapse / Expand</code> — some pages collapse search behind a toggle. Others show it inline. Others use the built-in grid filter row. Users must discover where search is on each page.</div>
+      </div>
+      <div><span class="badge badge-medium">Medium</span></div>
+    </div>
+
+    <div class="issue-row">
+      <div class="issue-id">U-8</div>
+      <div class="issue-content">
+        <div class="issue-title">Empty states are not designed</div>
+        <div class="issue-detail">No empty state component exists. When a data grid or list view returns no results, the default Mendix plain text message renders with no visual cue, icon, or guidance.</div>
+      </div>
+      <div><span class="badge badge-medium">Medium</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION 7: VISUAL CONSISTENCY ── -->
+<section id="visual">
+  <div class="section-label">Section 07</div>
+  <div class="section-title">Visual Consistency Issues</div>
+  <div class="section-sub">Problems that undermine the appearance of a coherent design system.</div>
+  <div class="section-divider"></div>
+  <div class="card-grid card-grid-2">
+
+    <div class="card card-accent-left card-accent-critical">
+      <div class="card-title">VC-1 — Six Competing Button Systems <span class="badge badge-critical">Critical</span></div>
+      <div class="card-body" style="margin-top:8px;">
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+          <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:2px 6px;">.btn-yazaki</code>
+          <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:2px 6px;">.button</code>
+          <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:2px 6px;">.button_approve</code>
+          <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:2px 6px;">.button_new</code>
+          <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:2px 6px;">.OpenRequestBtn</code>
+          <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:2px 6px;">.btn-default (MyGrid2Style)</code>
+        </div>
+        None defined in the Atlas variable layer. Shapes, colors, weights, and sizes vary page by page.
+      </div>
+    </div>
+
+    <div class="card card-accent-left card-accent-critical">
+      <div class="card-title">VC-2 — Orphan Teal Color Used in 6+ Places <span class="badge badge-critical">Critical</span></div>
+      <div class="card-body" style="margin-top:8px;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;"><div style="width:16px;height:16px;border-radius:3px;background:#2B6977;"></div><code style="font-family:monospace;font-size:11px;">#2B6977</code></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div style="width:16px;height:16px;border-radius:3px;background:#559FAE;"></div><code style="font-family:monospace;font-size:11px;">#559FAE</code></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div style="width:16px;height:16px;border-radius:3px;background:#559EAD;"></div><code style="font-family:monospace;font-size:11px;">#559EAD</code></div>
+        </div>
+        Teal is not a defined brand color in custom-variables.scss. Used in btn-yazaki, App-Button, Sequence-Label, home decoration — a leftover from an earlier design phase.
+      </div>
+    </div>
+
+    <div class="card card-accent-left card-accent-high">
+      <div class="card-title">VC-3 — $LabelColor Not in Variable System <span class="badge badge-high">High</span></div>
+      <div class="card-body" style="margin-top:8px;">Defined locally in <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">_maindesign.scss</code> as <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">$LabelColor: #2B6977</code>. Any other file needing the same color must re-define it or hardcode it. Not propagated through the theme.</div>
+    </div>
+
+    <div class="card card-accent-left card-accent-high">
+      <div class="card-title">VC-4 — White Topbar vs. Dark Navy Sidebar <span class="badge badge-high">High</span></div>
+      <div class="card-body" style="margin-top:8px;">The custom topbar override sets <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">background: white</code> and red bottom border. The sidebar retains <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">#020557</code>. Two competing surface treatments make navigation feel split across two products.</div>
+    </div>
+
+    <div class="card card-accent-left card-accent-high">
+      <div class="card-title">VC-5 — Card/Surface System Is Inconsistent <span class="badge badge-high">High</span></div>
+      <div class="card-body" style="margin-top:8px;">
+        Four different card treatments in use simultaneously:
+        <ul style="margin-top:8px;margin-left:16px;font-size:12px;color:var(--gray-mid);line-height:1.8;">
+          <li><code style="font-family:monospace;font-size:11px;">TestDetailsLegBox</code> — modern box-shadow card</li>
+          <li><code style="font-family:monospace;font-size:11px;">TileContainer</code> — <code style="font-family:monospace;font-size:11px;">border: 2px solid darkred</code></li>
+          <li><code style="font-family:monospace;font-size:11px;">EditSpecChapter-New</code> — gray fill, no border</li>
+          <li><code style="font-family:monospace;font-size:11px;">LegContainer</code> — different gray fill, no border</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-accent-left card-accent-medium">
+      <div class="card-title">VC-6 — Four Border Radius Conventions <span class="badge badge-medium">Medium</span></div>
+      <div class="card-body" style="margin-top:8px;">
+        <code style="font-family:monospace;font-size:11px;">$border-radius-default: 4px</code> is defined but ignored:<br>
+        <ul style="margin-top:8px;margin-left:16px;font-size:12px;color:var(--gray-mid);line-height:1.8;">
+          <li>Buttons (<code style="font-family:monospace;font-size:11px;">.btn-yazaki</code>): 20px pill</li>
+          <li>Tiles: 2% (relative!)</li>
+          <li>Cards (<code style="font-family:monospace;font-size:11px;">TestDetailsLegBox</code>): 8px</li>
+          <li>Sequence labels: 20% (relative!)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-accent-left card-accent-medium">
+      <div class="card-title">VC-7 — Font Sizes Enforced via !important <span class="badge badge-medium">Medium</span></div>
+      <div class="card-body" style="margin-top:8px;"><code style="font-family:monospace;font-size:11px;">$font-size-default: 14px</code> defined at top level. But <code style="font-family:monospace;font-size:11px;">.EditSpecChapter</code>, <code style="font-family:monospace;font-size:11px;">.account-container</code>, <code style="font-family:monospace;font-size:11px;">.role-container</code> all override with <code style="font-family:monospace;font-size:11px;">font-size: 12px !important</code>. The use of <code style="font-family:monospace;font-size:11px;">!important</code> indicates the cascade is not being managed correctly.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION 8: DATA GRID ── -->
+<section id="datagrid">
+  <div class="section-label">Section 08</div>
+  <div class="section-title">Data Grid Design Problems</div>
+  <div class="section-sub">Custom-Datagrid.scss is a strong foundation — the problems are in how it is applied and overridden.</div>
+  <div class="section-divider"></div>
+  <div class="callout callout-note"><span class="callout-icon">💡</span><div><strong>Note:</strong> The canonical Custom-Datagrid.scss should be <strong>preserved and extended</strong>, not replaced. The problems below are all in wrapper overrides and missing standardization — not in the core grid file itself.</div></div>
+
+  <div class="dg-problem"><div class="dg-num">1</div><div><div class="dg-title">Three Conflicting Grid Wrapper Classes</div><div class="dg-desc"><code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.MyGrid2Style</code>, <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.RQ-search</code>, <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.GridContainer</code> all override the same .btn and .pagination-bar rules inside the grid. A single <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.dg-wrapper</code> building block class should replace all three.</div></div></div>
+
+  <div class="dg-problem"><div class="dg-num">2</div><div><div class="dg-title">Grid Forced to 91vw — Not Responsive</div><div class="dg-desc"><code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">max-width: 91vw; min-width: 91vw</code> on the table. At 768px tablet that is 699px — works only if content fits, but many pages have 10+ columns. A responsive column-hiding strategy must be defined per page type.</div></div></div>
+
+  <div class="dg-problem"><div class="dg-num">3</div><div><div class="dg-title">No Standard for Column Priority at Tablet Width</div><div class="dg-desc">No documented or SCSS-enforced pattern for hiding columns at smaller widths. Must be defined per page type: e.g., request list always shows Name + Status; hides Date Created + Assigned User at ≤768px.</div></div></div>
+
+  <div class="dg-problem"><div class="dg-num">4</div><div><div class="dg-title">Row Action Buttons Not Standardized</div><div class="dg-desc">Row-level actions (Edit, Delete, Open) use the global <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.btn</code> override. Some pages further override to 12px gray. A standard row-action button size and placement — rightmost column, icon-only at narrow widths — is needed.</div></div></div>
+
+  <div class="dg-problem"><div class="dg-num">5</div><div><div class="dg-title">Empty State Not Designed</div><div class="dg-desc">Default Mendix plain text empty message renders with no icon, visual cue, or call to action. An empty state building block should be applied to every grid and list view.</div></div></div>
+
+  <div class="dg-problem"><div class="dg-num">6</div><div><div class="dg-title">No Decision: Filter Row vs. External Toolbar</div><div class="dg-desc">Some grids use the built-in Data Grid 2 filter row. Others use external filter inputs above the grid. Both exist in the same application. Standard: prefer external toolbar for complex multi-field filters; use inline row filter for simple single-column filtering only.</div></div></div>
+
+  <div class="dg-problem"><div class="dg-num">7</div><div><div class="dg-title">Pagination Styling Conflicts Directly Override Canonical File</div><div class="dg-desc"><code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.GridContainer</code> overrides pagination buttons to white. <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">.EditSpecChapter-Resource-Grid</code> forces pagination color to <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">#ed1c24 !important</code> at <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">font-size: 5px !important</code>. Both must be removed.</div></div></div>
+
+  <div class="dg-problem"><div class="dg-num">8</div><div><div class="dg-title">Column Header Font Weight Inconsistency</div><div class="dg-desc">Custom-Datagrid.scss: <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">font-weight: 600</code>. _maindesign.scss: overrides to <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">bold</code>. _NewDesign.scss: overrides to <code style="font-family:monospace;font-size:11px;background:var(--gray-pale);border:1px solid var(--border);border-radius:3px;padding:0 4px;">normal, 12px</code>. Three files override the same property three different ways.</div></div></div>
+
+</section>
+
+<!-- ── SECTION 9: OPEN QUESTIONS ── -->
+<section id="questions">
+  <div class="section-label">Section 09</div>
+  <div class="section-title">Information Needed From Client</div>
+  <div class="section-sub">These questions must be answered before representative screen designs can be finalized.</div>
+  <div class="section-divider"></div>
+
+  <div class="q-group">
+    <div class="q-group-title">Users &amp; Roles</div>
+    <ul class="q-list">
+      <li>Which user role should be used as the primary design reference? <em>The SCSS references a "phone" role — .ApproveReject-Container_Phone, .button_menu_phone — suggesting at least two distinct UX paths.</em></li>
+      <li>Do phone/mobile users perform the same tasks as desktop users, or a subset?</li>
+      <li>How experienced are users with the current application? <em>Affects how much we can change familiar patterns.</em></li>
+    </ul>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">Test Details Page</div>
+    <ul class="q-list">
+      <li>What is the maximum number of Test Legs a single request typically has?</li>
+      <li>Can a user collapse/hide Test Legs they are not currently working on? <em>.TestLegContainerExpand / Collapse classes exist — is this behavior already in place?</em></li>
+      <li>Is the horizontal scroll inside the Spec Chapter grid intentional? <em>I.e., do users need all columns visible simultaneously?</em></li>
+    </ul>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">Devices &amp; Breakpoints</div>
+    <ul class="q-list">
+      <li>What tablet models are used in production? <em>iPad, iPad Pro, Surface Pro, or other — affects breakpoint targets.</em></li>
+      <li>Is portrait or landscape the primary tablet orientation?</li>
+      <li>Are there shared-kiosk or wall-mounted display scenarios?</li>
+    </ul>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">Branding</div>
+    <ul class="q-list">
+      <li>Is there an official Yazaki digital brand guide? <em>Currently the primary UI color is Atlas blue (#264ae5), not Yazaki Red. Should the refactor correct this?</em></li>
+      <li>Should the topbar stay white (current) or return to dark navy to match the sidebar?</li>
+      <li>Should the orphan teal (#2B6977) be removed, or is it a sanctioned brand color?</li>
+    </ul>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">Flyout / Admin</div>
+    <ul class="q-list">
+      <li>What is the flyout panel used for? <em>Quick view, editing, or task assignment? The intent determines whether it stays a drawer or becomes a full modal.</em></li>
+      <li>Are Admin Center pages accessed by the same users as the main portal, or a separate admin team?</li>
+      <li>Are there bulk-action workflows in admin pages? <em>Multi-select + batch operations change the grid design significantly.</em></li>
+    </ul>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-title">Accessibility</div>
+    <ul class="q-list">
+      <li>Are there formal WCAG requirements?</li>
+      <li>Are keyboard navigation workflows expected by any user group?</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── SECTION 10: DESIGN DIRECTIONS ── -->
+<section id="directions">
+  <div class="section-label">Section 10</div>
+  <div class="section-title">Three Design Directions</div>
+  <div class="section-sub">No screens have been designed yet. Select one direction — or a hybrid — to begin Phase 2.</div>
+  <div class="section-divider"></div>
+  <div class="callout callout-warn"><span class="callout-icon">⚠️</span><div>A hybrid is valid — for example, <strong>Direction B's visual approach delivered through Direction C's system-first method</strong>. If that is the preference, indicate which visual characteristics from B to prioritize.</div></div>
+
+  <div class="direction-grid">
+
+    <!-- Direction A -->
+    <div class="direction-card">
+      <div class="dir-header dir-header-A">
+        <div class="dir-letter">A</div>
+        <div class="dir-eyebrow">Direction A</div>
+        <div class="dir-title">Conservative Refactor</div>
+        <div class="dir-pitch">Keep the existing visual language. Clean it up, enforce the variable system, fix responsiveness. Users will recognize the app — they'll just find it more consistent.</div>
+      </div>
+      <div class="dir-body">
+        <div class="dir-section-label">Key Visual Characteristics</div>
+        <div class="dir-traits">
+          <div class="dir-trait">White topbar, red bottom border — kept as-is</div>
+          <div class="dir-trait">Dark navy sidebar — kept as-is</div>
+          <div class="dir-trait">Primary button: Atlas blue (#264ae5) filled</div>
+          <div class="dir-trait">Cards: subtle box-shadow, white, 6px radius</div>
+          <div class="dir-trait">Open Sans unchanged, heading hierarchy tightened</div>
+          <div class="dir-trait">Data grid headers: 600 weight, #f8f8f8 bg — consistent</div>
+        </div>
+        <div class="dir-section-label">Advantages &amp; Tradeoffs</div>
+        <div class="dir-pros-cons">
+          <div>
+            <ul class="dir-pro-list">
+              <li>Lowest risk, no learning curve</li>
+              <li>Fastest to implement</li>
+              <li>Clean base for team to maintain</li>
+            </ul>
+          </div>
+          <div>
+            <ul class="dir-con-list">
+              <li>Least visible modernization</li>
+              <li>White/navy split unresolved</li>
+              <li>Still requires hard cleanup decisions</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dir-effort">
+          <span>Implementation effort:</span>
+          <div class="effort-dots">
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot"></div>
+            <div class="effort-dot"></div>
+            <div class="effort-dot"></div>
+          </div>
+          <span style="font-size:11px;">Low — primarily SCSS cleanup + building blocks</span>
+        </div>
+        <button class="dir-cta dir-cta-A">Select Direction A →</button>
+      </div>
+    </div>
+
+    <!-- Direction B -->
+    <div class="direction-card">
+      <div class="dir-header dir-header-B">
+        <div class="dir-letter">B</div>
+        <div class="dir-eyebrow">Direction B</div>
+        <div class="dir-title">Modern Enterprise</div>
+        <div class="dir-pitch">Clearly modernized appearance while keeping all workflows. The application should feel like a current enterprise tool, not a 2018-era portal.</div>
+      </div>
+      <div class="dir-body">
+        <div class="dir-section-label">Key Visual Characteristics</div>
+        <div class="dir-traits">
+          <div class="dir-trait">Full-width dark navy topbar — unified with sidebar</div>
+          <div class="dir-trait">Page background: #f4f5f7 off-white</div>
+          <div class="dir-trait">Cards: white, box-shadow, 8px radius</div>
+          <div class="dir-trait">Primary button: blue (#264ae5), softened pill (6px radius)</div>
+          <div class="dir-trait">Yazaki Red: accent only — tabs, badges, active states</div>
+          <div class="dir-trait">Status badges: defined semantic palette (green/amber/red/gray)</div>
+        </div>
+        <div class="dir-section-label">Advantages &amp; Tradeoffs</div>
+        <div class="dir-pros-cons">
+          <div>
+            <ul class="dir-pro-list">
+              <li>Visible, clear improvement</li>
+              <li>Enterprise-appropriate for manufacturing</li>
+              <li>Resolves split-personality navigation</li>
+              <li>Surface hierarchy solves most VC issues</li>
+            </ul>
+          </div>
+          <div>
+            <ul class="dir-con-list">
+              <li>More implementation work</li>
+              <li>Topbar change noticed by users</li>
+              <li>Needs full button system docs</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dir-effort">
+          <span>Implementation effort:</span>
+          <div class="effort-dots">
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot"></div>
+            <div class="effort-dot"></div>
+          </div>
+          <span style="font-size:11px;">Medium — layout files + full SCSS refactor</span>
+        </div>
+        <button class="dir-cta dir-cta-B">Select Direction B →</button>
+      </div>
+    </div>
+
+    <!-- Direction C -->
+    <div class="direction-card">
+      <div class="dir-header dir-header-C">
+        <div class="dir-letter">C</div>
+        <div class="dir-eyebrow">Direction C</div>
+        <div class="dir-title">Systemized Mendix UI</div>
+        <div class="dir-pitch">Eliminate every one-off style. Replace with a documented, reusable system of Building Blocks, Page Templates, variables, and design properties the team can maintain indefinitely.</div>
+      </div>
+      <div class="dir-body">
+        <div class="dir-section-label">Key Visual Characteristics</div>
+        <div class="dir-traits">
+          <div class="dir-trait">Close to Atlas UI defaults — known to Mendix developers</div>
+          <div class="dir-trait">All decisions made through SCSS variables only — zero hardcoded values</div>
+          <div class="dir-trait">Building blocks enforce consistency structurally</div>
+          <div class="dir-trait">One and only one grid wrapper class — used everywhere</div>
+          <div class="dir-trait">Five page templates — no new page built from scratch</div>
+        </div>
+        <div class="dir-section-label">Advantages &amp; Tradeoffs</div>
+        <div class="dir-pros-cons">
+          <div>
+            <ul class="dir-pro-list">
+              <li>Highest long-term maintainability</li>
+              <li>Easiest for client team post-engagement</li>
+              <li>Most comprehensive documentation</li>
+              <li>Future changes = variable edits only</li>
+            </ul>
+          </div>
+          <div>
+            <ul class="dir-con-list">
+              <li>Least dramatic visual change</li>
+              <li>BB + template creation time-intensive</li>
+              <li>Some pages rebuilt, not just restyled</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dir-effort">
+          <span>Implementation effort:</span>
+          <div class="effort-dots">
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot filled"></div>
+            <div class="effort-dot"></div>
+          </div>
+          <span style="font-size:11px;">High up front — full system + client enablement guide</span>
+        </div>
+        <button class="dir-cta dir-cta-C">Select Direction C →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div><!-- /page -->
+
+<div class="doc-footer">
+  Yazaki Test Portal — Phase 1 UI Audit &nbsp;·&nbsp; Based on full SCSS source review &nbsp;·&nbsp; No designs created yet — direction selection required before Phase 2
+</div>
+
+</body>
+</html>
