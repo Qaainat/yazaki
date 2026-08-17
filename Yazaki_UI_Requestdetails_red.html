@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yazaki Test Portal — UI Refactor Concepts</title>
+<style>
+:root {
+  color-scheme: light;
+  --yz-red: #ed1c24;
+  --yz-teal: #008C95;
+  --charcoal: #2B2B2B;
+  --yz-teal-light: #dff2f3;
+  --yz-red-light: #fff0f0;
+  --success: #3cb33d;
+  --success-dark: #2e7d32;
+  --warning: #eca51c;
+  --danger: #e33f4e;
+  --danger-dark: #c62828;
+  --bg: #f8f8f8;
+  --surface: #ffffff;
+  --surface-2: #f5f6f6;
+  --border: #ced0d3;
+  --border-light: #e8eaed;
+  --text: #0a1325;
+  --text-muted: #3d4350;
+  --text-label: #6c717e;
+  --shadow-card: 0 2px 4px 0 rgba(10,19,37,0.08);
+  --shadow-flyout: 0 5px 7px 0 rgba(10,19,37,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Segoe UI", system-ui, sans-serif; background: #e8eaed; color: var(--text); font-size: 14px; line-height: 1.5; }
+
+/* ── DOC SHELL ── */
+.doc-topbar {
+  background: #ffffff; border-bottom: 3px solid var(--yz-red);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 0 32px; height: 52px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 200;
+}
+.doc-topbar-logo { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; color: var(--yz-teal); text-transform: uppercase; }
+.doc-topbar-logo span { color: var(--yz-red); }
+.doc-topbar-subtitle { font-size: 12px; color: #5a6070; margin-left: 4px; }
+.doc-pill { background: var(--yz-teal); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; margin-left: auto; }
+
+.doc-body { max-width: 1360px; margin: 0 auto; padding: 32px 24px; }
+
+/* ── SCREEN BLOCK ── */
+.screen-block { margin-bottom: 64px; }
+.screen-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); background: var(--yz-teal); display: inline-block;
+  padding: 4px 12px; border-radius: 4px 4px 0 0; margin-bottom: 0;
+}
+.screen-title {
+  font-size: 22px; font-weight: 700; color: #2B2B2B;
+  padding: 16px 0 4px; border-bottom: 2px solid var(--border-light); margin-bottom: 24px;
+}
+
+/* ── BEFORE/AFTER COLUMNS ── */
+.ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+.ba-full { margin-bottom: 24px; }
+.panel-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 6px 12px; display: inline-block; border-radius: 4px 4px 0 0;
+}
+.panel-label.before { background: #ffebee; color: #c62828; }
+.panel-label.after { background: #e8f5e9; color: #1b5e20; }
+.panel {
+  background: #fff; border: 1px solid var(--border-light); border-radius: 0 4px 4px 4px;
+  overflow: hidden;
+}
+.panel.before { border-color: #fca5a5; }
+.panel.after { border-color: #86efac; }
+
+/* ── ANNOTATIONS ── */
+.annotation-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; background: #fff8f8; border-top: 1px solid #fca5a5; }
+.ann { display: flex; align-items: flex-start; gap: 6px; font-size: 11px; color: #7f1d1d; line-height: 1.4; }
+.ann-num { background: var(--yz-red); color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+/* ── RATIONALE SECTION ── */
+.rationale-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+.rationale-card { background: #fff; border: 1px solid var(--border-light); border-radius: 6px; padding: 16px; }
+.rationale-card h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.rationale-card.changes h4 { color: #1b5e20; }
+.rationale-card.components h4 { color: var(--yz-teal); }
+.rationale-list { list-style: none; padding: 0; }
+.rationale-list li { font-size: 12px; color: var(--text-muted); padding: 4px 0; border-bottom: 1px solid var(--border-light); display: flex; align-items: baseline; gap: 8px; line-height: 1.4; }
+.rationale-list li:last-child { border-bottom: none; }
+.rationale-list .bullet { color: var(--success-dark); font-weight: 700; flex-shrink: 0; }
+.component-chip {
+  display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px;
+  text-transform: uppercase; letter-spacing: 0.3px; margin: 2px;
+}
+.chip-template { background: #ede9fe; color: #5b21b6; }
+.chip-block { background: #dbeafe; color: #1e40af; }
+.chip-shared { background: #d1fae5; color: #065f46; }
+.chip-util { background: #fef3c7; color: #78350f; }
+.chip-scss { background: #f3f4f6; color: #374151; }
+
+/* ═══════════════════════════════════════════
+   BEFORE MOCKUPS — accurate recreations
+═══════════════════════════════════════════ */
+
+/* ── BEFORE: Shared App Shell ── */
+.bef-shell { background: #fff; font-size: 13px; }
+.bef-topbar {
+  background: #ffffff; border-bottom: 2px solid #ed1c24;
+  display: flex; align-items: center; padding: 0 16px; height: 40px;
+}
+.bef-logo-area { display: flex; align-items: center; gap: 8px; }
+.bef-logo-img { background: transparent; width: 28px; height: 22px; display: flex; align-items: center; justify-content: center; }
+.bef-logo-img svg { width: 22px; height: 16px; }
+.bef-portal-name { color: #333; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+.bef-user-area { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.bef-user-name { color: #333; font-size: 11px; }
+.bef-signout { color: #264ae5; font-size: 11px; font-weight: 600; }
+.bef-refresh-note { color: #888; font-size: 10px; font-style: italic; }
+
+/* ── BEFORE: Admin Nav Bar ── */
+.bef-admin-nav {
+  background: #fff; padding: 6px 8px;
+  border-bottom: 1px solid var(--border); font-size: 12px;
+  display: flex; flex-wrap: wrap; gap: 2px;
+}
+.bef-admin-nav a { color: var(--yz-red); padding: 2px 6px; text-decoration: none; font-size: 11px; }
+.bef-admin-nav a:hover { text-decoration: underline; }
+
+/* ── BEFORE: Detail Page Left Rail ── */
+.bef-detail-layout { display: flex; }
+.bef-left-rail { width: 36px; background: #f5f6f6; border-right: 1px solid #e0e0e0; padding: 8px 0; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.bef-rail-icon { width: 24px; height: 24px; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #555; }
+
+/* ── BEFORE: Page content area ── */
+.bef-content { flex: 1; padding: 12px; overflow: hidden; }
+.bef-breadcrumb { font-size: 13px; color: #264ae5; font-weight: 600; margin-bottom: 6px; }
+.bef-status-line { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.bef-status-label { font-size: 12px; color: #333; }
+.bef-status-value { color: #264ae5; font-size: 12px; font-weight: 600; }
+
+/* ── BEFORE: Linked Requests button ── */
+.bef-linked-btn { border: 1px solid var(--border); background: #fff; color: #333; font-size: 11px; padding: 4px 10px; border-radius: 3px; display: inline-block; margin-bottom: 8px; cursor: default; }
+
+/* ── BEFORE: Tab bar ── */
+.bef-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+.bef-tab { padding: 6px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; color: #777; text-transform: uppercase; border-bottom: 2px solid transparent; cursor: default; }
+.bef-tab.active { color: #264ae5; border-bottom-color: #264ae5; font-weight: 700; }
+
+/* ── BEFORE: 3-col content grid ── */
+.bef-col-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.bef-card { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 10px; }
+.bef-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.bef-card-title { font-weight: 700; font-size: 13px; color: #000; }
+.bef-edit-btn { border: 1px solid var(--border); background: #fff; color: #555; font-size: 10px; padding: 2px 6px; border-radius: 3px; cursor: default; white-space: nowrap; }
+.bef-kv-row { display: flex; gap: 8px; margin-bottom: 3px; font-size: 11px; }
+.bef-kv-label { font-weight: 400; color: #264ae5; min-width: 110px; flex-shrink: 0; }
+.bef-kv-value { color: #333; }
+.bef-kv-value-blue { color: #264ae5; font-weight: 400; }
+.bef-required-empty { border: 1px solid #f5c542; border-radius: 3px; padding: 3px 8px; display: inline-block; color: #888; font-size: 12px; background: #fff; }
+.bef-empty-field { border: 1.5px solid #f5c033; border-radius: 3px; padding: 2px 6px; font-size: 11px; color: #aaa; background: #fff; display: inline-block; margin: 1px 0; }
+.bef-note-red { color: var(--yz-red); font-size: 10px; line-height: 1.4; margin-top: 6px; }
+.bef-badge-yellow { border: 1.5px solid #f5c033; border-radius: 3px; padding: 1px 6px; font-size: 10px; color: #333; background: #fff; display: inline-block; }
+.bef-no-items { color: #aaa; font-size: 11px; text-align: center; margin-top: 8px; }
+
+/* ── BEFORE: Request List Grid ── */
+.bef-list-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 0; background: #fff; }
+.bef-list-tab { padding: 7px 14px; font-size: 12px; color: #555; border-bottom: 2px solid transparent; cursor: default; }
+.bef-list-tab.active { font-weight: 700; color: #222; border-bottom-color: #222; }
+.bef-grid { width: 100%; border-collapse: collapse; font-size: 12px; }
+.bef-grid th { background: #fff; padding: 6px 10px; text-align: left; border-bottom: 2px solid var(--border); border-right: 1px solid #eee; font-size: 11px; font-weight: 600; color: #333; }
+.bef-grid td { padding: 6px 10px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; color: #333; vertical-align: middle; }
+.bef-grid tr.selected td { border-left: 3px solid var(--yz-red); }
+.bef-grid td.ext-id { color: #264ae5; font-weight: 500; }
+.bef-action-icon { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 3px; font-size: 9px; color: #555; cursor: default; margin-right: 2px; }
+.bef-filter-input { border: 1px solid var(--border); border-radius: 2px; font-size: 10px; padding: 2px 4px; width: 100%; color: #888; }
+.bef-select-filter { border: 1px solid var(--border); border-radius: 2px; font-size: 10px; padding: 2px 4px; width: 100%; background: #fff; color: #888; }
+
+/* ═══════════════════════════════════════════
+   AFTER MOCKUPS — refactored designs
+═══════════════════════════════════════════ */
+
+/* ── AFTER: App Shell ── */
+.aft-topbar {
+  background: #ffffff; border-bottom: 3px solid var(--yz-red);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  display: flex; align-items: center; padding: 0 16px; height: 40px;
+}
+.aft-logo-area { display: flex; align-items: center; gap: 8px; }
+.aft-logo-box { background: #fff; padding: 3px 6px; border-radius: 3px; }
+.aft-logo-text { font-size: 11px; font-weight: 800; color: #ed1c24; letter-spacing: 0.5px; }
+.aft-portal-name { color: #ed1c24; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; border-left: 1px solid var(--border); padding-left: 12px; }
+.aft-topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.aft-role-display { color: var(--text-label); font-size: 11px; text-align: right; line-height: 1.3; }
+.aft-role-name { color: var(--text); font-weight: 600; font-size: 12px; }
+.aft-signout-btn {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-muted); font-size: 11px; font-weight: 600;
+  padding: 5px 12px; border-radius: 4px; cursor: default; display: flex; align-items: center; gap: 6px;
+}
+.aft-signout-btn:hover { background: #f5f6f6; color: #2B2B2B; }
+
+/* ── AFTER: Detail Page Layout ── */
+.aft-detail-layout { display: flex; height: 100%; }
+
+/* ── AFTER: Left Rail (detail page) ── */
+.aft-left-rail {
+  width: 44px; background: #f5f6f6; border-right: 1px solid var(--border); flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 6px;
+}
+.aft-rail-btn {
+  width: 32px; height: 32px; border-radius: 6px;
+  background: rgba(0,0,0,0.05); border: none; cursor: default;
+  display: flex; align-items: center; justify-content: center; color: var(--text-label);
+  font-size: 14px; transition: background 0.15s;
+}
+.aft-rail-btn:hover { background: #f5f6f6; color: #2B2B2B; }
+
+/* ── AFTER: Page Header ── */
+.aft-page-header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 14px 20px 0;
+}
+.aft-breadcrumb { font-size: 11px; color: var(--text-label); margin-bottom: 6px; }
+.aft-breadcrumb a { color: #2B2B2B; text-decoration: none; }
+.aft-breadcrumb span { color: var(--text-label); margin: 0 4px; }
+.aft-page-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.aft-page-title { font-size: 18px; font-weight: 700; color: var(--text); }
+.aft-status-badge {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 3px 9px; border-radius: 10px; flex-shrink: 0;
+}
+.badge-created { background: #f5f6f6; color: #2B2B2B; }
+.badge-approved { background: #e8f5e9; color: #2e7d32; }
+.badge-pending { background: #fff3e0; color: #e65100; }
+.badge-rejected { background: #ffebee; color: #c62828; }
+.badge-progress { background: #e3f2fd; color: #0d47a1; }
+.badge-received { background: #e0f2f1; color: #004d40; }
+.badge-waiting { background: #fff8e1; color: #f57f17; }
+.badge-closed { background: #f3f4f6; color: #374151; }
+
+.aft-page-title-row .linked-btn {
+  margin-left: auto;
+  background: #fff; border: 1px solid #ced0d3; color: #2B2B2B;
+  font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 4px; cursor: default;
+}
+
+/* ── AFTER: Tab Bar ── */
+.aft-tabs { display: flex; gap: 0; }
+.aft-tab {
+  padding: 8px 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--text-label); border-bottom: 3px solid transparent;
+  cursor: default; transition: color 0.15s;
+}
+.aft-tab.active { color: #2B2B2B; border-bottom-color: var(--yz-red); }
+.aft-tab:hover:not(.active) { color: var(--text); }
+
+/* ── AFTER: Content Area ── */
+.aft-content { flex: 1; background: var(--bg); padding: 16px; overflow: hidden; }
+
+/* ── AFTER: 3-Column Grid ── */
+.aft-col-grid { display: grid; grid-template-columns: 1.1fr 1fr 0.9fr; gap: 12px; }
+
+/* ── AFTER: Cards ── */
+.aft-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; box-shadow: var(--shadow-card); overflow: hidden;
+  margin-bottom: 12px;
+}
+.aft-card:last-child { margin-bottom: 0; }
+.aft-card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 1px solid var(--border-light); background: var(--surface-2);
+}
+.aft-card-title { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+.aft-edit-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--text-label);
+  font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 4px; cursor: default;
+  transition: border-color 0.15s, color 0.15s;
+}
+.aft-edit-btn:hover { border-color: #ced0d3; color: #2B2B2B; }
+.aft-card-body { padding: 12px 14px; }
+
+/* ── AFTER: Key-Value Pairs ── */
+.aft-kv-row { display: flex; gap: 12px; padding: 4px 0; border-bottom: 1px solid var(--border-light); }
+.aft-kv-row:last-child { border-bottom: none; }
+.aft-kv-label { font-size: 11px; color: var(--text-label); min-width: 120px; flex-shrink: 0; padding-top: 1px; }
+.aft-kv-value { font-size: 12px; color: var(--text); font-weight: 500; }
+.aft-kv-empty { font-size: 12px; color: var(--text-label); }
+
+/* ── AFTER: Inline badge elements ── */
+.aft-inline-badge {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
+  padding: 2px 8px; border-radius: 10px; display: inline-block;
+}
+
+/* ── AFTER: Question fields (read view) ── */
+.aft-question { font-size: 12px; color: var(--text-label); margin-bottom: 4px; }
+.aft-answer { font-size: 12px; color: var(--text); font-weight: 500; margin-bottom: 10px; }
+.aft-answer-empty { font-size: 12px; color: #bdbdbd; font-style: italic; margin-bottom: 10px; }
+
+/* ── AFTER: Supporting docs ── */
+.aft-docs-note {
+  font-size: 11px; color: #5f3500; background: #fff3e0; border-left: 3px solid var(--warning);
+  padding: 6px 10px; border-radius: 0 4px 4px 0; margin-bottom: 10px; line-height: 1.4;
+}
+.aft-docs-empty { font-size: 12px; color: var(--text-label); text-align: center; padding: 16px; }
+
+/* ── AFTER: Timing Card ── */
+.aft-timing-row { display: flex; gap: 12px; align-items: center; }
+.aft-timing-label { font-size: 11px; color: var(--text-label); }
+.aft-timing-value { font-size: 13px; font-weight: 600; color: var(--text); }
+
+/* ════════════════════════════════
+   AFTER: REQUEST LIST PAGE
+════════════════════════════════ */
+
+/* ── AFTER: Left Nav Sidebar ── */
+.aft-list-layout { display: flex; min-height: 480px; }
+.aft-sidebar {
+  width: 200px; flex-shrink: 0; background: #ffffff;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.aft-sidebar-section { padding: 8px 0; border-bottom: 1px solid var(--border-light); }
+.aft-sidebar-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-label); padding: 6px 14px 4px;
+}
+.aft-sidebar-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px; font-size: 12px; color: var(--text-muted);
+  cursor: default; transition: background 0.1s, color 0.1s; text-decoration: none;
+}
+.aft-sidebar-item:hover { background: #f5f6f6; color: #2B2B2B; }
+.aft-sidebar-item.active { background: #f5f6f6; color: #2B2B2B; font-weight: 600; border-left: 3px solid #ed1c24; }
+.aft-sidebar-icon { opacity: 0.7; font-size: 13px; width: 16px; text-align: center; flex-shrink: 0; }
+.aft-sidebar-item.active .aft-sidebar-icon { opacity: 1; }
+
+/* ── AFTER: List Content ── */
+.aft-list-content { flex: 1; background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
+.aft-list-header {
+  background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 20px 0;
+}
+.aft-list-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.aft-filter-tabs { display: flex; gap: 0; }
+.aft-filter-tab {
+  padding: 7px 14px; font-size: 12px; font-weight: 500; color: var(--text-label);
+  border-bottom: 3px solid transparent; cursor: default; transition: all 0.15s;
+}
+.aft-filter-tab.active { color: #2B2B2B; border-bottom-color: var(--yz-red); font-weight: 700; }
+.aft-filter-tab-count {
+  background: var(--border-light); color: var(--text-label); font-size: 10px;
+  padding: 1px 6px; border-radius: 8px; margin-left: 4px;
+}
+.aft-filter-tab.active .aft-filter-tab-count { background: var(--yz-red); color: #fff; }
+
+/* ── AFTER: Toolbar ── */
+.aft-toolbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+}
+.aft-search-box {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
+  padding: 5px 10px; flex: 1; max-width: 280px;
+}
+.aft-search-box input { border: none; background: none; font-size: 12px; color: var(--text-label); outline: none; width: 100%; }
+.aft-search-icon { font-size: 12px; color: var(--text-label); }
+.aft-btn-primary {
+  background: #ed1c24; color: #fff; border: none;
+  font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 4px;
+  cursor: default; margin-left: auto;
+}
+.aft-btn-secondary {
+  background: #fff; color: #2B2B2B; border: 1px solid #ced0d3;
+  font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 4px; cursor: default;
+}
+
+/* ── AFTER: Data Grid ── */
+.aft-grid-wrap { flex: 1; overflow: auto; padding: 16px; }
+.aft-grid {
+  width: 100%; border-collapse: collapse; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+  box-shadow: var(--shadow-card); font-size: 12px;
+}
+.aft-grid thead th {
+  background: var(--surface-2); padding: 9px 12px; text-align: left;
+  border-bottom: 2px solid var(--border); font-size: 11px; font-weight: 700;
+  color: var(--text-label); text-transform: uppercase; letter-spacing: 0.5px;
+  white-space: nowrap; border-right: 1px solid var(--border-light);
+}
+.aft-grid thead th:last-child { border-right: none; }
+.aft-grid thead th.sortable { cursor: default; }
+.aft-grid thead th.sortable::after { content: " ⇅"; opacity: 0.4; font-size: 10px; }
+.aft-grid thead th.sorted-asc::after { content: " ↑"; opacity: 0.8; color: #ed1c24; }
+.aft-grid tbody tr { transition: background 0.1s; }
+.aft-grid tbody tr:hover td { background: #f5f6f6; }
+.aft-grid tbody tr.selected td { background: #fff0f0; }
+.aft-grid tbody td {
+  padding: 9px 12px; border-bottom: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light); color: var(--text); vertical-align: middle;
+}
+.aft-grid tbody td:last-child { border-right: none; }
+.aft-grid tbody tr:last-child td { border-bottom: none; }
+.aft-grid .td-id { color: #ed1c24; font-weight: 600; }
+.aft-grid .td-actions { display: flex; gap: 4px; align-items: center; }
+.aft-action-btn {
+  width: 26px; height: 26px; border-radius: 4px; border: 1px solid var(--border);
+  background: #fff; color: var(--text-label); font-size: 12px;
+  display: flex; align-items: center; justify-content: center; cursor: default;
+}
+.aft-action-btn:hover { border-color: #ced0d3; color: #2B2B2B; }
+.aft-action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+/* ── Filter row in grid header ── */
+.aft-grid .filter-row td {
+  padding: 4px 8px; background: var(--surface); border-bottom: 2px solid var(--border);
+}
+.aft-filter-input {
+  border: 1px solid var(--border); border-radius: 3px; font-size: 11px;
+  padding: 3px 6px; width: 100%; background: var(--bg); color: var(--text);
+  outline: none;
+}
+.aft-filter-input:focus { border-color: #ed1c24; }
+.aft-filter-select {
+  border: 1px solid var(--border); border-radius: 3px; font-size: 11px;
+  padding: 3px 6px; width: 100%; background: var(--bg); color: var(--text);
+}
+
+/* ── Pagination ── */
+.aft-pagination {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 8px 16px; display: flex; align-items: center; gap: 8px; font-size: 11px;
+}
+.aft-page-info { color: var(--text-label); margin-right: auto; }
+.aft-page-btn {
+  width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--border);
+  background: #fff; color: var(--text-label); font-size: 11px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; cursor: default;
+}
+.aft-page-btn.active { background: #ed1c24; color: #fff; border-color: #ed1c24; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══ DOC HEADER ═══ -->
+<div class="doc-topbar">
+  <div class="doc-topbar-logo">YAZAKI<span>—</span>NA</div>
+  <div class="doc-topbar-subtitle">Test Portal · UI Refactor Concepts</div>
+  <div class="doc-pill">BEFORE / AFTER</div>
+</div>
+
+<div class="doc-body">
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN A: TEST REQUEST DETAIL
+════════════════════════════════════════════════════ -->
+<div class="screen-block" id="screenA">
+  <span class="screen-label">Screen A</span>
+  <div class="screen-title">Test Request Detail Page — TR26-6</div>
+
+  <!-- BEFORE -->
+  <div>
+    <span class="panel-label before">BEFORE — Current State</span>
+    <div class="panel before">
+      <!-- App Shell: Topbar -->
+      <div class="bef-shell">
+        <div class="bef-topbar">
+          <div class="bef-logo-area">
+            <div class="bef-logo-img">
+              <svg viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="40" fill="#ed1c24"/>
+                <text x="4" y="28" font-family="Arial" font-size="18" font-weight="800" fill="white">Y</text>
+                <polygon points="18,8 26,8 60,40 52,40" fill="white" opacity="0.3"/>
+              </svg>
+            </div>
+            <div class="bef-portal-name">YNA TESTING PORTAL</div>
+          </div>
+          <div class="bef-user-area">
+            <span class="bef-refresh-note">(Refresh browser to change role)</span>
+            <span class="bef-user-name">qtestmanager ▾</span>
+            <span style="color:#888; font-size:11px;">English, United States</span>
+            <span class="bef-signout">⊕ Sign Out</span>
+          </div>
+        </div>
+
+        <div class="bef-detail-layout">
+          <!-- Left Rail -->
+          <div class="bef-left-rail">
+            <div class="bef-rail-icon">←</div>
+            <div class="bef-rail-icon">⚙</div>
+          </div>
+
+          <!-- Content -->
+          <div class="bef-content">
+            <div class="bef-breadcrumb">TR26-6 - 2020 A123 dd ANALYSIS</div>
+            <div class="bef-status-line">
+              <span class="bef-status-label">Test Status:</span>
+              <span class="bef-status-value">Created</span>
+            </div>
+            <div><span class="bef-linked-btn">Linked Test Requests</span></div>
+
+            <div class="bef-tabs">
+              <div class="bef-tab active">GENERAL INFO</div>
+              <div class="bef-tab">DUT DETAILS</div>
+              <div class="bef-tab">REQUESTED TESTS</div>
+            </div>
+
+            <!-- 3 Columns -->
+            <div class="bef-col-grid">
+              <!-- LEFT: General Information -->
+              <div>
+                <div class="bef-card">
+                  <div class="bef-card-header">
+                    <div class="bef-card-title">General Information</div>
+                    <div class="bef-edit-btn">Edit General Details</div>
+                  </div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Test Request #</span><span class="bef-kv-value">TR26-6</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Test Description</span><span class="bef-kv-value">2020 A123 dd ANALYSIS</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Customer (OEM)</span><span class="bef-kv-value">A123</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Request Type ?</span><span class="bef-kv-value">Analysis</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Model Year</span><span class="bef-kv-value"></span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Program</span><span class="bef-kv-value"></span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Product Type</span><span class="bef-kv-value">BEC</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Product Name</span><span class="bef-empty-field">Product Name</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Associated RFQ</span><span class="bef-kv-value"></span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">UDP</span><span class="bef-kv-value">PDP23-001</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">BU/FG</span><span class="bef-empty-field">BU/FG</span></div>
+                </div>
+                <div class="bef-card" style="margin-top:10px;">
+                  <div class="bef-card-header">
+                    <div class="bef-card-title">Personal Information</div>
+                    <div class="bef-edit-btn">Edit Personal Details</div>
+                  </div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Requester</span><span class="bef-kv-value">Jeffrey Malotke</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Requester's Email</span><span class="bef-kv-value" style="font-size:10px;">jeffrey.malotke@us.yazaki.com</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Requester's Manager</span><span class="bef-empty-field">Requester's Manager</span></div>
+                  <div class="bef-kv-row"><span class="bef-kv-label">Program Manager</span><span class="bef-kv-value"></span></div>
+                </div>
+              </div>
+
+              <!-- MIDDLE: Parameters + CT Scan -->
+              <div>
+                <div class="bef-card">
+                  <div class="bef-card-header">
+                    <div class="bef-card-title">Project Parameters &amp; Fixtures</div>
+                    <div class="bef-edit-btn">Edit Parameters Details</div>
+                  </div>
+                  <div style="font-size:11px; margin-bottom:4px;"><span class="bef-empty-field">Analysis Objective</span></div>
+                  <div class="bef-kv-row" style="font-size:11px; color:var(--yz-teal);">Is this request related to a previous request?</div>
+                  <div style="font-size:11px; margin-bottom:4px;"><span class="bef-empty-field">Do you want samples returned after test completion?</span></div>
+                  <div class="bef-note-red">Note: If "No" is selected, Testing Center will recycle samples after test completion</div>
+                </div>
+                <div class="bef-card" style="margin-top:10px;">
+                  <div class="bef-card-header">
+                    <div class="bef-card-title">CT Scan Details</div>
+                    <div class="bef-edit-btn">Edit Analysis Details</div>
+                  </div>
+                  <div style="font-size:11px;"><span class="bef-empty-field">Is CT Scan Required?</span></div>
+                </div>
+              </div>
+
+              <!-- RIGHT: Timing + Supporting Docs -->
+              <div>
+                <div class="bef-card">
+                  <div class="bef-card-header">
+                    <div class="bef-card-title">Timing</div>
+                    <div class="bef-edit-btn">Edit Timing Details</div>
+                  </div>
+                  <div class="bef-kv-row">
+                    <span class="bef-badge-yellow">RTCD</span>
+                    <span class="bef-kv-value">&lt;TBD&gt;</span>
+                  </div>
+                </div>
+                <div class="bef-card" style="margin-top:10px;">
+                  <div class="bef-card-header">
+                    <div class="bef-card-title">Supporting Documents</div>
+                  </div>
+                  <div class="bef-note-red">Note: Be sure CAD files are Step files when attached. Size limit is 25mb</div>
+                  <div class="bef-no-items">No Items Found</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Annotations -->
+      <div class="annotation-row">
+        <div class="ann"><div class="ann-num">1</div><div>Blue labels (#008C95) on all key-value pairs — conflicts with interactive blue role; labels are not actionable</div></div>
+        <div class="ann"><div class="ann-num">2</div><div>Yellow-bordered empty fields render as Mendix widget placeholders — inconsistent and visually noisy</div></div>
+        <div class="ann"><div class="ann-num">3</div><div>No visual hierarchy between cards — all cards same weight, no differentiation of primary vs secondary content</div></div>
+        <div class="ann"><div class="ann-num">4</div><div>Pill-shaped buttons (30px radius) on "Linked Test Requests" and tab active state — inconsistent with all other UI</div></div>
+        <div class="ann"><div class="ann-num">5</div><div>"Edit" buttons lack consistent visual treatment — appear as small unstyled outlines</div></div>
+        <div class="ann"><div class="ann-num">6</div><div>Status "Created" is plain text — no badge treatment, easy to overlook</div></div>
+        <div class="ann"><div class="ann-num">7</div><div>Page title is same weight/style as breadcrumb — no clear heading hierarchy</div></div>
+        <div class="ann"><div class="ann-num">8</div><div>Double horizontal scrollbar in lower scroll position (min-width: 1400px on container)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER -->
+  <div style="margin-top:16px;">
+    <span class="panel-label after">AFTER — Proposed Refactor</span>
+    <div class="panel after">
+      <!-- App Shell: Topbar -->
+      <div class="aft-topbar">
+        <div class="aft-logo-area">
+          <div class="aft-logo-box">
+            <svg width="38" height="16" viewBox="0 0 60 26" xmlns="http://www.w3.org/2000/svg">
+              <rect width="60" height="26" fill="#ed1c24" rx="1"/>
+              <text x="3" y="20" font-family="Arial Black, Arial" font-size="18" font-weight="900" fill="white">Y</text>
+              <polygon points="18,4 24,4 60,26 54,26" fill="white" opacity="0.25"/>
+            </svg>
+          </div>
+          <div class="aft-portal-name">YNA TESTING PORTAL</div>
+        </div>
+        <div class="aft-topbar-actions">
+          <div class="aft-role-display">
+            <div class="aft-role-name">qtestmanager</div>
+            <div style="font-size:10px;">English, United States</div>
+          </div>
+          <div class="aft-signout-btn">⊕ Sign Out</div>
+        </div>
+      </div>
+
+      <!-- Layout -->
+      <div class="aft-detail-layout">
+        <!-- Left Rail (navy, part of nav chrome) -->
+        <div class="aft-left-rail">
+          <div class="aft-rail-btn" title="Back">←</div>
+          <div class="aft-rail-btn" title="Settings" style="margin-top:4px;">⚙</div>
+          <div style="flex:1;"></div>
+          <div class="aft-rail-btn" title="Profile" style="background:rgba(237,28,36,0.2);">👤</div>
+        </div>
+
+        <div style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+          <!-- Page Header -->
+          <div class="aft-page-header">
+            <div class="aft-breadcrumb">
+              <a>Request List</a>
+              <span>›</span>
+              <span>TR26-6</span>
+            </div>
+            <div class="aft-page-title-row">
+              <div class="aft-page-title">TR26-6 — 2020 A123 dd ANALYSIS</div>
+              <div class="aft-status-badge badge-created">Created</div>
+              <div class="linked-btn">Linked Test Requests ↗</div>
+            </div>
+            <div class="aft-tabs">
+              <div class="aft-tab active">General Info</div>
+              <div class="aft-tab">DUT Details</div>
+              <div class="aft-tab">Requested Tests</div>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="aft-content">
+            <div class="aft-col-grid">
+
+              <!-- LEFT COLUMN -->
+              <div>
+                <div class="aft-card">
+                  <div class="aft-card-header">
+                    <div class="aft-card-title">General Information</div>
+                    <button class="aft-edit-btn">Edit</button>
+                  </div>
+                  <div class="aft-card-body">
+                    <div class="aft-kv-row"><div class="aft-kv-label">Test Request #</div><div class="aft-kv-value">TR26-6</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Test Description</div><div class="aft-kv-value">2020 A123 dd ANALYSIS</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Customer (OEM)</div><div class="aft-kv-value">A123</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Request Type</div><div class="aft-kv-value">Analysis <span style="color:var(--text-label); font-size:10px; cursor:help;" title="Request type determines the required test specifications">?</span></div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Model Year</div><div class="aft-kv-empty">—</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Program</div><div class="aft-kv-empty">—</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Product Type</div><div class="aft-kv-value">BEC</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Product Name</div><div class="aft-kv-empty">Not provided</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Associated RFQ</div><div class="aft-kv-empty">—</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">UDP</div><div class="aft-kv-value">PDP23-001</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">BU/FG</div><div class="aft-kv-empty">Not provided</div></div>
+                  </div>
+                </div>
+
+                <div class="aft-card">
+                  <div class="aft-card-header">
+                    <div class="aft-card-title">Personal Information</div>
+                    <button class="aft-edit-btn">Edit</button>
+                  </div>
+                  <div class="aft-card-body">
+                    <div class="aft-kv-row"><div class="aft-kv-label">Requester</div><div class="aft-kv-value">Jeffrey Malotke</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Email</div><div class="aft-kv-value" style="font-size:11px; color:#2B2B2B;">jeffrey.malotke@us.yazaki.com</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Manager</div><div class="aft-kv-empty">Not provided</div></div>
+                    <div class="aft-kv-row"><div class="aft-kv-label">Program Manager</div><div class="aft-kv-empty">—</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- MIDDLE COLUMN -->
+              <div>
+                <div class="aft-card">
+                  <div class="aft-card-header">
+                    <div class="aft-card-title">Project Parameters &amp; Fixtures</div>
+                    <button class="aft-edit-btn">Edit</button>
+                  </div>
+                  <div class="aft-card-body">
+                    <div class="aft-question">Analysis Objective</div>
+                    <div class="aft-answer-empty">Not specified</div>
+                    <div class="aft-question">Related to a previous request?</div>
+                    <div class="aft-answer-empty">Not specified</div>
+                    <div class="aft-question">Return samples after test completion?</div>
+                    <div class="aft-answer-empty">Not specified</div>
+                    <div style="background:#fff8f0; border-left:3px solid var(--warning); padding:6px 10px; border-radius:0 4px 4px 0; font-size:11px; color:#5f3500; line-height:1.4;">
+                      If "No" is selected, samples will be recycled by the Testing Center after completion.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="aft-card">
+                  <div class="aft-card-header">
+                    <div class="aft-card-title">CT Scan Details</div>
+                    <button class="aft-edit-btn">Edit</button>
+                  </div>
+                  <div class="aft-card-body">
+                    <div class="aft-question">CT Scan Required?</div>
+                    <div class="aft-answer-empty">Not specified</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT COLUMN -->
+              <div>
+                <div class="aft-card">
+                  <div class="aft-card-header">
+                    <div class="aft-card-title">Timing</div>
+                    <button class="aft-edit-btn">Edit</button>
+                  </div>
+                  <div class="aft-card-body">
+                    <div class="aft-kv-row">
+                      <div class="aft-kv-label">RTCD</div>
+                      <div class="aft-kv-empty">TBD</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="aft-card">
+                  <div class="aft-card-header">
+                    <div class="aft-card-title">Supporting Documents</div>
+                  </div>
+                  <div class="aft-card-body">
+                    <div class="aft-docs-note">CAD files must be STEP format. Size limit: 25 MB per file.</div>
+                    <div style="text-align:center; padding:20px 0;">
+                      <div style="font-size:28px; color:var(--border); margin-bottom:8px;">📄</div>
+                      <div style="font-size:12px; color:var(--text-label);">No documents attached</div>
+                      <div style="font-size:11px; color:var(--text-label); opacity:0.7; margin-top:2px;">Attach files to support this request</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rationale + Component Mapping -->
+  <div class="rationale-row">
+    <div class="rationale-card changes">
+      <h4>Refactor Rationale — Screen A</h4>
+      <ul class="rationale-list">
+        <li><span class="bullet">✓</span>Labels changed from interactive blue (#008C95) to muted gray ($font-color-label: #6c717e) — blue reserved for actual clickable elements only</li>
+        <li><span class="bullet">✓</span>Yellow-bordered Mendix widget placeholders replaced with clean "—" / "Not provided" text — consistent read-only display state across all fields</li>
+        <li><span class="bullet">✓</span>Status "Created" promoted to semantic badge (navy chip) — scannable at a glance, consistent with all status treatments across the application</li>
+        <li><span class="bullet">✓</span>Breadcrumb added (Request List › TR26-6) — establishes context and provides back navigation independent of browser</li>
+        <li><span class="bullet">✓</span>Card headers use uppercase label + separate Edit button — cleaner visual separation of content and action zone per card</li>
+        <li><span class="bullet">✓</span>Active tab uses 3px Yazaki Red underline — replaces blue underline with brand-correct treatment consistent with topbar stripe</li>
+        <li><span class="bullet">✓</span>Left rail extended to full navy height — integrates with topbar chrome, eliminates the isolated icon strip look</li>
+        <li><span class="bullet">✓</span>Red warning note converted to amber left-border callout — red text reserved for actual errors, not informational notes</li>
+        <li><span class="bullet">✓</span>Empty state for Supporting Documents shows icon + instructive message — "No Items Found" plain text replaced with functional empty state</li>
+        <li><span class="bullet">✓</span>Button border-radius 30px → 4px — eliminates pill-shaped buttons throughout</li>
+        <li><span class="bullet">✓</span>Heading hierarchy established: 18px page title, 12px uppercase card headers, 11px field labels — three distinct tiers</li>
+      </ul>
+    </div>
+    <div class="rationale-card components">
+      <h4>Mendix Component Opportunities</h4>
+      <ul class="rationale-list">
+        <li><span class="bullet">▸</span><strong>Page Header with Breadcrumb + Status</strong>
+          <span class="component-chip chip-template">Page Template</span><span class="component-chip chip-block">Building Block</span><br>
+          <span style="font-size:11px;">Reusable across all detail pages: Test Request, Spec Chapter, Test Result.</span></li>
+        <li><span class="bullet">▸</span><strong>Key-Value Read Panel</strong>
+          <span class="component-chip chip-block">Building Block</span><span class="component-chip chip-shared">Shared Pattern</span><br>
+          <span style="font-size:11px;">Parameterized card with title, edit button, and key-value list. Used on every detail page.</span></li>
+        <li><span class="bullet">▸</span><strong>Status Badge</strong>
+          <span class="component-chip chip-util">Utility Class</span><span class="component-chip chip-scss">SCSS Pattern</span><br>
+          <span style="font-size:11px;">Semantic color map: Created / Pending / Approved / Rejected / Closed → shared class names.</span></li>
+        <li><span class="bullet">▸</span><strong>3-Column Detail Layout</strong>
+          <span class="component-chip chip-template">Page Template</span><br>
+          <span style="font-size:11px;">Primary / Secondary / Support column grid as a named Mendix layout template.</span></li>
+        <li><span class="bullet">▸</span><strong>Informational Callout</strong>
+          <span class="component-chip chip-block">Building Block</span><span class="component-chip chip-scss">SCSS Pattern</span><br>
+          <span style="font-size:11px;">Left-border callout in warning / info / danger variants. Replaces inline red text warnings.</span></li>
+        <li><span class="bullet">▸</span><strong>Document Upload Empty State</strong>
+          <span class="component-chip chip-block">Building Block</span><br>
+          <span style="font-size:11px;">Reusable empty state with icon, message, and optional action button.</span></li>
+        <li><span class="bullet">▸</span><strong>Tab Bar with Active Indicator</strong>
+          <span class="component-chip chip-scss">SCSS Pattern</span><br>
+          <span style="font-size:11px;"><code>.aft-tabs</code> + <code>border-bottom: 3px solid $YazakiRed</code> — apply to all tabbed page layouts.</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SCREEN B: REQUEST LIST PAGE
+════════════════════════════════════════════════════ -->
+<div class="screen-block" id="screenB">
+  <span class="screen-label">Screen B</span>
+  <div class="screen-title">Request List Page — Open Requests</div>
+
+  <!-- BEFORE -->
+  <div>
+    <span class="panel-label before">BEFORE — Current State</span>
+    <div class="panel before">
+      <div class="bef-shell">
+        <div class="bef-topbar">
+          <div class="bef-logo-area">
+            <div class="bef-logo-img">
+              <svg viewBox="0 0 60 40" fill="none">
+                <rect width="60" height="40" fill="#ed1c24"/>
+                <text x="4" y="28" font-family="Arial" font-size="18" font-weight="800" fill="white">Y</text>
+              </svg>
+            </div>
+            <div class="bef-portal-name">YNA TESTING PORTAL</div>
+          </div>
+          <div class="bef-user-area">
+            <span class="bef-refresh-note">(Refresh browser to change role)</span>
+            <span class="bef-user-name">qtestmanager ▾</span>
+            <span style="color:#888; font-size:11px;">English, United States</span>
+            <span class="bef-signout">⊕ Sign Out</span>
+          </div>
+        </div>
+
+        <!-- Admin Nav Bar — the exploded horizontal overflow -->
+        <div class="bef-admin-nav">
+          <a>Authentication / Connect</a>
+          <a>Email Control</a>
+          <a>Equipment Group Management</a>
+          <a>Lab Location Management</a>
+          <a>Reflection Page</a>
+          <a>Request List</a>
+          <a>Sharepoint</a>
+          <a>Specification Management</a>
+          <a>Support Equipment Group Management</a>
+          <a>System Audits</a>
+          <a>System Setup</a>
+          <a>Training Matrix</a>
+          <a>Troubleshoot</a>
+          <a>Workflow Admin</a>
+          <a style="color:#333;">⊕ ExcelImporter</a>
+        </div>
+
+        <div style="padding: 8px 12px; background:#fff; border-bottom:1px solid var(--border);">
+          <div class="bef-list-tabs">
+            <div class="bef-list-tab">Created</div>
+            <div class="bef-list-tab">Rejected</div>
+            <div class="bef-list-tab">Pending Approval</div>
+            <div class="bef-list-tab active">Open Request</div>
+            <div class="bef-list-tab">Closed Requests</div>
+          </div>
+        </div>
+
+        <div style="padding:12px; overflow-x:auto;">
+          <table class="bef-grid" style="min-width:860px;">
+            <thead>
+              <tr>
+                <th style="width:60px;"></th>
+                <th>External I D ↕</th>
+                <th>Test description ↕</th>
+                <th>Status ↕</th>
+                <th>Test Completion Date ↕</th>
+                <th>Requester ↕</th>
+              </tr>
+              <tr style="background:#fafafa;">
+                <td style="border-bottom:1px solid #eee; padding:4px;"></td>
+                <td style="padding:4px; border-bottom:1px solid #eee;"><input class="bef-filter-input" placeholder="Ab" style="width:80px;"></td>
+                <td style="padding:4px; border-bottom:1px solid #eee;"><input class="bef-filter-input" placeholder="Ab"></td>
+                <td style="padding:4px; border-bottom:1px solid #eee;"><select class="bef-select-filter"><option>Select</option></select></td>
+                <td style="padding:4px; border-bottom:1px solid #eee;"><input class="bef-filter-input" placeholder="📅"></td>
+                <td style="padding:4px; border-bottom:1px solid #eee;"><input class="bef-filter-input" placeholder="Ab"></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="selected">
+                <td><span class="bef-action-icon">ⓘ</span><span class="bef-action-icon">🗑</span></td>
+                <td class="ext-id">TR26-8</td>
+                <td>2019 A123 ddd ddd ANALYSIS</td>
+                <td>Received by Testing Center</td>
+                <td>5/13/2026</td>
+                <td>Jennifer Simko</td>
+              </tr>
+              <tr>
+                <td><span class="bef-action-icon">ⓘ</span><span class="bef-action-icon">🗑</span></td>
+                <td class="ext-id">TR25-105</td>
+                <td>2022 WAYMO dddd ddd CTD WELD VALIDATION</td>
+                <td>Test In Progress</td>
+                <td>7/9/2025</td>
+                <td>Jeffrey Malotke</td>
+              </tr>
+              <tr>
+                <td><span class="bef-action-icon">ⓘ</span><span class="bef-action-icon">🗑</span></td>
+                <td class="ext-id">TR25-103</td>
+                <td>2019 WAYMO ddd dd ANALYSIS</td>
+                <td>Waiting on Deliverables</td>
+                <td>7/17/2025</td>
+                <td>Jeffrey Malotke</td>
+              </tr>
+              <tr>
+                <td><span class="bef-action-icon">ⓘ</span><span class="bef-action-icon">🗑</span></td>
+                <td class="ext-id">TR25-102</td>
+                <td>2019 WAYMO ddd ddd ANALYSIS</td>
+                <td>Waiting on Deliverables</td>
+                <td>7/7/2025</td>
+                <td>Jeffrey Malotke</td>
+              </tr>
+              <tr>
+                <td><span class="bef-action-icon">ⓘ</span><span class="bef-action-icon">🗑</span></td>
+                <td class="ext-id">TR25-101</td>
+                <td>2019 WAYMO ddd ddd CTD CRIMP VALIDATION</td>
+                <td>Test In Progress</td>
+                <td>7/15/2025</td>
+                <td>Jeffrey Malotke</td>
+              </tr>
+              <tr>
+                <td><span class="bef-action-icon">ⓘ</span><span class="bef-action-icon">🗑</span></td>
+                <td class="ext-id">TR25-100</td>
+                <td>2019 WAYMO aaa aaa ANALYSIS</td>
+                <td>Waiting on Deliverables</td>
+                <td>7/1/2025</td>
+                <td>Jeffrey Malotke</td>
+              </tr>
+              <tr>
+                <td><span class="bef-action-icon">ⓘ</span><span class="bef-action-icon">🗑</span></td>
+                <td class="ext-id">TR25-99</td>
+                <td>2019 VARIOUS ddd ddd CTD CRIMP VALIDATION</td>
+                <td>Waiting on Deliverables</td>
+                <td>7/8/2025</td>
+                <td>Jeffrey Malotke</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Double scrollbar representation -->
+          <div style="height:14px; background:#f0f0f0; border:1px solid #ccc; border-radius:2px; margin-top:4px; display:flex; align-items:center; padding:0 4px;">
+            <div style="height:6px; background:#bbb; border-radius:3px; width:30%; margin-left:10%;"></div>
+          </div>
+          <div style="height:14px; background:#f0f0f0; border:1px solid #ccc; border-radius:2px; margin-top:2px; display:flex; align-items:center; padding:0 4px;">
+            <div style="height:6px; background:#bbb; border-radius:3px; width:50%;"></div>
+          </div>
+          <div style="font-size:9px; color:#999; margin-top:2px;">▲ Double horizontal scrollbar — outer container + grid container both scroll independently</div>
+        </div>
+      </div>
+
+      <div class="annotation-row">
+        <div class="ann"><div class="ann-num">1</div><div>Admin nav overflows into 2 rows — 15 items laid out horizontally with no grouping or hierarchy</div></div>
+        <div class="ann"><div class="ann-num">2</div><div>Column header reads "External I D" (has a space) — typography/naming inconsistency</div></div>
+        <div class="ann"><div class="ann-num">3</div><div>Status values are plain text — "Received by Testing Center", "Test In Progress", "Waiting on Deliverables" all look identical, no color differentiation</div></div>
+        <div class="ann"><div class="ann-num">4</div><div>Selected row indicated only by red left border — subtle, not immediately obvious to new users</div></div>
+        <div class="ann"><div class="ann-num">5</div><div>Double horizontal scrollbar — min-width: 1400px on .RequestDataContainer creates nested scroll inside outer page scroll</div></div>
+        <div class="ann"><div class="ann-num">6</div><div>No visible search box — column-level filters only (the Ab text inputs) with no global search</div></div>
+        <div class="ann"><div class="ann-num">7</div><div>Info (ⓘ) and delete icons are visual equals — destructive action has same visual weight as navigation action</div></div>
+        <div class="ann"><div class="ann-num">8</div><div>Status filter tabs are low-contrast, indistinguishable active state from inactive</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER: Request List -->
+  <div style="margin-top:16px;">
+    <span class="panel-label after">AFTER — Proposed Refactor</span>
+    <div class="panel after">
+      <div class="aft-topbar">
+        <div class="aft-logo-area">
+          <div class="aft-logo-box">
+            <svg width="38" height="16" viewBox="0 0 60 26">
+              <rect width="60" height="26" fill="#ed1c24" rx="1"/>
+              <text x="3" y="20" font-family="Arial Black, Arial" font-size="18" font-weight="900" fill="white">Y</text>
+              <polygon points="18,4 24,4 60,26 54,26" fill="white" opacity="0.25"/>
+            </svg>
+          </div>
+          <div class="aft-portal-name">YNA TESTING PORTAL</div>
+        </div>
+        <div class="aft-topbar-actions">
+          <div class="aft-role-display">
+            <div class="aft-role-name">qtestmanager</div>
+            <div style="font-size:10px;">English, United States</div>
+          </div>
+          <div class="aft-signout-btn">⊕ Sign Out</div>
+        </div>
+      </div>
+
+      <!-- List Page Layout: Sidebar + Content -->
+      <div class="aft-list-layout">
+
+        <!-- LEFT: Collapsible Admin Sidebar -->
+        <div class="aft-sidebar">
+          <div class="aft-sidebar-section" style="padding-top:12px;">
+            <div class="aft-sidebar-label">Main</div>
+            <div class="aft-sidebar-item active"><span class="aft-sidebar-icon">≡</span> Request List</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">📄</span> Spec Management</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🔄</span> Workflow Admin</div>
+          </div>
+          <div class="aft-sidebar-section">
+            <div class="aft-sidebar-label">Equipment</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🔧</span> Equipment Groups</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🏷</span> Support Equip.</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">📍</span> Lab Locations</div>
+          </div>
+          <div class="aft-sidebar-section">
+            <div class="aft-sidebar-label">Administration</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🔒</span> Auth / Connect</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">✉</span> Email Control</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">⚙</span> System Setup</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">📊</span> System Audits</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🎓</span> Training Matrix</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🔍</span> Troubleshoot</div>
+          </div>
+          <div class="aft-sidebar-section">
+            <div class="aft-sidebar-label">Integrations</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🔗</span> SharePoint</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">📥</span> Excel Importer</div>
+            <div class="aft-sidebar-item"><span class="aft-sidebar-icon">🔁</span> Reflection Page</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Content Area -->
+        <div class="aft-list-content">
+
+          <!-- List Header + Tabs -->
+          <div class="aft-list-header">
+            <div class="aft-list-title">Test Requests</div>
+            <div class="aft-filter-tabs">
+              <div class="aft-filter-tab">Created <span class="aft-filter-tab-count">12</span></div>
+              <div class="aft-filter-tab">Rejected <span class="aft-filter-tab-count">3</span></div>
+              <div class="aft-filter-tab">Pending Approval <span class="aft-filter-tab-count">7</span></div>
+              <div class="aft-filter-tab active">Open Requests <span class="aft-filter-tab-count">24</span></div>
+              <div class="aft-filter-tab">Closed <span class="aft-filter-tab-count">142</span></div>
+            </div>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="aft-toolbar">
+            <div class="aft-search-box">
+              <span class="aft-search-icon">🔍</span>
+              <input placeholder="Search requests..." type="text">
+            </div>
+            <div style="font-size:11px; color:var(--text-label); margin-left:4px;">24 results</div>
+            <div class="aft-btn-secondary" style="margin-left:auto;">Export</div>
+            <div class="aft-btn-primary">+ New Request</div>
+          </div>
+
+          <!-- Grid -->
+          <div class="aft-grid-wrap">
+            <table class="aft-grid">
+              <thead>
+                <tr>
+                  <th style="width:72px;">Actions</th>
+                  <th class="sorted-asc">External ID</th>
+                  <th class="sortable">Test Description</th>
+                  <th class="sortable">Status</th>
+                  <th class="sortable">Completion Date</th>
+                  <th class="sortable">Requester</th>
+                </tr>
+                <tr class="filter-row">
+                  <td></td>
+                  <td><input class="aft-filter-input" placeholder="Filter ID…"></td>
+                  <td><input class="aft-filter-input" placeholder="Filter description…"></td>
+                  <td>
+                    <select class="aft-filter-select">
+                      <option value="">All statuses</option>
+                      <option>Received by Testing Center</option>
+                      <option>Test In Progress</option>
+                      <option>Waiting on Deliverables</option>
+                    </select>
+                  </td>
+                  <td><input class="aft-filter-input" placeholder="mm/dd/yyyy" type="text"></td>
+                  <td><input class="aft-filter-input" placeholder="Filter name…"></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="selected">
+                  <td>
+                    <div class="td-actions">
+                      <div class="aft-action-btn" title="View details">ⓘ</div>
+                      <div class="aft-action-btn danger" title="Delete">🗑</div>
+                    </div>
+                  </td>
+                  <td class="td-id">TR26-8</td>
+                  <td>2019 A123 ddd ddd ANALYSIS</td>
+                  <td><span class="aft-inline-badge badge-received">Received by Lab</span></td>
+                  <td>5/13/2026</td>
+                  <td>Jennifer Simko</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-actions">
+                      <div class="aft-action-btn" title="View details">ⓘ</div>
+                      <div class="aft-action-btn danger" title="Delete">🗑</div>
+                    </div>
+                  </td>
+                  <td class="td-id">TR25-105</td>
+                  <td>2022 WAYMO dddd ddd CTD WELD VALIDATION</td>
+                  <td><span class="aft-inline-badge badge-progress">Test In Progress</span></td>
+                  <td>7/9/2025</td>
+                  <td>Jeffrey Malotke</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-actions">
+                      <div class="aft-action-btn" title="View details">ⓘ</div>
+                      <div class="aft-action-btn danger" title="Delete">🗑</div>
+                    </div>
+                  </td>
+                  <td class="td-id">TR25-103</td>
+                  <td>2019 WAYMO ddd dd ANALYSIS</td>
+                  <td><span class="aft-inline-badge badge-waiting">Waiting on Deliverables</span></td>
+                  <td>7/17/2025</td>
+                  <td>Jeffrey Malotke</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-actions">
+                      <div class="aft-action-btn" title="View details">ⓘ</div>
+                      <div class="aft-action-btn danger" title="Delete">🗑</div>
+                    </div>
+                  </td>
+                  <td class="td-id">TR25-102</td>
+                  <td>2019 WAYMO ddd ddd ANALYSIS</td>
+                  <td><span class="aft-inline-badge badge-waiting">Waiting on Deliverables</span></td>
+                  <td>7/7/2025</td>
+                  <td>Jeffrey Malotke</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-actions">
+                      <div class="aft-action-btn" title="View details">ⓘ</div>
+                      <div class="aft-action-btn danger" title="Delete">🗑</div>
+                    </div>
+                  </td>
+                  <td class="td-id">TR25-101</td>
+                  <td>2019 WAYMO ddd ddd CTD CRIMP VALIDATION</td>
+                  <td><span class="aft-inline-badge badge-progress">Test In Progress</span></td>
+                  <td>7/15/2025</td>
+                  <td>Jeffrey Malotke</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-actions">
+                      <div class="aft-action-btn" title="View details">ⓘ</div>
+                      <div class="aft-action-btn danger" title="Delete">🗑</div>
+                    </div>
+                  </td>
+                  <td class="td-id">TR25-100</td>
+                  <td>2019 WAYMO aaa aaa ANALYSIS</td>
+                  <td><span class="aft-inline-badge badge-waiting">Waiting on Deliverables</span></td>
+                  <td>7/1/2025</td>
+                  <td>Jeffrey Malotke</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="td-actions">
+                      <div class="aft-action-btn" title="View details">ⓘ</div>
+                      <div class="aft-action-btn danger" title="Delete">🗑</div>
+                    </div>
+                  </td>
+                  <td class="td-id">TR25-99</td>
+                  <td>2019 VARIOUS ddd ddd CTD CRIMP VALIDATION</td>
+                  <td><span class="aft-inline-badge badge-waiting">Waiting on Deliverables</span></td>
+                  <td>7/8/2025</td>
+                  <td>Jeffrey Malotke</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="aft-pagination" style="margin-top:12px; border:1px solid var(--border); border-radius:6px; background:var(--surface);">
+              <div class="aft-page-info">Showing 1–7 of 24 results</div>
+              <div class="aft-page-btn">‹</div>
+              <div class="aft-page-btn active">1</div>
+              <div class="aft-page-btn">2</div>
+              <div class="aft-page-btn">3</div>
+              <div class="aft-page-btn">4</div>
+              <div class="aft-page-btn">›</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rationale + Component Mapping -->
+  <div class="rationale-row">
+    <div class="rationale-card changes">
+      <h4>Refactor Rationale — Screen B</h4>
+      <ul class="rationale-list">
+        <li><span class="bullet">✓</span>Admin nav moved from 2-row horizontal overflow into grouped left sidebar — eliminates wrapping, groups related tools, provides consistent navigation chrome across all views</li>
+        <li><span class="bullet">✓</span>Status filter tabs promoted to properly styled filter row with count badges — active tab uses 3px Yazaki Red underline + count badge turns red; inactive tabs use muted text</li>
+        <li><span class="bullet">✓</span>Double horizontal scrollbar eliminated — removed <code>min-width: 1400px</code> on .RequestDataContainer, grid uses <code>width: 100%</code> relative to its container</li>
+        <li><span class="bullet">✓</span>Status values converted to semantic color badges — "Test In Progress" blue, "Waiting on Deliverables" amber, "Received by Lab" teal — scannable at a glance</li>
+        <li><span class="bullet">✓</span>Selected row now uses blue tint ($dg-brand-light: #dff2f3) — replaces red left-border which conflicted with the Yazaki Red brand use; blue tint is clearer selection affordance</li>
+        <li><span class="bullet">✓</span>Column header "External I D" fixed to "External ID" — minor but signals attention to quality</li>
+        <li><span class="bullet">✓</span>Action buttons differentiated: info (ⓘ) is neutral, delete (🗑) gains danger hover state — destructive action is visually distinct without adding friction</li>
+        <li><span class="bullet">✓</span>Global search box added above the filter row — prominent search complements per-column filters for users who know what they're looking for</li>
+        <li><span class="bullet">✓</span>Column filters use consistent input styling (border-radius: 3px, $bg-color background) — replaces mismatched filter inputs</li>
+        <li><span class="bullet">✓</span>Result count + pagination added — users know how many records match and can navigate without scrolling to find the bottom</li>
+        <li><span class="bullet">✓</span>"New Request" primary button promoted to top-right of toolbar — currently no visible entry point for creating a request from the list view</li>
+      </ul>
+    </div>
+    <div class="rationale-card components">
+      <h4>Mendix Component Opportunities</h4>
+      <ul class="rationale-list">
+        <li><span class="bullet">▸</span><strong>Admin Sidebar Navigation</strong>
+          <span class="component-chip chip-template">Page Template</span><span class="component-chip chip-shared">Shared Pattern</span><br>
+          <span style="font-size:11px;">Named Mendix Atlas sidebar layout with grouped sections. Apply to all manager-role pages. Replaces the horizontal nav overflow pattern entirely.</span></li>
+        <li><span class="bullet">▸</span><strong>Status Filter Tabs</strong>
+          <span class="component-chip chip-block">Building Block</span><span class="component-chip chip-scss">SCSS Pattern</span><br>
+          <span style="font-size:11px;">Tab group with count badge. <code>.aft-filter-tab.active</code> pattern — 3px Yazaki Red underline, navy text. Reuse on all multi-status list pages.</span></li>
+        <li><span class="bullet">▸</span><strong>Data Grid with Search + Toolbar</strong>
+          <span class="component-chip chip-template">Page Template</span><br>
+          <span style="font-size:11px;">Full list page template: sidebar + content area + toolbar (search, count, actions) + grid + pagination. The canonical Mendix list page pattern for this application.</span></li>
+        <li><span class="bullet">▸</span><strong>Status Badge (Semantic Colors)</strong>
+          <span class="component-chip chip-util">Utility Class</span><span class="component-chip chip-scss">SCSS Pattern</span><br>
+          <span style="font-size:11px;">Shared class map: <code>.badge-progress</code> / <code>.badge-waiting</code> / <code>.badge-received</code> / <code>.badge-approved</code> / <code>.badge-rejected</code>. Define once in <code>_yazaki_variables.scss</code>.</span></li>
+        <li><span class="bullet">▸</span><strong>Grid Action Column</strong>
+          <span class="component-chip chip-block">Building Block</span><br>
+          <span style="font-size:11px;">Standard 2-button action column: View (neutral) + Delete (danger on hover). Consistent placement and sizing across all data grids.</span></li>
+        <li><span class="bullet">▸</span><strong>Pagination Bar</strong>
+          <span class="component-chip chip-block">Building Block</span><span class="component-chip chip-scss">SCSS Pattern</span><br>
+          <span style="font-size:11px;">Standardized pagination with result count, page buttons using $brand-primary for active state. Replaces current scattered pagination implementations.</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     SUMMARY: DESIGN SYSTEM TOKENS APPLIED
+════════════════════════════════════════════════════ -->
+<div class="screen-block" id="summary">
+  <div class="screen-title">Design System Tokens Applied Across Both Screens</div>
+
+  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;">
+    <div style="background:#fff; border:1px solid var(--border-light); border-radius:6px; padding:14px;">
+      <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-label); margin-bottom:10px;">Colors Changed</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Labels: <strong>blue → muted gray</strong></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Warning notes: <strong>red text → amber callout</strong></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Selected row: <strong>red border → blue tint</strong></div>
+      <div style="font-size:12px; color:var(--text-muted);">Status: <strong>plain text → semantic badges</strong></div>
+    </div>
+    <div style="background:#fff; border:1px solid var(--border-light); border-radius:6px; padding:14px;">
+      <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-label); margin-bottom:10px;">Shapes Changed</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Buttons: <strong>30px → 4px radius</strong></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Cards: <strong>no radius → 6px</strong></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Badges: <strong>10px pill radius</strong></div>
+      <div style="font-size:12px; color:var(--text-muted);">Inputs: <strong>consistent 4px radius</strong></div>
+    </div>
+    <div style="background:#fff; border:1px solid var(--border-light); border-radius:6px; padding:14px;">
+      <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-label); margin-bottom:10px;">Layout Changed</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Horizontal nav overflow → <strong>sidebar</strong></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Double scroll → <strong>single scroll, fluid width</strong></div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Flat card hierarchy → <strong>card headers + body zones</strong></div>
+      <div style="font-size:12px; color:var(--text-muted);">Inline breadcrumb → <strong>dedicated header region</strong></div>
+    </div>
+    <div style="background:#fff; border:1px solid var(--border-light); border-radius:6px; padding:14px;">
+      <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-label); margin-bottom:10px;">New Patterns Added</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Global search toolbar</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Result count + pagination</div>
+      <div style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Empty state (Supporting Docs)</div>
+      <div style="font-size:12px; color:var(--text-muted);">Breadcrumb navigation</div>
+    </div>
+  </div>
+
+  <div style="background:#2B2B2B; color:#fff; border-radius:6px; padding:16px 20px; font-size:12px; line-height:1.7; border-left:4px solid var(--yz-red);">
+    <strong style="font-size:13px; display:block; margin-bottom:6px;">Next Steps</strong>
+    These designs are ready for client review. Once approved, implementation should follow this sequence:
+    (1) Apply <code>custom-variables.scss</code> token changes — buttons, typography, border radius — which will propagate across all pages simultaneously;
+    (2) Build the <strong>sidebar navigation</strong> as a Mendix Atlas layout and apply it to manager-role pages;
+    (3) Create the <strong>Key-Value Read Panel</strong> and <strong>Status Badge</strong> building blocks in Mendix Studio Pro;
+    (4) Fix the <strong>.RequestDataContainer min-width</strong> scroll issue;
+    (5) Apply <strong>Status Badge</strong> pattern to all data grids across the application.
+    Remaining screens (DUT Details, Requested Tests, Spec Chapter Edit) should follow the same building blocks once those are established.
+  </div>
+</div>
+
+</div>
+</body>
+</html>
