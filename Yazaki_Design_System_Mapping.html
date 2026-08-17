@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yazaki Mendix — Visual Foundation & Design System Mapping</title>
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Yazaki Brand */
+      --yz-red: #ed1c24;
+      --yz-teal: #008C95;
+      --yz-red-light: #fff0f0;
+      --yz-teal-light: #dff2f3;
+      --charcoal: #2B2B2B;
+
+      /* Doc UI */
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --surface-2: #f9fafb;
+      --border: #e2e4e8;
+      --text: #1a1d25;
+      --text-muted: #5a6070;
+      --text-light: #8c95a6;
+      --code-bg: #f1f3f7;
+      --code-text: #2d3748;
+
+      --badge-source-bg: #e8f5e9; --badge-source: #1b5e20;
+      --badge-var-bg: #f5f6f6; --badge-var: #2B2B2B;
+      --badge-new-bg: #fff3e0; --badge-new: #bf360c;
+      --badge-flag-bg: #fff0f0; --badge-flag: #c62828;
+      --badge-keep-bg: #e3f2fd; --badge-keep: #0d47a1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: #ffffff;
+      border-bottom: 3px solid var(--yz-red);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 32px; height: 52px;
+    }
+    .topbar-logo {
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      color: var(--yz-teal); text-transform: uppercase; opacity: 0.9;
+    }
+    .topbar-logo span { color: var(--yz-red); }
+    .topbar-nav { display: flex; gap: 4px; margin-left: auto; }
+    .topbar-nav a {
+      color: #2B2B2B; font-size: 12px; font-weight: 500;
+      padding: 6px 10px; border-radius: 4px; text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .topbar-nav a:hover { background: var(--yz-teal-light); color: var(--yz-teal); }
+    .topbar-pill {
+      margin-left: 8px;
+      background: var(--yz-teal); color: #fff;
+      font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px;
+    }
+
+    /* ── Layout ── */
+    .layout { display: flex; min-height: calc(100vh - 52px); }
+
+    .sidebar {
+      width: 220px; flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      position: sticky; top: 52px; height: calc(100vh - 52px);
+      overflow-y: auto;
+    }
+    .sidebar-section {
+      padding: 0 16px; margin-bottom: 8px;
+    }
+    .sidebar-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      color: var(--text-light); text-transform: uppercase;
+      padding: 4px 8px; margin-bottom: 4px;
+    }
+    .sidebar a {
+      display: block; padding: 5px 8px; border-radius: 4px;
+      font-size: 12px; font-weight: 500; color: var(--text-muted);
+      text-decoration: none; transition: background 0.1s, color 0.1s;
+    }
+    .sidebar a:hover { background: var(--yz-teal-light); color: var(--yz-teal); }
+    .sidebar a.active { background: var(--yz-teal-light); color: var(--yz-teal); font-weight: 600; }
+    .sidebar-num {
+      float: right; background: var(--border);
+      font-size: 10px; padding: 0 5px; border-radius: 8px;
+    }
+
+    .content {
+      flex: 1; padding: 32px 40px;
+      max-width: 1100px;
+    }
+
+    /* ── Page Header ── */
+    .page-header {
+      background: #ffffff;
+      border-radius: 8px; padding: 32px 36px; margin-bottom: 32px;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--yz-teal);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .page-header-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--yz-teal); margin-bottom: 8px;
+    }
+    .page-header h1 {
+      font-size: 24px; font-weight: 700; color: #2B2B2B; margin-bottom: 8px;
+    }
+    .page-header-sub {
+      font-size: 14px; color: #5a6070; line-height: 1.5;
+    }
+    .page-header-meta {
+      display: flex; gap: 20px; margin-top: 20px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .meta-item { font-size: 12px; color: #5a6070; }
+    .meta-item strong { color: #2B2B2B; display: block; font-size: 13px; }
+
+    /* ── Notice ── */
+    .notice {
+      background: #fffbeb; border: 1px solid #f5c540;
+      border-left: 3px solid #f5c540; border-radius: 6px;
+      padding: 12px 16px; margin-bottom: 24px; font-size: 13px; color: #5a4500;
+    }
+    .notice-flag {
+      background: #fff0f0; border: 1px solid #fca5a5;
+      border-left: 3px solid var(--yz-red); border-radius: 6px;
+      padding: 12px 16px; margin-bottom: 24px; font-size: 13px; color: #7f1d1d;
+    }
+
+    /* ── Section ── */
+    .section { margin-bottom: 48px; scroll-margin-top: 72px; }
+    .section-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-number {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--yz-teal); color: #fff;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .section-title {
+      font-size: 18px; font-weight: 700; color: var(--text);
+    }
+    .section-desc {
+      font-size: 13px; color: var(--text-muted); margin-left: auto;
+    }
+
+    /* ── Token Table ── */
+    .token-table {
+      width: 100%; border-collapse: collapse;
+      background: var(--surface); border-radius: 8px;
+      border: 1px solid var(--border); overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .token-table th {
+      background: var(--surface-2); padding: 10px 14px;
+      text-align: left; font-size: 11px; font-weight: 700;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+    .token-table td {
+      padding: 12px 14px; border-bottom: 1px solid var(--border);
+      font-size: 13px; vertical-align: top;
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table tr:hover td { background: var(--surface-2); }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 600;
+      padding: 2px 7px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap;
+    }
+    .badge-source { background: var(--badge-source-bg); color: var(--badge-source); }
+    .badge-var { background: var(--badge-var-bg); color: var(--badge-var); }
+    .badge-new { background: var(--badge-new-bg); color: var(--badge-new); }
+    .badge-flag { background: var(--badge-flag-bg); color: var(--badge-flag); }
+    .badge-keep { background: var(--badge-keep-bg); color: var(--badge-keep); }
+    .badge-change { background: #f3e8ff; color: #6b21a8; }
+
+    /* ── Color Swatch ── */
+    .swatch-cell { display: flex; align-items: center; gap: 10px; }
+    .swatch {
+      width: 28px; height: 28px; border-radius: 5px; flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .swatch-meta { display: flex; flex-direction: column; gap: 1px; }
+    .swatch-hex { font-family: "Consolas", monospace; font-size: 12px; font-weight: 600; }
+    .swatch-name { font-size: 11px; color: var(--text-muted); }
+
+    /* ── Code ── */
+    code {
+      background: var(--code-bg); color: var(--code-text);
+      font-family: "Consolas", "Fira Code", monospace;
+      font-size: 12px; padding: 1px 5px; border-radius: 3px;
+    }
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 14px 16px; overflow-x: auto;
+      font-size: 12px; line-height: 1.7; margin: 12px 0;
+    }
+    pre code { background: none; padding: 0; }
+
+    /* ── Usage Guidance ── */
+    .usage { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .usage strong { color: var(--text); font-weight: 600; }
+
+    /* ── Flags Section ── */
+    .flags-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 16px;
+    }
+    .flag-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px;
+    }
+    .flag-card.danger { border-left: 3px solid var(--yz-red); }
+    .flag-card.warn { border-left: 3px solid #f5c540; }
+    .flag-title {
+      font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px;
+    }
+    .flag-body { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── Color Palette Preview ── */
+    .palette-row {
+      display: flex; gap: 0; border-radius: 8px; overflow: hidden;
+      margin-bottom: 24px; border: 1px solid var(--border);
+    }
+    .palette-chip {
+      flex: 1; padding: 20px 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .palette-chip .chip-hex {
+      font-family: "Consolas", monospace; font-size: 12px; font-weight: 700;
+    }
+    .palette-chip .chip-name { font-size: 11px; opacity: 0.7; }
+
+    /* ── Button Preview ── */
+    .btn-preview-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin: 16px 0; }
+    .btn-preview {
+      padding: 8px 20px; border-radius: 4px;
+      font-size: 13px; font-weight: 600; border: 1px solid transparent;
+      font-family: inherit; cursor: default;
+    }
+    .btn-primary { background: #008C95; color: #fff; }
+    .btn-secondary { background: #fff; color: #008C95; border-color: #008C95; }
+    .btn-danger { background: #e33f4e; color: #fff; }
+    .btn-ghost { background: transparent; color: #008C95; border-color: #e2e4e8; }
+    .btn-yazaki { background: var(--yz-red); color: #fff; }
+
+    /* ── Grid Preview ── */
+    .grid-preview {
+      background: var(--surface); border: 1px solid #ced0d3;
+      border-radius: 6px; overflow: hidden; margin: 12px 0; font-size: 12px;
+    }
+    .grid-header {
+      background: #f5f6f6; border-bottom: 2px solid #ced0d3;
+      display: flex;
+    }
+    .grid-th {
+      padding: 8px 12px; font-weight: 700; font-size: 11px;
+      color: #5a6070; text-transform: uppercase; letter-spacing: 0.5px;
+      border-right: 1px solid #ced0d3; flex: 1;
+    }
+    .grid-row { display: flex; border-bottom: 1px solid #ced0d3; }
+    .grid-row.striped { background: #fafafb; }
+    .grid-row.hover { background: #f5f6f6; }
+    .grid-row.selected { background: #dff2f3; }
+    .grid-td {
+      padding: 7px 12px; border-right: 1px solid #ced0d3; flex: 1;
+      color: #0a1325;
+    }
+
+    /* ── Spacing Scale ── */
+    .spacing-row { display: flex; align-items: center; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .spacing-row:last-child { border-bottom: none; }
+    .spacing-bar-wrap { width: 200px; }
+    .spacing-bar { height: 10px; background: var(--yz-teal); border-radius: 2px; opacity: 0.7; }
+    .spacing-var { font-family: "Consolas", monospace; font-size: 12px; width: 160px; }
+    .spacing-val { font-weight: 700; font-size: 13px; width: 40px; }
+    .spacing-use { font-size: 12px; color: var(--text-muted); }
+
+    /* ── Shadow Preview ── */
+    .shadow-preview-row { display: flex; gap: 16px; margin: 16px 0; }
+    .shadow-box {
+      background: #fff; border-radius: 6px; padding: 16px 20px;
+      text-align: center; flex: 1; font-size: 12px; font-weight: 600;
+    }
+    .shadow-box.sm { box-shadow: 0 2px 4px 0 rgba(10,19,37,0.5); }
+    .shadow-box.md { box-shadow: 0 5px 7px 0 rgba(10,19,37,0.5); }
+    .shadow-box.lg { box-shadow: 0 8px 10px 0 rgba(10,19,37,0.5); }
+
+    /* ── Radius Preview ── */
+    .radius-preview-row { display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap; }
+    .radius-box {
+      background: var(--yz-teal-light); border: 2px solid var(--yz-teal);
+      width: 80px; height: 50px; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 600; color: var(--yz-teal);
+    }
+
+    /* ── Status indicator ── */
+    .status-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .status-dot.keep { background: #3cb33d; }
+    .status-dot.change { background: #f5c540; }
+    .status-dot.new { background: #f38824; }
+    .status-dot.flag { background: var(--yz-red); }
+    .status-label { font-size: 11px; color: var(--text-muted); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .content { padding: 20px; }
+      .flags-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-logo">YAZAKI<span>—</span>NA</div>
+  <div class="topbar-logo" style="font-weight:400; opacity:0.5;">Test Portal · Visual Foundation</div>
+  <nav class="topbar-nav">
+    <a href="#brand">Brand</a>
+    <a href="#semantic">Semantic</a>
+    <a href="#typography">Type</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#radius">Radius</a>
+    <a href="#borders">Borders</a>
+    <a href="#shadows">Shadows</a>
+    <a href="#buttons">Buttons</a>
+    <a href="#forms">Forms</a>
+    <a href="#grids">Grids</a>
+    <a href="#surfaces">Surfaces</a>
+    <a href="#flags">Flags</a>
+    <span class="topbar-pill">REVIEW ONLY</span>
+  </nav>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Design System</div>
+      <a href="#website-extraction">&#8853; Website Extraction</a>
+      <a href="#brand">01 Brand Colors</a>
+      <a href="#semantic">02 Semantic UI Colors</a>
+      <a href="#typography">03 Typography</a>
+      <a href="#spacing">04 Spacing Scale</a>
+      <a href="#radius">05 Border Radius</a>
+      <a href="#borders">06 Borders</a>
+      <a href="#shadows">07 Shadows</a>
+      <a href="#buttons">08 Buttons</a>
+      <a href="#forms">09 Form Controls</a>
+      <a href="#grids">10 Data Grid</a>
+      <a href="#surfaces">11 Surfaces</a>
+    </div>
+    <div class="sidebar-section" style="margin-top:16px;">
+      <div class="sidebar-label">Reference</div>
+      <a href="#flags">⚑ Website Flags</a>
+      <a href="#implementation">Implementation Notes</a>
+    </div>
+    <div class="sidebar-section" style="margin-top:16px;">
+      <div class="sidebar-label">Legend</div>
+      <div style="padding: 0 8px;">
+        <div class="status-row"><span class="status-dot keep"></span><span class="status-label">Keep existing value</span></div>
+        <div class="status-row"><span class="status-dot change"></span><span class="status-label">Propose change</span></div>
+        <div class="status-row"><span class="status-dot new"></span><span class="status-label">New variable</span></div>
+        <div class="status-row"><span class="status-dot flag"></span><span class="status-label">Website element to flag</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-eyebrow">Phase 2 · Pre-Design</div>
+      <h1>Visual Foundation &amp; Design System Mapping</h1>
+      <div class="page-header-sub">
+        Proposed variable mapping from Yazaki brand identity to the Atlas Core SCSS variable system.
+        All values are for review only — no files have been modified.
+      </div>
+      <div class="page-header-meta">
+        <div class="meta-item"><strong>Target File</strong>themesource/atlas_core/web/_variables.scss</div>
+        <div class="meta-item"><strong>Override File</strong>theme/web/custom-variables.scss</div>
+        <div class="meta-item"><strong>Brand Anchor</strong>#ed1c24 · #008C95</div>
+        <div class="meta-item"><strong>Status</strong>Proposed — Awaiting Approval</div>
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>Note on source material:</strong> The Yazaki NA website (yazaki-na.com) was not reachable from this environment. Brand identity has been derived from: (1) <code>$YazakiRed: #ed1c24</code> confirmed in <code>_yazaki_variables.scss</code>, (2) the existing <code>custom-variables.scss</code> overrides already applied in the project, (3) the <code>atlas_core/web/_variables.scss</code> variable system, and (4) the existing SCSS component files. The referenced <code>customtheme_starter</code> module does not exist in this project — the target variable file is <code>atlas_core/web/_variables.scss</code>, which <code>custom-variables.scss</code> already overrides via the <code>!default</code> cascade.
+    </div>
+
+    <section class="section" id="website-extraction" style="scroll-margin-top:72px; margin-bottom:48px;">
+  <div class="section-header">
+    <div class="section-number" style="background:#008C95;">&#127758;</div>
+    <div class="section-title">Brand Extraction &mdash; yazaki-na.com</div>
+    <div class="section-desc">Colors and patterns observed from the live website</div>
+  </div>
+
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:20px; margin-bottom:20px;">
+    <div style="font-size:12px; color:var(--text-muted); margin-bottom:16px; line-height:1.6;">The following colors were extracted by visual inspection of yazaki-na.com screenshots (homepage hero, world map section, feature cards, latest news section, and Company dropdown). Values marked <em>estimated</em> should be verified against Yazaki's official brand guidelines before final implementation.</div>
+
+    <div style="display:grid; grid-template-columns: repeat(6,1fr); gap:0; border-radius:8px; overflow:hidden; border:1px solid var(--border); margin-bottom:20px;">
+      <div style="background:#ed1c24; color:#fff; padding:16px 10px;">
+        <div style="font-family:Consolas,monospace; font-size:11px; font-weight:700;">#ed1c24</div>
+        <div style="font-size:10px; opacity:0.8; margin-top:2px;">Yazaki Red</div>
+        <div style="font-size:9px; margin-top:4px; opacity:0.7;">&#10003; Confirmed<br>"Power." hero text<br>Outline button</div>
+      </div>
+      <div style="background:#008C95; color:#fff; padding:16px 10px;">
+        <div style="font-family:Consolas,monospace; font-size:11px; font-weight:700;">#008C95</div>
+        <div style="font-size:10px; opacity:0.8; margin-top:2px;">Yazaki Teal</div>
+        <div style="font-size:9px; margin-top:4px; opacity:0.7;">&#9733; New finding<br>App Portal nav<br>CTA buttons</div>
+      </div>
+      <div style="background:#2B2B2B; color:#fff; padding:16px 10px;">
+        <div style="font-family:Consolas,monospace; font-size:11px; font-weight:700;">~#2B2B2B</div>
+        <div style="font-size:10px; opacity:0.8; margin-top:2px;">Dark Charcoal</div>
+        <div style="font-size:9px; margin-top:4px; opacity:0.7;">estimated<br>Nav dropdown<br>World map bg</div>
+      </div>
+      <div style="background:#1a1a1a; color:#fff; padding:16px 10px;">
+        <div style="font-family:Consolas,monospace; font-size:11px; font-weight:700;">~#1a1a1a</div>
+        <div style="font-size:10px; opacity:0.8; margin-top:2px;">Near Black</div>
+        <div style="font-size:9px; margin-top:4px; opacity:0.7;">estimated<br>Body text<br>Logo type</div>
+      </div>
+      <div style="background:#dff2f3; color:#0a1325; padding:16px 10px; border-left:1px solid #ced0d3;">
+        <div style="font-family:Consolas,monospace; font-size:11px; font-weight:700;">~#b8dedf</div>
+        <div style="font-size:10px; opacity:0.6; margin-top:2px;">Teal Light</div>
+        <div style="font-size:9px; margin-top:4px; opacity:0.6;">estimated<br>Card backgrounds<br>(website only)</div>
+      </div>
+      <div style="background:#ffffff; color:#0a1325; padding:16px 10px; border-left:1px solid #ced0d3;">
+        <div style="font-family:Consolas,monospace; font-size:11px; font-weight:700;">#ffffff</div>
+        <div style="font-size:10px; opacity:0.6; margin-top:2px;">White</div>
+        <div style="font-size:9px; margin-top:4px; opacity:0.6;">confirmed<br>Page background<br>Topbar</div>
+      </div>
+    </div>
+
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <thead>
+        <tr style="background:var(--surface-2);">
+          <th style="padding:8px 12px; text-align:left; border-bottom:1px solid var(--border); font-size:11px; color:var(--text-muted); text-transform:uppercase;">Element Observed</th>
+          <th style="padding:8px 12px; text-align:left; border-bottom:1px solid var(--border); font-size:11px; color:var(--text-muted); text-transform:uppercase;">Color</th>
+          <th style="padding:8px 12px; text-align:left; border-bottom:1px solid var(--border); font-size:11px; color:var(--text-muted); text-transform:uppercase;">Enterprise App Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);">"Power." hero text / outline button border</td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:3px;background:#ed1c24;display:inline-block;border:1px solid rgba(0,0,0,.1);"></span><code>#ed1c24</code></span></td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light); color:var(--text-muted);">$YazakiRed &mdash; topbar stripe, active tab, checkbox/radio accent</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);">"App Portal" nav text, "Explore Products" button, "View All" button, news dates</td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:3px;background:#008C95;display:inline-block;border:1px solid rgba(0,0,0,.1);"></span><code>~#008C95</code> <em style="color:var(--text-muted);font-size:10px;">estimated</em></span></td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light); color:var(--text-muted);">$YazakiTeal &rarr; replaces $brand-primary (#264ae5). All interactive elements, primary buttons, links, focus states</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);">Nav dropdown background, world map section</td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:3px;background:#2B2B2B;display:inline-block;border:1px solid rgba(0,0,0,.1);"></span><code>~#2B2B2B</code> <em style="color:var(--text-muted);font-size:10px;">estimated</em></span></td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light); color:var(--text-muted);">Changed: topbar now uses $YazakiTeal (#008C95), sidebar uses #006870 (darker teal). $YazakiNavy retained as an accent/overlay variable only.</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);">Website CTA buttons &mdash; pill shape (~24px radius)</td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);">Border-radius: ~24px</td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light); color:var(--text-muted);">&#9876; NOT carried into enterprise app &mdash; pill buttons are marketing-only. Enterprise buttons use 4px radius</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);">Feature card backgrounds (Environmental, Component Catalog)</td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);"><code>~#b8dedf</code> / <code>~#d4d8e8</code></td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light); color:var(--text-muted);">&#9876; Marketing-only. Light teal used only as $bg-inset variant in specific enterprise cards</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);">Website topbar &mdash; white background</td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light);"><code>#ffffff</code></td>
+          <td style="padding:8px 12px; border-bottom:1px solid var(--border-light); color:var(--text-muted);">&#9876; NOT carried into enterprise app. Enterprise topbar changed to $YazakiTeal (#008C95) to align with actual Yazaki brand. Navy (#020557) was the Atlas Core default, not a Yazaki brand color.</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;">Typography &mdash; appears to be a geometric sans-serif (possibly Montserrat or similar for headers)</td>
+          <td style="padding:8px 12px;">Sans-serif, wide tracking on uppercase headings</td>
+          <td style="padding:8px 12px; color:var(--text-muted);">Keep Open Sans for enterprise. Match the letter-spacing pattern for card title uppercase labels ($font-weight-semibold, letter-spacing: 0.5px)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:16px; padding:12px 16px; background:#fff8e1; border-left:3px solid #f5c540; border-radius:0 4px 4px 0; font-size:12px; color:#5f3500; line-height:1.5;">
+      <strong>Critical finding:</strong> The current app's <code>$brand-primary: #264ae5</code> is the Atlas Core framework default &mdash; it appears nowhere on the Yazaki website and is not a Yazaki brand color. It should be replaced with <code>$YazakiTeal: ~#008C95</code> across all interactive elements. This is the highest-impact single change in the design system.
+    </div>
+  </div>
+</section>
+
+        <!-- ─── 01 Brand Colors ─── -->
+    <section class="section" id="brand">
+      <div class="section-header">
+        <div class="section-number">01</div>
+        <div class="section-title">Brand Colors</div>
+        <div class="section-desc">The core Yazaki visual identity palette</div>
+      </div>
+
+      <div class="palette-row">
+        <div class="palette-chip" style="background:#ed1c24; color:#fff;">
+          <div class="chip-hex">#ed1c24</div>
+          <div class="chip-name">Yazaki Red</div>
+        </div>
+        <div class="palette-chip" style="background:#020557; color:#fff;">
+          <div class="chip-hex">#020557</div>
+          <div class="chip-name">Yazaki Navy</div>
+        </div>
+        <div class="palette-chip" style="background:#008C95; color:#fff;">
+          <div class="chip-hex">#008C95</div>
+          <div class="chip-name">Yazaki Teal</div>
+        </div>
+        <div class="palette-chip" style="background:#ffffff; color:#1a1d25; border-right:1px solid #e2e4e8;">
+          <div class="chip-hex">#ffffff</div>
+          <div class="chip-name">Pure White</div>
+        </div>
+        <div class="palette-chip" style="background:#f5f6f8; color:#1a1d25;">
+          <div class="chip-hex">#f5f6f8</div>
+          <div class="chip-name">Page Background</div>
+        </div>
+        <div class="palette-chip" style="background:#0a1325; color:#fff;">
+          <div class="chip-hex">#0a1325</div>
+          <div class="chip-name">Dark Text</div>
+        </div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Proposed Value</th>
+            <th>Variable</th>
+            <th>Source</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Yazaki Red</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ed1c24;"></div>
+                <div class="swatch-meta">
+                  <span class="swatch-hex">#ed1c24</span>
+                  <span class="swatch-name">Brand primary</span>
+                </div>
+              </div>
+            </td>
+            <td><code>$YazakiRed</code><br><span class="badge badge-keep">Keep</span></td>
+            <td><span class="badge badge-source">Codebase</span> <code>_yazaki_variables.scss</code></td>
+            <td class="usage">Top bar accent stripe, active tab indicator, critical badges, brand highlight. <strong>Not</strong> for interactive actions — red reads as danger in enterprise UIs.</td>
+          </tr>
+          <tr>
+            <td><strong>Yazaki Navy</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#020557;"></div>
+                <div class="swatch-meta">
+                  <span class="swatch-hex">#020557</span>
+                  <span class="swatch-name">Brand secondary</span>
+                </div>
+              </div>
+            </td>
+            <td><code>$YazakiNavy</code><br><span class="badge badge-new">New variable</span></td>
+            <td><span class="badge badge-source">Codebase</span> <code>custom-variables.scss</code> — current value of <code>$topbar-bg</code> and <code>$sidebar-bg</code></td>
+            <td class="usage">Topbar, left navigation, primary headings, data grid column headers in branded contexts. The existing dark navy is a strong Yazaki identity anchor — promote it to a named brand variable rather than leaving it only in layout tokens.</td>
+          </tr>
+          <tr>
+            <td><strong>Yazaki Teal</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#008C95;"></div>
+                <div class="swatch-meta">
+                  <span class="swatch-hex">#008C95</span>
+                  <span class="swatch-name">Brand interactive/CTA color</span>
+                </div>
+              </div>
+            </td>
+            <td><code>$brand-primary</code><br><span class="badge badge-change">Change</span></td>
+            <td><span class="badge badge-source">Website</span> yazaki-na.com (App Portal nav, CTA buttons, news dates)</td>
+            <td class="usage">All interactive elements: primary CTA buttons, links, focus rings, active pagination. Confirmed as Yazaki's primary brand interactive color from the website (App Portal nav link, 'Explore Products' and 'View All' button fills, news section date text). Replaces the previous Atlas Core default blue (#264ae5) which is not a Yazaki brand color.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 02 Semantic UI Colors ─── -->
+    <section class="section" id="semantic">
+      <div class="section-header">
+        <div class="section-number">02</div>
+        <div class="section-title">Semantic UI Colors</div>
+        <div class="section-desc">Status, feedback, and state colors</div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Proposed Value</th>
+            <th>Variable</th>
+            <th>Source / Rationale</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Success</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#3cb33d;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#3cb33d</span></div>
+              </div>
+            </td>
+            <td><code>$brand-success</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Atlas Core default — universally readable green, strong pass/approval signal.</td>
+            <td class="usage">Approved status badges, test pass indicators, completion checkmarks.</td>
+          </tr>
+          <tr>
+            <td><strong>Warning</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#eca51c;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#eca51c</span></div>
+              </div>
+            </td>
+            <td><code>$brand-warning</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Atlas Core default — clear amber. Different enough from Yazaki Red.</td>
+            <td class="usage">Pending review, in-progress states, caution notices.</td>
+          </tr>
+          <tr>
+            <td><strong>Danger</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#e33f4e;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#e33f4e</span></div>
+              </div>
+            </td>
+            <td><code>$brand-danger</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Already set in <code>custom-variables.scss</code>. Intentionally distinct from <code>$YazakiRed</code> (#ed1c24) — similar hue but brand red must not be confused with "error."</td>
+            <td class="usage">Validation errors, rejection badges, destructive action buttons, field-level errors.</td>
+          </tr>
+          <tr>
+            <td><strong>Reject / Reject Action</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#c62828;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#c62828</span></div>
+              </div>
+            </td>
+            <td><code>$brand-danger-dark</code><br><span class="badge badge-new">New variable</span></td>
+            <td>Derived — a deeper red for reject/fail buttons, different from both brand red and danger, so all three roles are visually distinct in the approve/reject workflow.</td>
+            <td class="usage">Reject button backgrounds only. Do not use for general error states.</td>
+          </tr>
+          <tr>
+            <td><strong>Approve / Positive Action</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#2e7d32;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#2e7d32</span></div>
+              </div>
+            </td>
+            <td><code>$brand-success-dark</code><br><span class="badge badge-new">New variable</span></td>
+            <td>Deeper green for approve button. The existing <code>$brand-success</code> (#3cb33d) is too light for solid button background contrast.</td>
+            <td class="usage">Approve button background in the approve/reject workflow. Not for general success states.</td>
+          </tr>
+          <tr>
+            <td><strong>Info / Neutral</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#0277bd;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#0277bd</span></div>
+              </div>
+            </td>
+            <td><code>$brand-info</code><br><span class="badge badge-new">New variable</span></td>
+            <td>Not currently defined. The orphan teal (<code>$LabelColor: #2B6977</code> / <code>#559FAE</code> in <code>_maindesign.scss</code>) suggests a need for an info tone. Propose a cleaner blue-info rather than carrying that teal forward.</td>
+            <td class="usage">Informational badges, tooltip anchors, read-only field labels where a color distinction is needed.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice">
+        <strong>Retire these orphan colors:</strong> <code>#2B6977</code> (teal, <code>$LabelColor</code> in _maindesign.scss, local scope only), <code>#f38824</code> (<code>$ActionColor</code> in _requestlist.scss, local scope only), <code>#ffa31a</code> (current <code>$btn-default-bg</code>, orange default button not visibly used). None of these should be carried into the new system — they have no semantic role and create visual noise.
+      </div>
+    </section>
+
+    <!-- ─── 03 Typography ─── -->
+    <section class="section" id="typography">
+      <div class="section-header">
+        <div class="section-number">03</div>
+        <div class="section-title">Typography</div>
+        <div class="section-desc">Font family, scale, and weight system</div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Current Value</th>
+            <th>Proposed Value</th>
+            <th>Variable</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Base Font</strong></td>
+            <td><code>"Open Sans", sans-serif</code></td>
+            <td><code>"Open Sans", sans-serif</code></td>
+            <td><code>$font-family-base</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Open Sans is clean, highly readable, and enterprise-appropriate. Used across all UI text. No change needed.</td>
+          </tr>
+          <tr>
+            <td><strong>Base Size</strong></td>
+            <td><code>14px</code></td>
+            <td><code>14px</code></td>
+            <td><code>$font-size-default</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Appropriate for dense data grid interfaces. Do not increase — this is a data-heavy application, not a marketing page.</td>
+          </tr>
+          <tr>
+            <td><strong>Body Color</strong></td>
+            <td><code>#6c717e</code> (medium gray)</td>
+            <td><code>#3d4350</code></td>
+            <td><code>$font-color-default</code><br><span class="badge badge-change">Change</span></td>
+            <td class="usage">The current #6c717e fails WCAG AA contrast on #f8f8f8 backgrounds. Propose darkening to #3d4350 — still visually distinct from headings but passes 4.5:1 contrast ratio. This is the primary readability fix.</td>
+          </tr>
+          <tr>
+            <td><strong>Header Color</strong></td>
+            <td><code>#0a1326</code></td>
+            <td><code>#0a1325</code></td>
+            <td><code>$font-color-header</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Near-black. Strong contrast. Used for all h1–h4 elements, data grid column headers. Already set in <code>$gray-darker</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>Muted / Label Color</strong></td>
+            <td>No dedicated variable</td>
+            <td><code>#6c717e</code></td>
+            <td><code>$font-color-muted</code><br><span class="badge badge-new">New variable</span></td>
+            <td class="usage">Form labels, table captions, timestamps, secondary metadata. Current default color shifted to this role. Explicitly designate rather than relying on component-level overrides.</td>
+          </tr>
+          <tr>
+            <td><strong>H1</strong></td>
+            <td><code>31px</code></td>
+            <td><code>24px</code></td>
+            <td><code>$font-size-h1</code><br><span class="badge badge-change">Change</span></td>
+            <td class="usage">31px is marketing scale. In an enterprise app, page titles should be 22–24px. Reduces vertical page consumption on content-dense screens.</td>
+          </tr>
+          <tr>
+            <td><strong>H2</strong></td>
+            <td><code>26px</code></td>
+            <td><code>20px</code></td>
+            <td><code>$font-size-h2</code><br><span class="badge badge-change">Change</span></td>
+            <td class="usage">Section headers within pages. 20px is appropriate for sub-page grouping in tabbed layouts.</td>
+          </tr>
+          <tr>
+            <td><strong>H3</strong></td>
+            <td><code>24px</code></td>
+            <td><code>17px</code></td>
+            <td><code>$font-size-h3</code><br><span class="badge badge-change">Change</span></td>
+            <td class="usage">Card headers, flyout headings, collapsible section titles. Keep tightly scoped.</td>
+          </tr>
+          <tr>
+            <td><strong>H4</strong></td>
+            <td><code>18px</code></td>
+            <td><code>15px</code></td>
+            <td><code>$font-size-h4</code><br><span class="badge badge-change">Change</span></td>
+            <td class="usage">Form group labels, modal section titles. Currently hidden in flyouts via <code>h4 { display: none }</code> — fixing this requires both CSS and restoring the heading.</td>
+          </tr>
+          <tr>
+            <td><strong>Semibold Weight</strong></td>
+            <td><code>600</code></td>
+            <td><code>600</code></td>
+            <td><code>$font-weight-semibold</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Use for column headers, button labels, badge text, section titles — not for body text.</td>
+          </tr>
+          <tr>
+            <td><strong>Small / Caption</strong></td>
+            <td>No dedicated variable</td>
+            <td><code>12px</code></td>
+            <td><code>$font-size-small</code><br><span class="badge badge-new">New variable</span></td>
+            <td class="usage">Timestamps, badge labels, grid pagination text, helper text under form inputs. Currently using raw <code>font-size: 12px</code> inline in multiple SCSS files — centralize.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 04 Spacing ─── -->
+    <section class="section" id="spacing">
+      <div class="section-header">
+        <div class="section-number">04</div>
+        <div class="section-title">Spacing Scale</div>
+        <div class="section-desc">The 7-step spacing system from Atlas Core</div>
+      </div>
+
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px 20px; margin-bottom:16px;">
+        <div class="spacing-row">
+          <div class="spacing-var"><code>$spacing-smallest</code></div>
+          <div class="spacing-val">2px</div>
+          <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px;"></div></div>
+          <div class="spacing-use">Internal badge padding, tight icon gaps</div>
+          <span class="badge badge-keep" style="margin-left:auto;">Keep</span>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-var"><code>$spacing-smaller</code></div>
+          <div class="spacing-val">4px</div>
+          <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px;"></div></div>
+          <div class="spacing-use">Input field internal padding, icon-to-label gap</div>
+          <span class="badge badge-keep" style="margin-left:auto;">Keep</span>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-var"><code>$spacing-small</code></div>
+          <div class="spacing-val">8px</div>
+          <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px;"></div></div>
+          <div class="spacing-use">Grid cell padding, button icon gap, tab padding</div>
+          <span class="badge badge-keep" style="margin-left:auto;">Keep</span>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-var"><code>$spacing-medium</code></div>
+          <div class="spacing-val">16px</div>
+          <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:32px;"></div></div>
+          <div class="spacing-use">Card padding, section internal gap, form row gap</div>
+          <span class="badge badge-keep" style="margin-left:auto;">Keep</span>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-var"><code>$spacing-large</code></div>
+          <div class="spacing-val">24px</div>
+          <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px;"></div></div>
+          <div class="spacing-use">Page layout padding, between major sections, layout margins</div>
+          <span class="badge badge-keep" style="margin-left:auto;">Keep</span>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-var"><code>$spacing-larger</code></div>
+          <div class="spacing-val">32px</div>
+          <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px;"></div></div>
+          <div class="spacing-use">Between page-level sections, flyout internal group spacing</div>
+          <span class="badge badge-keep" style="margin-left:auto;">Keep</span>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-var"><code>$spacing-largest</code></div>
+          <div class="spacing-val">48px</div>
+          <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:96px;"></div></div>
+          <div class="spacing-use">Top-of-page breathing room, empty state vertical centering only</div>
+          <span class="badge badge-keep" style="margin-left:auto;">Keep</span>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>Key action:</strong> The existing <code>margin-left: 50px</code> on <code>.RequestDataContainer</code> and <code>top: -50px</code> in <code>_SpecChapterEdit.scss</code> are arbitrary pixel hacks — not from the spacing scale. Replace with <code>$spacing-large</code> (24px) and layout-grid alignment respectively.
+      </div>
+    </section>
+
+    <!-- ─── 05 Border Radius ─── -->
+    <section class="section" id="radius">
+      <div class="section-header">
+        <div class="section-number">05</div>
+        <div class="section-title">Border Radius</div>
+        <div class="section-desc">Shape language — currently split between 4px, 5px, and 30px</div>
+      </div>
+
+      <div class="radius-preview-row">
+        <div>
+          <div class="radius-box" style="border-radius:0px;">0px<br><small>No radius</small></div>
+        </div>
+        <div>
+          <div class="radius-box" style="border-radius:4px;">4px<br><small>Proposed default</small></div>
+        </div>
+        <div>
+          <div class="radius-box" style="border-radius:6px;">6px<br><small>Cards</small></div>
+        </div>
+        <div>
+          <div class="radius-box" style="border-radius:20px;">20px<br><small>Badges/pills</small></div>
+        </div>
+        <div>
+          <div class="radius-box" style="border-radius:50%; width:50px; height:50px;">50%<br><small>Avatar</small></div>
+        </div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Current</th>
+            <th>Proposed</th>
+            <th>Variable</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Default</strong></td>
+            <td>5px (Atlas) / 4px (custom override)</td>
+            <td><code>4px</code></td>
+            <td><code>$border-radius-default</code><br><span class="badge badge-keep">Keep override</span></td>
+            <td class="usage">Inputs, dropdowns, data grid containers, modals, buttons. Consistent 4px gives a crisp-but-not-sharp enterprise feel appropriate for manufacturing data software.</td>
+          </tr>
+          <tr>
+            <td><strong>Button</strong></td>
+            <td>30px (pill — current override)</td>
+            <td><code>4px</code></td>
+            <td><code>$btn-border-radius</code><br><span class="badge badge-change">Change</span></td>
+            <td class="usage"><strong>Critical fix.</strong> Pill-shaped buttons (30px) conflict with every other element in the application and look out of place in a data-dense enterprise UI. Standardize to 4px — matches inputs, cards, and grid containers. Only exception: badge/chip elements (20px).</td>
+          </tr>
+          <tr>
+            <td><strong>Card / Panel</strong></td>
+            <td>No dedicated variable</td>
+            <td><code>6px</code></td>
+            <td><code>$border-radius-large</code><br><span class="badge badge-new">New variable</span></td>
+            <td class="usage">Containers, flyout drawers, modal dialogs, summary cards. Slightly larger than input/button radius to create a clear visual hierarchy between shell and content.</td>
+          </tr>
+          <tr>
+            <td><strong>Badge / Pill</strong></td>
+            <td>Various inline values</td>
+            <td><code>10px</code></td>
+            <td><code>$border-radius-pill</code><br><span class="badge badge-new">New variable</span></td>
+            <td class="usage">Status badges, navigation count chips, tab count indicators. The only context where a pill shape is appropriate.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 06 Borders ─── -->
+    <section class="section" id="borders">
+      <div class="section-header">
+        <div class="section-number">06</div>
+        <div class="section-title">Borders</div>
+        <div class="section-desc">Stroke colors, weights, and special borders</div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Proposed Value</th>
+            <th>Variable</th>
+            <th>Source</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Default Border</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ced0d3;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#ced0d3</span></div>
+              </div>
+            </td>
+            <td><code>$border-color-default</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Atlas Core default, also used in <code>Custom-Datagrid.scss</code></td>
+            <td class="usage">All input outlines, card borders, table cell dividers, flyout borders. Single consistent stroke color throughout.</td>
+          </tr>
+          <tr>
+            <td><strong>Topbar Accent Stripe</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ed1c24;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#ed1c24</span></div>
+              </div>
+            </td>
+            <td><code>$YazakiRed</code> on <code>$topbar-border-bottom</code><br><span class="badge badge-keep">Keep pattern</span></td>
+            <td>Already in <code>module_ui/web/main.scss</code>: <code>border-bottom: 3px solid $YazakiRed</code></td>
+            <td class="usage">The 3px bottom border on the topbar is the primary brand identity moment in the application. Keep it. Standardize the weight explicitly to 3px via a new variable if needed.</td>
+          </tr>
+          <tr>
+            <td><strong>Brand Accent Weight</strong></td>
+            <td><code>3px solid</code></td>
+            <td><code>$border-brand-width: 3px</code><br><span class="badge badge-new">New variable</span></td>
+            <td>Derived from existing topbar usage. Also appears on active tab bottom borders.</td>
+            <td class="usage">Active tab underline, topbar bottom stripe, selected filter chip underline — all should share this 3px brand weight.</td>
+          </tr>
+          <tr>
+            <td><strong>Divider</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#e8eaed;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#e8eaed</span></div>
+              </div>
+            </td>
+            <td><code>$border-color-divider</code><br><span class="badge badge-new">New variable</span></td>
+            <td>Derived — lighter than <code>$border-color-default</code> for internal section separators</td>
+            <td class="usage">Row separators inside cards, section dividers within flyout panels, list item separators. Lighter than the outer border to avoid visual noise.</td>
+          </tr>
+          <tr>
+            <td><strong>Focus Ring</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#008C95;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#008C95 at 40%</span></div>
+              </div>
+            </td>
+            <td><code>$brand-primary</code> with <code>rgba()</code> <span class="badge badge-keep">Keep pattern</span></td>
+            <td>Atlas Core uses <code>$brand-primary</code> for focus outlines — correct semantic relationship</td>
+            <td class="usage">Keyboard focus state on all interactive elements. Must be visible against both white and light gray backgrounds. Propose: <code>0 0 0 2px rgba($brand-primary, 0.4)</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 07 Shadows ─── -->
+    <section class="section" id="shadows">
+      <div class="section-header">
+        <div class="section-number">07</div>
+        <div class="section-title">Shadows</div>
+        <div class="section-desc">Three-level elevation system</div>
+      </div>
+
+      <div class="shadow-preview-row">
+        <div class="shadow-box sm">
+          <div style="font-size:11px; color:#8c95a6; margin-bottom:4px;">$shadow-small</div>
+          <div>Card, input hover</div>
+        </div>
+        <div class="shadow-box md">
+          <div style="font-size:11px; color:#8c95a6; margin-bottom:4px;">$shadow-medium</div>
+          <div>Modal, flyout panel</div>
+        </div>
+        <div class="shadow-box lg">
+          <div style="font-size:11px; color:#8c95a6; margin-bottom:4px;">$shadow-large</div>
+          <div>Top-level overlay</div>
+        </div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Current / Proposed Value</th>
+            <th>Variable</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Shadow Color</strong></td>
+            <td><code>rgba(#0a1325, 0.66)</code></td>
+            <td><code>$shadow-color</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Dark navy-tinted shadow — reads as professional and controlled. Do not use pure black.</td>
+          </tr>
+          <tr>
+            <td><strong>Shadow Small</strong></td>
+            <td><code>0 2px 4px 0 $shadow-color</code></td>
+            <td><code>$shadow-small</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Elevated cards on the page surface, data grid container, hovered table rows, form inputs on focus.</td>
+          </tr>
+          <tr>
+            <td><strong>Shadow Medium</strong></td>
+            <td><code>0 5px 7px 0 $shadow-color</code></td>
+            <td><code>$shadow-medium</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Flyout/drawer panels, dropdown menus, date pickers. Clearly elevated above the page content.</td>
+          </tr>
+          <tr>
+            <td><strong>Shadow Large</strong></td>
+            <td><code>0 8px 10px 0 $shadow-color</code></td>
+            <td><code>$shadow-large</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Modal dialogs only. Reserved for the highest elevation layer — do not apply to cards or persistent panels.</td>
+          </tr>
+          <tr>
+            <td><strong>Topbar Shadow</strong></td>
+            <td><code>0 2px 8px rgba(#020557, 0.25)</code></td>
+            <td><code>$shadow-topbar</code><br><span class="badge badge-new">New variable</span></td>
+            <td class="usage">Navy-tinted shadow under the topbar to lift it above page content. Tinted toward Yazaki Navy rather than neutral dark, reinforcing the brand identity of the nav chrome.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 08 Buttons ─── -->
+    <section class="section" id="buttons">
+      <div class="section-header">
+        <div class="section-number">08</div>
+        <div class="section-title">Buttons</div>
+        <div class="section-desc">Standardize 6 competing button systems into one hierarchy</div>
+      </div>
+
+      <div class="notice-flag">
+        <strong>Critical issue:</strong> The application currently has 6 competing button class systems: <code>.btn-yazaki</code>, <code>.button</code>, <code>.button_approve</code>, <code>.button_new</code>, <code>.OpenRequestBtn</code>, and <code>.btn-default</code> (overridden in MyGrid2Style). There is also a global <code>.btn</code> ghost override in <code>module_ui/web/main.scss</code> that makes ALL buttons borderless by default. The proposed system collapses this into 4 canonical roles.
+      </div>
+
+      <div class="btn-preview-row">
+        <button class="btn-preview btn-primary">Primary</button>
+        <button class="btn-preview btn-secondary">Secondary</button>
+        <button class="btn-preview btn-ghost">Ghost</button>
+        <button class="btn-preview btn-yazaki">Brand / CTA</button>
+        <button class="btn-preview btn-danger">Danger</button>
+        <button class="btn-preview" style="background:#2e7d32; color:#fff; border-radius:4px;">Approve</button>
+        <button class="btn-preview" style="background:#c62828; color:#fff; border-radius:4px;">Reject</button>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Background</th>
+            <th>Text Color</th>
+            <th>Variables</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Primary</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#008C95;"></div>
+                <span class="swatch-hex">#008C95</span>
+              </div>
+            </td>
+            <td>#ffffff</td>
+            <td><code>$btn-primary-bg: $brand-primary</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">The most important action on a page: Submit, Save, Create New Request. One per section.</td>
+          </tr>
+          <tr>
+            <td><strong>Secondary</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#fff; border:1px solid #008C95;"></div>
+                <span class="swatch-hex">#ffffff</span>
+              </div>
+            </td>
+            <td>#008C95</td>
+            <td><code>$btn-default-bg: #fff</code> / <code>$btn-default-color: $brand-primary</code><br><span class="badge badge-change">Change</span> (from orange)</td>
+            <td class="usage">Secondary actions: Edit, Export, Filter. White background with blue border and text. The current orange ($btn-default-bg: #ffa31a) must be removed — it has no semantic role and does not appear in practice.</td>
+          </tr>
+          <tr>
+            <td><strong>Ghost</strong></td>
+            <td>Transparent</td>
+            <td>#008C95</td>
+            <td>Global <code>.btn</code> override already in <code>module_ui/web/main.scss</code><br><span class="badge badge-change">Scope it</span></td>
+            <td class="usage">Low-emphasis actions: Cancel, Back, Close. The global <code>.btn</code> ghost override currently makes ALL buttons ghost by default — this must be scoped to a specific class (e.g. <code>.btn-ghost</code>) rather than the base selector.</td>
+          </tr>
+          <tr>
+            <td><strong>Brand / CTA</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ed1c24;"></div>
+                <span class="swatch-hex">#ed1c24</span>
+              </div>
+            </td>
+            <td>#ffffff</td>
+            <td><code>$YazakiRed</code> on a new <code>.btn-brand</code> class<br><span class="badge badge-new">New class</span></td>
+            <td class="usage">Reserve for one truly brand-highlighted action per page — typically a key navigation CTA or a modal opener for a major workflow. Never use for approve/reject or destructive actions.</td>
+          </tr>
+          <tr>
+            <td><strong>Danger</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#e33f4e;"></div>
+                <span class="swatch-hex">#e33f4e</span>
+              </div>
+            </td>
+            <td>#ffffff</td>
+            <td><code>$btn-danger-bg: $brand-danger</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Destructive actions only: Delete, Remove. Always paired with a confirmation dialog.</td>
+          </tr>
+          <tr>
+            <td><strong>Approve (workflow)</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#2e7d32;"></div>
+                <span class="swatch-hex">#2e7d32</span>
+              </div>
+            </td>
+            <td>#ffffff</td>
+            <td><code>$brand-success-dark</code> on <code>.btn-approve</code><br><span class="badge badge-new">New class</span></td>
+            <td class="usage">Only in the approve/reject workflow panel. Not interchangeable with primary. Must always appear adjacent to the Reject button.</td>
+          </tr>
+          <tr>
+            <td><strong>Reject (workflow)</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#c62828;"></div>
+                <span class="swatch-hex">#c62828</span>
+              </div>
+            </td>
+            <td>#ffffff</td>
+            <td><code>$brand-danger-dark</code> on <code>.btn-reject</code><br><span class="badge badge-new">New class</span></td>
+            <td class="usage">Only in the approve/reject workflow panel. Darker than $brand-danger to visually separate "reject workflow" from "generic destructive action."</td>
+          </tr>
+          <tr>
+            <td><strong>Border Radius (all buttons)</strong></td>
+            <td colspan="2">30px → <strong>4px</strong></td>
+            <td><code>$btn-border-radius: 4px</code><br><span class="badge badge-change">Change</span></td>
+            <td class="usage">See Section 05. Pill buttons are the highest-visibility visual inconsistency in the current application.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 09 Form Controls ─── -->
+    <section class="section" id="forms">
+      <div class="section-header">
+        <div class="section-number">09</div>
+        <div class="section-title">Form Controls</div>
+        <div class="section-desc">Inputs, checkboxes, radios, dropdowns, and labels</div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token / Element</th>
+            <th>Proposed Value</th>
+            <th>Variable</th>
+            <th>Source</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Input Background</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ffffff; border:1px solid #ced0d3;"></div>
+                <span class="swatch-hex">#ffffff</span>
+              </div>
+            </td>
+            <td><code>$input-bg: #fff</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Atlas Core default</td>
+            <td class="usage">All text inputs, textareas, selects. White background creates clear contrast against the #f8f8f8 page surface.</td>
+          </tr>
+          <tr>
+            <td><strong>Input Border</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ced0d3;"></div>
+                <span class="swatch-hex">#ced0d3</span>
+              </div>
+            </td>
+            <td><code>$border-color-default</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Consistent with the border system</td>
+            <td class="usage">Default state only. Do not change on hover — only change on focus.</td>
+          </tr>
+          <tr>
+            <td><strong>Input Focus Border</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#008C95;"></div>
+                <span class="swatch-hex">#008C95</span>
+              </div>
+            </td>
+            <td><code>$brand-primary</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Standard Atlas pattern</td>
+            <td class="usage">1px solid $brand-primary + $shadow-small focus ring on all inputs when focused. Consistent with button active states.</td>
+          </tr>
+          <tr>
+            <td><strong>Input Height</strong></td>
+            <td><code>32px</code></td>
+            <td><code>$input-height: 32px</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Atlas Core default, appropriate for dense data entry</td>
+            <td class="usage">Compact but accessible. The <code>_SpecChapterEdit.scss</code> override of <code>height: auto; padding: 4px</code> should reference this token rather than hard-coding.</td>
+          </tr>
+          <tr>
+            <td><strong>Checkbox / Radio Accent</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ed1c24;"></div>
+                <span class="swatch-hex">#ed1c24</span>
+              </div>
+            </td>
+            <td><code>$YazakiRed</code><br><span class="badge badge-keep">Keep pattern</span></td>
+            <td>Already in <code>_SpecChapterEdit.scss</code>: checkboxes/radios use Yazaki Red for border and fill</td>
+            <td class="usage">Keep this brand touch — Yazaki Red on form selection controls is a distinctive and appropriate use of the brand color that does not conflict with "danger." Extend this to all pages (currently only on SpecChapterEdit).</td>
+          </tr>
+          <tr>
+            <td><strong>Label Color</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#3d4350;"></div>
+                <span class="swatch-hex">#3d4350</span>
+              </div>
+            </td>
+            <td><code>$font-color-default</code> (proposed new value)<br><span class="badge badge-change">Change</span></td>
+            <td>See Typography section — improve from current #6c717e for WCAG compliance</td>
+            <td class="usage">Form field labels. Do not use the orphan <code>$LabelColor: #2B6977</code> — this teal has no semantic role and should not be carried forward.</td>
+          </tr>
+          <tr>
+            <td><strong>Required Field Marker</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#ed1c24;"></div>
+                <span class="swatch-hex">#ed1c24</span>
+              </div>
+            </td>
+            <td><code>$YazakiRed</code><br><span class="badge badge-new">Document this use</span></td>
+            <td>No current standard — propose using Yazaki Red for the asterisk on required fields</td>
+            <td class="usage">The asterisk (*) on required form fields. Using Yazaki Red here is a globally recognized pattern and a consistent brand touch. Pair with visible label text ("Required") for accessibility.</td>
+          </tr>
+          <tr>
+            <td><strong>Validation Error</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#e33f4e;"></div>
+                <span class="swatch-hex">#e33f4e</span>
+              </div>
+            </td>
+            <td><code>$brand-danger</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Atlas Core / custom-variables.scss</td>
+            <td class="usage">Inline validation error text below inputs, error border on failed inputs. Note: must be visually distinct from $YazakiRed — they are similar but intentionally different.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 10 Data Grid ─── -->
+    <section class="section" id="grids">
+      <div class="section-header">
+        <div class="section-number">10</div>
+        <div class="section-title">Data Grid Styling</div>
+        <div class="section-desc">The canonical grid system is well-structured in Custom-Datagrid.scss — standardize and fix layout issues</div>
+      </div>
+
+      <!-- Grid Preview -->
+      <div class="grid-preview">
+        <div class="grid-header">
+          <div class="grid-th">Request ID</div>
+          <div class="grid-th">Title</div>
+          <div class="grid-th">Status</div>
+          <div class="grid-th">Submitted</div>
+          <div class="grid-th">Assignee</div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-td">REQ-2401</div>
+          <div class="grid-td">Module 4 Testing</div>
+          <div class="grid-td"><span style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700;">Approved</span></div>
+          <div class="grid-td">2026-01-14</div>
+          <div class="grid-td">K. Schneider</div>
+        </div>
+        <div class="grid-row striped">
+          <div class="grid-td">REQ-2402</div>
+          <div class="grid-td">Connector B Validation</div>
+          <div class="grid-td"><span style="background:#fff3e0; color:#e65100; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700;">In Review</span></div>
+          <div class="grid-td">2026-01-15</div>
+          <div class="grid-td">T. Yamamoto</div>
+        </div>
+        <div class="grid-row hover">
+          <div class="grid-td">REQ-2403</div>
+          <div class="grid-td">Wire Harness Spec Update</div>
+          <div class="grid-td"><span style="background:#f5f6f6; color:#2B2B2B; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700;">Draft</span></div>
+          <div class="grid-td">2026-01-16</div>
+          <div class="grid-td">M. Okonkwo</div>
+        </div>
+        <div class="grid-row selected">
+          <div class="grid-td" style="color:#2B2B2B; font-weight:600;">REQ-2404</div>
+          <div class="grid-td" style="color:#2B2B2B;">Terminal Position Assurance Test</div>
+          <div class="grid-td"><span style="background:#fff0f0; color:#c62828; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700;">Rejected</span></div>
+          <div class="grid-td" style="color:#2B2B2B;">2026-01-17</div>
+          <div class="grid-td" style="color:#2B2B2B;">A. Petrov</div>
+        </div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Proposed Value</th>
+            <th>Variable</th>
+            <th>Source</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Grid Background</strong></td>
+            <td>#ffffff</td>
+            <td><code>$dg-background-color</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Custom-Datagrid.scss — well-defined</td>
+            <td class="usage">Default row background. White against page surface (#f8f8f8) creates the grid as a contained surface.</td>
+          </tr>
+          <tr>
+            <td><strong>Row Hover</strong></td>
+            <td>#f5f6f6</td>
+            <td><code>$dg-grid-bg-hover</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Custom-Datagrid.scss</td>
+            <td class="usage">Single-row hover state. Subtle enough to not distract from content scanning.</td>
+          </tr>
+          <tr>
+            <td><strong>Striped Row</strong></td>
+            <td>#fafafb</td>
+            <td><code>$dg-grid-bg-striped</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Custom-Datagrid.scss</td>
+            <td class="usage">Alternate row shading for wide grids only (5+ columns). Do not apply to narrow grids — striping adds visual noise without benefit when columns are few.</td>
+          </tr>
+          <tr>
+            <td><strong>Selected Row</strong></td>
+            <td>#dff2f3</td>
+            <td><code>$dg-brand-light</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Custom-Datagrid.scss — <code>$dg-brand-light</code> blue tint</td>
+            <td class="usage">Selected / active row in master-detail layouts. Blue tint is clearly actionable and semantically "interactive" not "status."</td>
+          </tr>
+          <tr>
+            <td><strong>Cell Border</strong></td>
+            <td>#ced0d3</td>
+            <td><code>$dg-grid-border-color</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Custom-Datagrid.scss — matches default border system</td>
+            <td class="usage">All grid cell dividers. Use 1px only — heavier borders create visual clutter in dense grids.</td>
+          </tr>
+          <tr>
+            <td><strong>Header Background</strong></td>
+            <td>#f5f6f6</td>
+            <td><code>$dg-header-bg</code><br><span class="badge badge-new">Document this</span></td>
+            <td>Derived from existing hover color — gives a clean, non-branded header row</td>
+            <td class="usage">Column header row. Do not use navy or brand colors in grid headers — this is data UI, not navigation chrome. Bold text (600 weight) and uppercase at 11px creates sufficient visual hierarchy.</td>
+          </tr>
+          <tr>
+            <td><strong>Grid Width (Critical Fix)</strong></td>
+            <td>Remove <code>min-width: 1400px</code></td>
+            <td><code>.RequestDataContainer</code><br><span class="badge badge-flag">Fix required</span></td>
+            <td><code>_requestlist.scss</code> — root cause of double horizontal scroll</td>
+            <td class="usage">Remove the hard-coded <code>min-width: 1400px</code> and replace with <code>width: 100%</code>. The <code>max-width: 91vw; min-width: 91vw</code> on <code>.column-left-wrap .table</code> in Custom-Datagrid.scss should also move to <code>width: 100%</code>. Let the layout grid control width.</td>
+          </tr>
+          <tr>
+            <td><strong>Pagination Color</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#008C95;"></div>
+                <span class="swatch-hex">#008C95</span>
+              </div>
+            </td>
+            <td><code>$dg-brand-primary: $brand-primary</code><br><span class="badge badge-keep">Keep</span></td>
+            <td>Custom-Datagrid.scss — already references brand-primary</td>
+            <td class="usage">Active page number, next/prev controls. The <code>_SpecChapterEdit.scss</code> override to Yazaki Red for pagination is incorrect — revert to $brand-primary for all pagination.</td>
+          </tr>
+          <tr>
+            <td><strong>Status Badges in Grid</strong></td>
+            <td>Semantic color chips per status</td>
+            <td>Use semantic colors from Section 02<br><span class="badge badge-new">Standardize</span></td>
+            <td>No current standard — each module uses different status styling</td>
+            <td class="usage">Approved → success-green chip. Rejected → danger-dark chip. In Review → warning chip. Draft → navy chip. All at 10px bold uppercase, 10px border-radius. This is the most visible consistency fix across all grid pages.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── 11 Surfaces ─── -->
+    <section class="section" id="surfaces">
+      <div class="section-header">
+        <div class="section-number">11</div>
+        <div class="section-title">Surfaces &amp; Backgrounds</div>
+        <div class="section-desc">The four-layer surface hierarchy</div>
+      </div>
+
+      <div style="display:flex; gap:0; border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:20px;">
+        <div style="background:#ffffff; color:#1a1d25; padding:20px 16px; flex:1; border:1px solid #e2e4e8;">
+          <div style="font-size:11px; color:#8c95a6; margin-bottom:4px;">Layer 0 — Nav Chrome</div>
+          <div style="font-weight:700;">#ffffff</div>
+          <div style="font-size:12px; color:#5a6070;">White topbar / White sidebar</div>
+        </div>
+        <div style="background:#f8f8f8; color:#0a1325; padding:20px 16px; flex:1;">
+          <div style="font-size:11px; color:#8c95a6; margin-bottom:4px;">Layer 1 — Page Background</div>
+          <div style="font-weight:700;">#f8f8f8</div>
+          <div style="font-size:12px; color:#5a6070;">$bg-color</div>
+        </div>
+        <div style="background:#ffffff; color:#0a1325; padding:20px 16px; flex:1; border-left:1px solid #e2e4e8;">
+          <div style="font-size:11px; color:#8c95a6; margin-bottom:4px;">Layer 2 — Surface (Cards)</div>
+          <div style="font-weight:700;">#ffffff</div>
+          <div style="font-size:12px; color:#5a6070;">$bg-color-secondary</div>
+        </div>
+        <div style="background:#f5f6f6; color:#0a1325; padding:20px 16px; flex:1; border-left:1px solid #e2e4e8;">
+          <div style="font-size:11px; color:#8c95a6; margin-bottom:4px;">Layer 3 — Inset / Section</div>
+          <div style="font-weight:700;">#f5f6f6</div>
+          <div style="font-size:12px; color:#5a6070;">$bg-inset</div>
+        </div>
+      </div>
+
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Surface</th>
+            <th>Proposed Value</th>
+            <th>Variable</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nav Chrome (Layer 0)</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#008C95;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#008C95</span></div>
+              </div>
+            </td>
+            <td><code>$topbar-bg / $sidebar-bg (changed)</code><br><span class="badge badge-change">Changed</span></td>
+            <td class="usage">Changed from #020557 (Atlas default navy) to Yazaki Teal (#008C95), matching the brand's primary interactive/CTA color from yazaki-na.com. Sidebar uses a slightly darker teal variant (#006870) for depth.</td>
+          </tr>
+          <tr>
+            <td><strong>Page Background (Layer 1)</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#f8f8f8; border:1px solid #e2e4e8;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#f8f8f8</span></div>
+              </div>
+            </td>
+            <td><code>$bg-color</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">The page canvas behind all content. Slightly off-white provides depth contrast against white cards. Do not use pure white as the page background.</td>
+          </tr>
+          <tr>
+            <td><strong>Card / Panel (Layer 2)</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#fff; border:1px solid #e2e4e8;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#ffffff</span></div>
+              </div>
+            </td>
+            <td><code>$bg-color-secondary</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Content cards, data grid containers, form panels, flyout/drawer backgrounds. White cards on #f8f8f8 background creates clear content grouping without heavy borders.</td>
+          </tr>
+          <tr>
+            <td><strong>Inset / Section (Layer 3)</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#f5f6f6; border:1px solid #e2e4e8;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#f5f6f6</span></div>
+              </div>
+            </td>
+            <td><code>$bg-inset</code><br><span class="badge badge-new">New variable</span></td>
+            <td class="usage">Sub-sections within cards, grouped form areas, table header rows, "new item" areas within a panel. The <code>background-color: rgb(236, 236, 236)</code> in <code>_SpecChapterEdit.scss</code> for EditSpecChapter-New/Current should reference this token — #ececec is too heavy, #f5f6f6 is more refined.</td>
+          </tr>
+          <tr>
+            <td><strong>Flyout / Drawer</strong></td>
+            <td>
+              <div class="swatch-cell">
+                <div class="swatch" style="background:#fff; border:1px solid #e2e4e8;"></div>
+                <div class="swatch-meta"><span class="swatch-hex">#ffffff</span></div>
+              </div>
+            </td>
+            <td><code>$bg-color-secondary</code> + <code>$shadow-medium</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Right-side flyout panels (the duplicate implementations in module_ui and module_testingportal). Standardize both to this surface + medium shadow. Width: 600px (module_ui) or 500px (modal-slider) — propose unifying to <strong>560px</strong> for all flyout panels.</td>
+          </tr>
+          <tr>
+            <td><strong>Modal Dialog</strong></td>
+            <td>#ffffff</td>
+            <td><code>$bg-color-secondary</code> + <code>$shadow-large</code><br><span class="badge badge-keep">Keep</span></td>
+            <td class="usage">Full-screen modals (<code>.modal-dialog.fullscreen</code>). The shadow differentiates modals from flyouts in the elevation hierarchy.</td>
+          </tr>
+          <tr>
+            <td><strong>Overlay / Scrim</strong></td>
+            <td><code>rgba(2, 5, 87, 0.4)</code></td>
+            <td><code>$overlay-bg</code><br><span class="badge badge-new">New variable</span></td>
+            <td class="usage">Background overlay behind flyouts and modals. Navy-tinted rather than pure black — consistent with the Yazaki brand tone. Currently no standard — each overlay implementation uses different alpha values.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ─── Website Flags ─── -->
+    <section class="section" id="flags">
+      <div class="section-header">
+        <div class="section-number" style="background:#ed1c24;">⚑</div>
+        <div class="section-title">Website Elements — Do Not Carry Into Enterprise App</div>
+        <div class="section-desc">Patterns from yazaki-na.com that are not appropriate for this application</div>
+      </div>
+
+      <div class="notice">
+        The Yazaki NA website could not be fetched directly. The following flags are based on standard patterns typical of Yazaki's web presence and Yazaki brand documentation, combined with knowledge of what does and does not translate from marketing sites to enterprise data applications.
+      </div>
+
+      <div class="flags-grid">
+        <div class="flag-card danger">
+          <div class="flag-title">Full-bleed hero imagery</div>
+          <div class="flag-body">Large product photography (connectors, wire harnesses) with overlaid text. Appropriate on the marketing site — not appropriate inside an authenticated data application. The one product photo (<code>Connectors.png</code>) should be confined to login/welcome screens only, not used as page backgrounds in functional areas.</div>
+        </div>
+        <div class="flag-card danger">
+          <div class="flag-title">Marketing typography scale</div>
+          <div class="flag-body">Website H1s at 48–72px with tight tracking. In the enterprise app, font sizes above 24px belong only in empty state illustrations or welcome messages — never in data-entry or review workflows. The existing heading scale in Atlas Core is already too large; we are proposing to reduce it further (see Section 03).</div>
+        </div>
+        <div class="flag-card warn">
+          <div class="flag-title">Animated transitions / scroll effects</div>
+          <div class="flag-body">The public website likely uses scroll-triggered animations and parallax. These are inappropriate in a workflow application — they introduce perceived latency and are disorienting in task-focused contexts. Limit animation to: the flyout slide-in (existing, keep), loading state spinners, and toast notifications only.</div>
+        </div>
+        <div class="flag-card warn">
+          <div class="flag-title">Yazaki Red as primary action color</div>
+          <div class="flag-body">The website likely uses Yazaki Red prominently for CTAs and navigation highlights. In the enterprise application, red must be reserved for brand accents (topbar stripe, checkbox/radio fills) — using it for interactive buttons will cause user confusion with danger/error states, especially in the approve/reject workflow.</div>
+        </div>
+        <div class="flag-card warn">
+          <div class="flag-title">Dark section backgrounds</div>
+          <div class="flag-body">Marketing sites often alternate white and dark navy section backgrounds for visual rhythm. This pattern does not translate to application UIs where the navy is strictly reserved for the nav chrome. Application content areas must use the light surface hierarchy (Layer 1–3) only.</div>
+        </div>
+        <div class="flag-card warn">
+          <div class="flag-title">Wide-spaced, low-density layouts</div>
+          <div class="flag-body">Marketing pages optimize for impact and readability at a glance. This application must optimize for data density — users spend hours in request list grids and spec review tables. Marketing whitespace values would require excessive scrolling in real-world use. Use the spacing scale conservatively.</div>
+        </div>
+        <div class="flag-card danger">
+          <div class="flag-title">Non-standard icon libraries</div>
+          <div class="flag-body">If the website uses a custom Yazaki icon set, do not carry it into the Mendix application. Use the Atlas Core Mendix icon system (Atlas Icons or a single agreed icon library) to ensure Mendix widget integration. Mixing icon families is a primary visual inconsistency source.</div>
+        </div>
+        <div class="flag-card danger">
+          <div class="flag-title">Multiple decorative font families</div>
+          <div class="flag-body">Marketing sites often pair a display typeface with a body font. Open Sans already in the application is correct for enterprise use. Do not introduce a display or heading-only font — it increases the font load, conflicts with Mendix text widget rendering, and is unnecessary in a data-dense application context.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Implementation Notes ─── -->
+    <section class="section" id="implementation">
+      <div class="section-header">
+        <div class="section-number" style="background:#5a6070;">i</div>
+        <div class="section-title">Implementation Notes</div>
+        <div class="section-desc">How to apply this system once approved</div>
+      </div>
+
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:20px 24px; margin-bottom:20px;">
+        <h3 style="font-size:14px; font-weight:700; margin-bottom:12px; color:var(--yz-teal);">Recommended implementation sequence</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:6px; padding:14px;">
+            <div style="font-size:11px; font-weight:700; color:var(--yz-red); text-transform:uppercase; margin-bottom:6px;">Step 1 — Variable Approval</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Review this document with the client. Confirm proposed values. Identify any deviations from actual brand guidelines. Approve the mapping before any code is written.</div>
+          </div>
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:6px; padding:14px;">
+            <div style="font-size:11px; font-weight:700; color:var(--yz-red); text-transform:uppercase; margin-bottom:6px;">Step 2 — Write custom-variables.scss</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Apply all proposed values to <code>theme/web/custom-variables.scss</code> (the override file). Do not edit <code>atlas_core/web/_variables.scss</code> directly — that file is owned by Mendix and will be overwritten on Atlas updates.</div>
+          </div>
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:6px; padding:14px;">
+            <div style="font-size:11px; font-weight:700; color:var(--yz-red); text-transform:uppercase; margin-bottom:6px;">Step 3 — Promote to _yazaki_variables.scss</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Add new named Yazaki brand variables (<code>$YazakiNavy</code>, <code>$brand-success-dark</code>, etc.) to <code>themesource/module_ui/web/_yazaki_variables.scss</code> rather than scattering them across component files.</div>
+          </div>
+          <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:6px; padding:14px;">
+            <div style="font-size:11px; font-weight:700; color:var(--yz-red); text-transform:uppercase; margin-bottom:6px;">Step 4 — Consolidate modules</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.6;">Merge duplicate flyout/home/list implementations from <code>module_ui</code> and <code>module_testingportal</code> into a single canonical implementation in <code>module_ui</code>. Module_testingportal should only contain page-specific overrides, not layout foundations.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>New variables summary:</strong> This mapping proposes 9 new variables: <code>$YazakiNavy</code>, <code>$brand-success-dark</code>, <code>$brand-danger-dark</code>, <code>$brand-info</code>, <code>$font-color-muted</code>, <code>$font-size-small</code>, <code>$border-radius-large</code>, <code>$border-radius-pill</code>, <code>$border-brand-width</code>, <code>$border-color-divider</code>, <code>$shadow-topbar</code>, <code>$bg-inset</code>, <code>$overlay-bg</code>. All other changes are modifications to existing Atlas Core variables in <code>custom-variables.scss</code>.
+      </div>
+
+      <pre><code>// === theme/web/custom-variables.scss — proposed additions/changes ===
+
+// ── Yazaki Brand (promote to explicit variables)
+$YazakiNavy:            #020557;              // retained as an accent variable — no longer used for app chrome
+$YazakiRed:             #ed1c24 !default;     // KEEP — existing, in _yazaki_variables.scss
+
+// ── Typography changes
+$font-color-default:    #3d4350;              // CHANGE from #6c717e — WCAG compliance
+$font-color-muted:      #6c717e;              // NEW — secondary/label text
+$font-size-small:       12px;                 // NEW — captions, badges, helper text
+$font-size-h1:          24px;                 // CHANGE from 31px
+$font-size-h2:          20px;                 // CHANGE from 26px
+$font-size-h3:          17px;                 // CHANGE from 24px
+$font-size-h4:          15px;                 // CHANGE from 18px
+
+// ── Button fix
+$btn-border-radius:     4px;                  // CHANGE from 30px — no more pill buttons
+$btn-default-bg:        #fff;                 // CHANGE from #ffa31a orange
+
+// ── New semantic colors
+$brand-success-dark:    #2e7d32;              // NEW — approve button background
+$brand-danger-dark:     #c62828;              // NEW — reject button background
+$brand-info:            #0277bd;              // NEW — informational state
+
+// ── New border tokens
+$border-radius-large:   6px;                  // NEW — cards, panels, modals
+$border-radius-pill:    10px;                 // NEW — status badges only
+$border-brand-width:    3px;                  // NEW — topbar stripe, active tab
+$border-color-divider:  #e8eaed;              // NEW — internal section separators
+
+// ── New shadow token
+$shadow-topbar: 0 2px 8px rgba($YazakiNavy, 0.25); // NEW
+
+// ── New surface token
+$bg-inset:              #f5f6f6;              // NEW — sub-sections, inset areas
+$overlay-bg:            rgba($YazakiNavy, 0.4); // NEW — modal/flyout scrim</code></pre>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>
