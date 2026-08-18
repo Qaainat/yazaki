@@ -600,6 +600,125 @@
   /* ── UTIL ── */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 680px) { .two-col, .dir-pros-cons { grid-template-columns: 1fr; } }
+
+  /* ── v2 ADDITIONS ── */
+  --border-light: #e2e4e8;
+
+  /* Summary Buckets */
+  .bucket-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 8px; }
+  .bucket {
+    background: #fff; border: 1px solid var(--border-light, #e2e4e8); border-radius: 10px;
+    overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .bucket-top { height: 4px; }
+  .bucket-top.consistency { background: var(--red); }
+  .bucket-top.hierarchy   { background: var(--teal); }
+  .bucket-top.standardize { background: var(--charcoal); }
+  .bucket-body { padding: 20px 22px; }
+  .bucket-icon { font-size: 22px; margin-bottom: 10px; }
+  .bucket-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
+  .bucket-label.consistency { color: var(--red); }
+  .bucket-label.hierarchy   { color: var(--teal); }
+  .bucket-label.standardize { color: var(--charcoal); }
+  .bucket-title { font-size: 16px; font-weight: 700; color: var(--charcoal); margin-bottom: 10px; }
+  .bucket-desc { font-size: 13px; color: var(--gray-mid); line-height: 1.6; }
+
+  /* Finding Cards */
+  .finding {
+    background: #fff; border: 1px solid var(--border-light, #e2e4e8); border-radius: 8px;
+    overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 20px;
+  }
+  .finding-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 22px 16px; border-bottom: 1px solid var(--border-light, #e2e4e8);
+  }
+  .finding-num {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--red);
+    color: #fff; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .finding-title { font-size: 15px; font-weight: 700; color: var(--charcoal); flex: 1; }
+  .finding-body { padding: 20px 22px; }
+  .finding-summary { font-size: 13px; color: var(--gray-mid); line-height: 1.7; margin-bottom: 18px; }
+
+  /* Evidence */
+  .evidence-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .evidence-chip {
+    background: var(--gray-pale); border: 1px solid var(--border);
+    border-radius: 4px; padding: 4px 10px; font-size: 11px;
+    font-family: "SF Mono", "Fira Code", monospace; color: var(--gray-mid);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .evidence-chip .chip-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .evidence-chip .chip-file { font-size: 10px; color: var(--gray-light); margin-left: 4px; font-family: var(--font); font-style: italic; }
+
+  /* Swatches */
+  .swatch-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .swatch { display: flex; align-items: center; gap: 8px; background: var(--gray-pale); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; font-size: 11px; }
+  .swatch-dot { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; border: 1px solid rgba(0,0,0,.08); }
+  .swatch-label { color: var(--gray-mid); }
+  .swatch-role { color: var(--gray-light); font-size: 10px; margin-top: 1px; }
+
+  /* Examples */
+  .example-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+  .example-box { border-radius: 6px; padding: 12px 14px; font-size: 12px; }
+  .example-box.before { background: #fff8f8; border: 1px solid #fca5a5; }
+  .example-box.after  { background: #f0fdf4; border: 1px solid #86efac; }
+  .example-box .ex-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .example-box.before .ex-label { color: var(--danger); }
+  .example-box.after .ex-label  { color: var(--success); }
+  .ex-btn { display: inline-block; border-radius: 4px; padding: 5px 12px; font-size: 11px; font-weight: 600; margin: 3px 4px 3px 0; cursor: default; }
+
+  /* Status badges */
+  .status-example { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; align-items: center; }
+  .st-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+  .st-badge .st-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* Hierarchy illustration */
+  .hierarchy-viz { background: var(--gray-pale); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin-bottom: 18px; font-size: 12px; color: var(--gray-mid); }
+  .h-level { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border-light, #e2e4e8); }
+  .h-level:last-child { border-bottom: none; }
+  .h-indent-0 { padding-left: 0; }
+  .h-indent-1 { padding-left: 20px; }
+  .h-indent-2 { padding-left: 40px; }
+  .h-label { font-weight: 600; color: var(--gray-dark); }
+  .h-note { color: var(--gray-light); font-size: 11px; font-style: italic; }
+  .h-pill { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 3px; text-transform: uppercase; }
+
+  /* Transition block */
+  .transition-block {
+    background: var(--charcoal); color: #fff;
+    border-radius: 10px; padding: 28px 32px; margin-top: 12px;
+  }
+  .transition-block h3 { font-size: 17px; font-weight: 700; margin-bottom: 12px; line-height: 1.35; }
+  .transition-block p { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.7; }
+
+  /* Component pills */
+  .comp-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .comp-pill {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+    border-radius: 20px; padding: 5px 13px;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,.85);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .comp-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+
+  /* Page template grid */
+  .template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .tmpl-card { background: #fff; border: 1px solid var(--border-light, #e2e4e8); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+  .tmpl-hdr { background: linear-gradient(135deg, #006870, var(--teal)); color: #fff; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .tmpl-icon { font-size: 18px; }
+  .tmpl-name { font-size: 13px; font-weight: 700; }
+  .tmpl-body { padding: 12px 16px; }
+  .tmpl-desc { font-size: 12px; color: var(--gray-mid); line-height: 1.5; margin-bottom: 10px; }
+  .tmpl-blocks { display: flex; flex-direction: column; gap: 4px; }
+  .tmpl-block { background: var(--gray-pale); border: 1px solid var(--border); border-radius: 3px; padding: 4px 8px; font-size: 11px; color: var(--gray-mid); display: flex; align-items: center; gap: 5px; }
+  .tmpl-block::before { content: ""; width: 6px; height: 6px; border-radius: 1px; background: var(--border); flex-shrink: 0; }
+  .tmpl-block.primary { background: #f0f9ff; border-color: #bae0f7; }
+  .tmpl-block.primary::before { background: var(--teal); }
+  .tmpl-block.accent { background: #fff0f0; border-color: #fca5a5; }
+  .tmpl-block.accent::before { background: var(--red); }
+
 </style>
 </head>
 <body>
@@ -607,21 +726,20 @@
 <!-- NAV -->
 <nav>
   <span class="nav-brand">Yazaki <span>Test Portal</span></span>
-  <a href="#audit">Audit</a>
-  <a href="#patterns">Patterns</a>
-  <a href="#templates">Templates</a>
-  <a href="#blocks">Building Blocks</a>
-  <a href="#responsive">Responsive</a>
-  <a href="#usability">Usability</a>
-  <a href="#visual">Visual</a>
+  <a href="#audit">Overview</a>
+  <a href="#patterns">Layout</a>
+  <a href="#visual">Color + Visual</a>
   <a href="#datagrid">Data Grids</a>
-  <a href="#questions">Open Questions</a>
-  <a href="#directions">Directions</a>
+  <a href="#usability">Readability</a>
+  <a href="#blocks">Interactions</a>
+  <a href="#vis-inconsistencies">Visual Inconsistencies</a>
+  <a href="#path-forward">Path Forward</a>
+  <a href="#page-templates">Templates</a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-eyebrow">Phase 1 — UI Audit Report</div>
+  <div class="hero-eyebrow">YNA Test Portal · Phase 1 UI Audit</div>
   <h1>Yazaki Test Portal<br>UI/UX Design Audit</h1>
   <p class="hero-sub">Based on full review of custom-variables.scss, module_ui, module_testingportal, Custom-Datagrid.scss, and Atlas Core theme layers.</p>
   <div class="hero-stats">
@@ -632,6 +750,8 @@
     <div class="hero-stat"><div class="num blue">5</div><div class="lbl">Page Templates</div></div>
     <div class="hero-stat"><div class="num blue">10</div><div class="lbl">Building Blocks</div></div>
     <div class="hero-stat"><div class="num">3</div><div class="lbl">Design Directions</div></div>
+    <div class="hero-stat"><div class="num teal">5</div><div class="lbl">Visual Findings</div></div>
+    <div class="hero-stat"><div class="num">7</div><div class="lbl">Reusable Components</div></div>
   </div>
 </div>
 
@@ -676,6 +796,329 @@
     <div class="swatch"><div class="swatch-chip" style="background:#f8f8f8;border:1px solid #ccc;"></div><div class="swatch-name">BG Gray</div><div class="swatch-hex">#f8f8f8</div></div>
   </div>
 </section>
+
+<!-- ── AUDIT OVERVIEW: THREE AREAS OF FOCUS ── -->
+<section id="overview-buckets">
+  <div class="section-label">Audit Overview</div>
+  <div class="section-title">Three Areas of Focus</div>
+  <p class="section-sub">The audit findings fall into three interconnected themes. Addressing them together — rather than screen by screen — is what makes the refactor sustainable.</p>
+  <div class="section-divider"></div>
+
+  <div class="bucket-grid">
+
+    <div class="bucket">
+      <div class="bucket-top consistency"></div>
+      <div class="bucket-body">
+        <div class="bucket-icon">🎨</div>
+        <div class="bucket-label consistency">Bucket 1</div>
+        <div class="bucket-title">Consistency</div>
+        <div class="bucket-desc">Buttons, colors, spacing, page headers, and common components currently vary quite a bit depending on the screen.</div>
+      </div>
+    </div>
+
+    <div class="bucket">
+      <div class="bucket-top hierarchy"></div>
+      <div class="bucket-body">
+        <div class="bucket-icon">📐</div>
+        <div class="bucket-label hierarchy">Bucket 2</div>
+        <div class="bucket-title">Hierarchy</div>
+        <div class="bucket-desc">Some of the more information-heavy workflows could use clearer visual hierarchy so users can scan and understand relationships more quickly.</div>
+      </div>
+    </div>
+
+    <div class="bucket">
+      <div class="bucket-top standardize"></div>
+      <div class="bucket-body">
+        <div class="bucket-icon">🔩</div>
+        <div class="bucket-label standardize">Bucket 3</div>
+        <div class="bucket-title">Standardization</div>
+        <div class="bucket-desc">Rather than fixing those individually, the goal is to establish reusable patterns through the custom UI module, building blocks, and page templates.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── VISUAL INCONSISTENCIES ── -->
+<section id="vis-inconsistencies">
+  <div class="section-label">Visual Inconsistencies</div>
+  <div class="section-title">5 Visual Inconsistencies</div>
+  <p class="section-sub">These findings are drawn directly from the codebase and represent the most visible opportunities for improvement.</p>
+  <div class="section-divider"></div>
+
+  <!-- FINDING 1 -->
+  <div class="finding">
+    <div class="finding-header">
+      <div class="finding-num">1</div>
+      <div class="finding-title">Buttons don't have a consistent hierarchy</div>
+      <span style="font-size:11px; font-weight:700; background:#fdeaea; color:#c0202a; border:1px solid #f5b8bb; border-radius:3px; padding:2px 8px; white-space:nowrap;">Consistency</span>
+    </div>
+    <div class="finding-body">
+      <p class="finding-summary">Six different button styling approaches exist across the codebase. Primary, secondary, and destructive actions don't consistently communicate their importance — each was styled independently on the page it first appeared.</p>
+
+      <div class="evidence-row">
+        <div class="evidence-chip"><span class="chip-dot" style="background:#559FAE;"></span>.btn-yazaki <span class="chip-file">main.scss:205</span></div>
+        <div class="evidence-chip"><span class="chip-dot" style="background:#adadad;"></span>.button <span class="chip-file">_buttons.scss:5</span></div>
+        <div class="evidence-chip"><span class="chip-dot" style="background:#12af07;"></span>.button_approve <span class="chip-file">_maindesign.scss:127</span></div>
+        <div class="evidence-chip"><span class="chip-dot" style="background:transparent; border:1px solid #ed1c24;"></span>.button_new <span class="chip-file">_maindesign.scss:147</span></div>
+        <div class="evidence-chip"><span class="chip-dot" style="background:#3cb33d;"></span>.OpenRequestBtn <span class="chip-file">main.scss:48</span></div>
+        <div class="evidence-chip"><span class="chip-dot" style="background:#ffa31a;"></span>$btn-default-bg: #ffa31a <span class="chip-file">custom-variables.scss:233</span></div>
+      </div>
+
+      <div class="example-row">
+        <div class="example-box before">
+          <div class="ex-label">Current — 4 different button treatments on one screen</div>
+          <div>
+            <span class="ex-btn" style="background:#559FAE; color:#fff; border-radius:20px; padding:5px 24px;">Submit</span>
+            <span class="ex-btn" style="background:transparent; color:#12af07; border:1px solid #12af07; border-radius:5px;">Approve</span>
+            <span class="ex-btn" style="background:#ffa31a; color:#000; border-radius:4px;">Default</span>
+            <span class="ex-btn" style="background:#3cb33d; color:#fff; border-radius:15px; padding:5px 20px;">Open Request</span>
+          </div>
+        </div>
+        <div class="example-box after">
+          <div class="ex-label">After — Consistent 3-level hierarchy</div>
+          <div>
+            <span class="ex-btn" style="background:#ed1c24; color:#fff; border-radius:4px;">Submit</span>
+            <span class="ex-btn" style="background:#fff; color:#2B2B2B; border:1px solid #ced0d3; border-radius:4px;">Approve</span>
+            <span class="ex-btn" style="background:#fdeaea; color:#c0202a; border:1px solid #f5b8bb; border-radius:4px;">Delete</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDING 2 -->
+  <div class="finding">
+    <div class="finding-header">
+      <div class="finding-num">2</div>
+      <div class="finding-title">Color usage isn't consistently communicating meaning</div>
+      <span style="font-size:11px; font-weight:700; background:#fdeaea; color:#c0202a; border:1px solid #f5b8bb; border-radius:3px; padding:2px 8px; white-space:nowrap;">Consistency</span>
+    </div>
+    <div class="finding-body">
+      <p class="finding-summary">Status colors vary by page with no shared semantic pattern — red in some areas, orange in others. The audit also surfaced branding questions: Atlas blue (#264ae5) is the current interactive color but isn't a Yazaki brand color; there's an orphan teal (#559FAE, #2B6977) used in several places that has no defined brand role.</p>
+
+      <div class="swatch-row">
+        <div class="swatch"><div class="swatch-dot" style="background:#264ae5;"></div><div><div class="swatch-label">#264ae5</div><div class="swatch-role">Atlas default — not Yazaki brand</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#ed1c24;"></div><div><div class="swatch-label">#ed1c24</div><div class="swatch-role">Yazaki Red — official brand color</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#ffa31a;"></div><div><div class="swatch-label">#ffa31a</div><div class="swatch-role">$btn-default-bg — origin unclear</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#559FAE;"></div><div><div class="swatch-label">#559FAE / #2B6977</div><div class="swatch-role">Orphan teal — no brand role defined</div></div></div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gray); margin-bottom:8px;">Current status color usage — no consistent pattern</div>
+        <div class="status-example">
+          <div class="st-badge" style="background:#fff0f0; color:#c0202a;"><span class="st-dot" style="background:#c0202a;"></span>Rejected</div>
+          <div class="st-badge" style="background:#fff0f0; color:#c0202a;"><span class="st-dot" style="background:#c0202a;"></span>Overdue</div>
+          <div class="st-badge" style="background:#fff8e1; color:#9a6c00;"><span class="st-dot" style="background:#d4a800;"></span>Pending</div>
+          <div class="st-badge" style="background:#e8f7ea; color:#2a9d3c;"><span class="st-dot" style="background:#2a9d3c;"></span>Approved</div>
+          <span style="font-size:12px; color:var(--gray-light); font-style:italic;">→ used differently screen to screen</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDING 3 -->
+  <div class="finding">
+    <div class="finding-header">
+      <div class="finding-num">3</div>
+      <div class="finding-title">Visual hierarchy on complex screens could be clearer</div>
+      <span style="font-size:11px; font-weight:700; background:#dff2f3; color:#006870; border:1px solid #a2d9dc; border-radius:3px; padding:2px 8px; white-space:nowrap;">Hierarchy</span>
+    </div>
+    <div class="finding-body">
+      <p class="finding-summary">On Test Details, the three levels — Test Request → Test Leg → Spec Chapter — are mainly distinguished through indentation alone. Very little visual differentiation separates the levels. Users scanning a complex test record must read text labels to understand structure rather than perceiving it visually.</p>
+
+      <div class="hierarchy-viz">
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gray-light); margin-bottom:10px;">Current — indentation only, same visual weight at every level</div>
+        <div class="h-level h-indent-0">
+          <span class="h-pill" style="background:var(--gray-pale); color:var(--gray); border:1px solid var(--border);">TR</span>
+          <span class="h-label">Test Request TR26-7</span>
+          <span class="h-note">— same font size, same card treatment as children</span>
+        </div>
+        <div class="h-level h-indent-1">
+          <span class="h-pill" style="background:var(--gray-pale); color:var(--gray); border:1px solid var(--border);">Leg</span>
+          <span class="h-label">Leg 1 — 26-7-1</span>
+          <span class="h-note">— only indented, no visual container distinction</span>
+        </div>
+        <div class="h-level h-indent-2">
+          <span class="h-pill" style="background:var(--gray-pale); color:var(--gray); border:1px solid var(--border);">Ch</span>
+          <span class="h-label">26-7-1-1 USCAR-2 REV 8 Failure Analysis</span>
+          <span class="h-note">— same visual level as parent leg</span>
+        </div>
+      </div>
+
+      <div class="hierarchy-viz" style="background:#f0fdf4; border-color:#86efac;">
+        <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--success); margin-bottom:10px;">After — containers, accents, and type scale signal hierarchy</div>
+        <div class="h-level h-indent-0">
+          <span class="h-pill" style="background:#ed1c24; color:#fff;">TR</span>
+          <span class="h-label" style="font-size:14px;">Test Request TR26-7</span>
+          <span class="h-note">— bold section header, full-width</span>
+        </div>
+        <div class="h-level h-indent-1">
+          <span class="h-pill" style="background:#2B2B2B; color:#fff;">Leg</span>
+          <span class="h-label">Leg 1 — 26-7-1</span>
+          <span class="h-note">— card container, red left border accent</span>
+        </div>
+        <div class="h-level h-indent-2">
+          <span class="h-pill" style="background:#f3f4f6; color:#374151; border:1px solid #d1d5db;">Ch</span>
+          <span class="h-label" style="font-weight:400; color:var(--gray-mid);">26-7-1-1 USCAR-2 REV 8 Failure Analysis</span>
+          <span class="h-note">— lighter weight, clearly subordinate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDING 4 -->
+  <div class="finding">
+    <div class="finding-header">
+      <div class="finding-num">4</div>
+      <div class="finding-title">Common components look different from page to page</div>
+      <span style="font-size:11px; font-weight:700; background:#fdeaea; color:#c0202a; border:1px solid #f5b8bb; border-radius:3px; padding:2px 8px; white-space:nowrap;">Consistency</span>
+    </div>
+    <div class="finding-body">
+      <p class="finding-summary">Similar functionality is presented differently depending on the page. Search is the clearest example — three different implementations exist across the application with no shared pattern, so users have to relearn filtering on each screen.</p>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:18px;">
+        <div style="background:var(--gray-pale); border:1px solid var(--border); border-radius:6px; padding:12px; font-size:12px;">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gray); margin-bottom:8px;">Screen A</div>
+          <div style="background:#fff; border:1px solid var(--border); border-radius:4px; padding:6px 10px; color:var(--gray-light); font-size:11px; margin-bottom:6px;">🔍 Search requests…</div>
+          <div style="font-size:11px; color:var(--gray-light); font-style:italic;">Inline search bar, always visible</div>
+        </div>
+        <div style="background:var(--gray-pale); border:1px solid var(--border); border-radius:6px; padding:12px; font-size:12px;">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gray); margin-bottom:8px;">Screen B</div>
+          <div style="background:#264ae5; color:#fff; border-radius:4px; padding:5px 10px; font-size:11px; display:inline-block; margin-bottom:6px;">▼ Filters</div>
+          <div style="font-size:11px; color:var(--gray-light); font-style:italic;">Collapsed behind a toggle button</div>
+        </div>
+        <div style="background:var(--gray-pale); border:1px solid var(--border); border-radius:6px; padding:12px; font-size:12px;">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gray); margin-bottom:8px;">Screen C</div>
+          <div style="background:#fff; border:1px solid var(--border); border-radius:3px; padding:5px 8px; font-size:11px; color:var(--gray-mid); margin-bottom:6px;">Column header ▲▼</div>
+          <div style="font-size:11px; color:var(--gray-light); font-style:italic;">Grid native filter only, no search bar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDING 5 -->
+  <div class="finding">
+    <div class="finding-header">
+      <div class="finding-num">5</div>
+      <div class="finding-title">Page spacing and layout patterns aren't standardized</div>
+      <span style="font-size:11px; font-weight:700; background:#f3f4f6; color:#374151; border:1px solid #d1d5db; border-radius:3px; padding:2px 8px; white-space:nowrap;">Standardization</span>
+    </div>
+    <div class="finding-body">
+      <p class="finding-summary">The application contains several recurring page patterns — data grid pages, detail views, form pages — but they've been individually styled rather than built from shared templates. Data-grid pages in particular use multiple wrappers that style the same grid type differently, giving each screen an independently designed feel even though the underlying intent is the same.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px;">
+        <div style="background:#fff8f8; border:1px solid #fca5a5; border-radius:6px; padding:12px; font-size:12px;">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--danger); margin-bottom:8px;">Current — each grid page, individually styled</div>
+          <div style="border:1px solid var(--border); border-radius:3px; overflow:hidden; font-size:11px;">
+            <div style="background:#264ae5; color:#fff; padding:8px 10px; font-weight:600;">Requests</div>
+            <div style="padding:6px 10px; border-bottom:1px solid var(--border); color:var(--gray);">min-width: 1400px · margin: 15px</div>
+          </div>
+          <div style="border:1px solid var(--border); border-radius:3px; overflow:hidden; font-size:11px; margin-top:8px;">
+            <div style="background:#ffa31a; color:#000; padding:8px 10px; font-weight:600;">Test Overview</div>
+            <div style="padding:6px 10px; color:var(--gray);">width: 95% · padding: 10px 5px</div>
+          </div>
+        </div>
+        <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:6px; padding:12px; font-size:12px;">
+          <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--success); margin-bottom:8px;">After — one reusable DataGrid page template</div>
+          <div style="border:1px solid #86efac; border-radius:4px; overflow:hidden; font-size:11px;">
+            <div style="background:var(--charcoal); color:#fff; padding:8px 10px; font-weight:600;">Page Header Block</div>
+            <div style="padding:5px 10px; border-bottom:1px solid #d1fae5; color:var(--gray);">Search + Filter Toolbar Block</div>
+            <div style="padding:5px 10px; border-bottom:1px solid #d1fae5; color:var(--gray);">Data Grid Wrapper Block</div>
+            <div style="padding:5px 10px; color:var(--gray);">Action Footer Block</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── PATH FORWARD ── -->
+<section id="path-forward">
+  <div class="section-label">Path Forward</div>
+  <div class="section-title">Standardization Over Redesign</div>
+  <div class="section-divider"></div>
+
+  <div class="transition-block">
+    <h3>This isn't a redesign — it's standardization.</h3>
+    <p>The underlying patterns are already present across the application. The goal is to identify which patterns repeat, standardize them, and convert them into reusable page templates and building blocks — improving visual consistency now, and making it easier to maintain that consistency as new pages are built.</p>
+    <div class="comp-grid">
+      <div class="comp-pill">Page Header</div>
+      <div class="comp-pill">Section Header</div>
+      <div class="comp-pill">Search + Filter Toolbar</div>
+      <div class="comp-pill">Status Badge</div>
+      <div class="comp-pill">Action Footer</div>
+      <div class="comp-pill">Data Grid Wrapper</div>
+      <div class="comp-pill">Flyout / Drawer</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PAGE TEMPLATES ── -->
+<section id="page-templates">
+  <div class="section-label">Reusable Patterns</div>
+  <div class="section-title">Page Templates to Establish</div>
+  <p class="section-sub">These are the recurring page types identified in the audit. Each should become a named template built from shared building blocks rather than being independently styled.</p>
+  <div class="section-divider"></div>
+
+  <div class="template-grid">
+
+    <div class="tmpl-card">
+      <div class="tmpl-hdr"><div class="tmpl-icon">📋</div><div class="tmpl-name">Data Grid Page</div></div>
+      <div class="tmpl-body">
+        <div class="tmpl-desc">Request list, test overview grids. Most common pattern in the app.</div>
+        <div class="tmpl-blocks">
+          <div class="tmpl-block primary">Page Header Block</div>
+          <div class="tmpl-block primary">Search + Filter Toolbar</div>
+          <div class="tmpl-block accent">Data Grid Wrapper</div>
+          <div class="tmpl-block">Action Footer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tmpl-card">
+      <div class="tmpl-hdr"><div class="tmpl-icon">🗂️</div><div class="tmpl-name">Detail View</div></div>
+      <div class="tmpl-body">
+        <div class="tmpl-desc">TR Detail, Test Details Overview. Multi-section record view with hierarchy.</div>
+        <div class="tmpl-blocks">
+          <div class="tmpl-block primary">Page Header + Breadcrumb</div>
+          <div class="tmpl-block accent">Section Header Block</div>
+          <div class="tmpl-block">Key-Value Field Block</div>
+          <div class="tmpl-block">Accordion / Leg Block</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tmpl-card">
+      <div class="tmpl-hdr"><div class="tmpl-icon">📝</div><div class="tmpl-name">Form / Edit Page</div></div>
+      <div class="tmpl-body">
+        <div class="tmpl-desc">New request forms, spec chapter edit. Field groups with validation.</div>
+        <div class="tmpl-blocks">
+          <div class="tmpl-block primary">Page Header Block</div>
+          <div class="tmpl-block">Field Group Block</div>
+          <div class="tmpl-block accent">Primary / Secondary Actions</div>
+          <div class="tmpl-block">Validation Message Block</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tmpl-card">
+      <div class="tmpl-hdr"><div class="tmpl-icon">📊</div><div class="tmpl-name">Dashboard / Home</div></div>
+      <div class="tmpl-body">
+        <div class="tmpl-desc">Portal home, summary views. Tile and stat-card patterns.</div>
+        <div class="tmpl-blocks">
+          <div class="tmpl-block primary">Page Header Block</div>
+          <div class="tmpl-block">Stat Card Block</div>
+          <div class="tmpl-block accent">Quick Action Tile</div>
+          <div class="tmpl-block">Recent Activity Feed</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 
 <!-- ── SECTION 2: PAGE PATTERNS ── -->
 <section id="patterns">
@@ -1305,9 +1748,9 @@
 
 </div><!-- /page -->
 
-<div class="doc-footer">
-  Yazaki Test Portal — Phase 1 UI Audit &nbsp;·&nbsp; Based on full SCSS source review &nbsp;·&nbsp; No designs created yet — direction selection required before Phase 2
-</div>
+<footer>
+  <strong>Yazaki North America — YNA Test Portal</strong> &nbsp;·&nbsp; Phase 1 UI Audit &nbsp;·&nbsp; Design proposals only, no app files modified
+</footer>
 
 </body>
 </html>
