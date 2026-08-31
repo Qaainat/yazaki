@@ -329,10 +329,17 @@
       padding: var(--spacing-sm);
     }
 
-    .tab-bar {
+    .tab-bar, .nav-tabs {
       display: flex;
       border-bottom: 1px solid var(--tabs-border-color);
       gap: 0;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-tabs > li {
+      list-style: none;
     }
 
     .tab-item {
@@ -349,13 +356,15 @@
       cursor: pointer;
       transition: color 0.15s, border-color 0.15s;
       margin-bottom: -1px;
+      text-decoration: none;
     }
 
     .tab-item:hover {
       color: var(--tabs-active-color);
     }
 
-    .tab-item.active {
+    .tab-item.active,
+    li.active > .tab-item {
       color: var(--tabs-active-color);
       border-bottom-color: var(--tabs-active-border-color);
       font-weight: var(--font-weight-bold);
@@ -376,58 +385,86 @@
     }
 
     .tab-item.active .tab-badge,
+    li.active > .tab-item .tab-badge,
     .tab-item:hover .tab-badge {
       background: var(--brand-primary-lighter);
       color: var(--brand-primary);
     }
 
-    .tab-content {
+    .tab-content, .tab-pane {
+      display: none;
+    }
+
+    .tab-content.active, .tab-pane.active {
+      display: block;
       padding: var(--spacing-sm);
       color: var(--font-color-detail);
       font-size: 13px;
     }
 
-    /* Numbered tabs (wizard-style) */
+    /* Wizard step tabs */
     .tab-numbered {
       display: flex;
-      background: #ffffff;
-      border-bottom: 1px solid var(--tabs-border-color);
+      background: var(--bg-color-secondary);
+      border-bottom: 1px solid var(--border-color-default);
       gap: 0;
-      padding: 0;
+      margin-bottom: var(--spacing-md);
+      padding: var(--spacing-xs) var(--spacing-md) 0;
+      list-style: none;
     }
-
+    .tab-numbered > li {
+      flex: 1;
+      min-width: 0;
+      list-style: none;
+    }
     .tab-numbered .tab-item {
-      gap: 8px;
-      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
       padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: 12px;
+      width: 100%;
+      text-align: center;
+      justify-content: center;
     }
-
     .tab-step-num {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: 22px;
       height: 22px;
+      flex-shrink: 0;
       border-radius: var(--border-radius-default);
       font-size: 12px;
       font-weight: var(--font-weight-bold);
-      background: var(--border-color-default);
+      background: var(--gray-primary-lighter);
       color: var(--font-color-detail);
     }
-
-    .tab-item.active .tab-step-num {
+    .tab-item.active .tab-step-num,
+    li.active > .tab-item .tab-step-num {
       background: var(--brand-primary);
       color: #ffffff;
     }
-
-    .tab-item.visited .tab-step-num {
+    .tab-item.visited .tab-step-num,
+    li.visited > .tab-item .tab-step-num {
       background: var(--gray-primary-dark);
       color: #ffffff;
     }
-
-    .tab-numbered.teal .tab-item.active { color: var(--brand-secondary); border-bottom-color: var(--brand-secondary); }
+    /* Teal wizard variant */
+    .tab-numbered.teal .tab-item.active,
+    .tab-numbered.teal li.active > .tab-item { color: var(--brand-secondary); border-bottom-color: var(--brand-secondary); }
     .tab-numbered.teal .tab-item:hover { color: var(--brand-secondary); }
-    .tab-numbered.teal .tab-item.active .tab-step-num { background: var(--brand-secondary); }
+    .tab-numbered.teal .tab-item.active .tab-step-num,
+    .tab-numbered.teal li.active > .tab-item .tab-step-num { background: var(--brand-secondary); }
+
+    .modal-body > .mx-tabcontainer .tab-numbered {
+      margin-left: calc(-1 * var(--spacing-md));
+      margin-right: calc(-1 * var(--spacing-md));
+      padding-left: var(--spacing-md);
+      padding-right: var(--spacing-md);
+    }
 
     /* ========================================================
        2. NAVIGATION TREE (Sidebar)
@@ -448,6 +485,18 @@
       min-height: 420px;
     }
 
+    .nav-sidebar > ul.nav {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .nav-sidebar > ul.nav > li {
+      list-style: none;
+    }
+
     .nav-sidebar-item {
       display: flex;
       align-items: center;
@@ -459,6 +508,16 @@
       transition: background 0.15s, color 0.15s;
       border-radius: 0;
       position: relative;
+    }
+    .nav-sidebar-item > a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     .nav-sidebar-item:hover {
@@ -493,25 +552,46 @@
       min-height: 420px;
     }
 
+    .nav-sidebar-expanded > ul.nav {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .nav-sidebar-expanded > ul.nav > li {
+      list-style: none;
+    }
+
     .nav-sidebar-expanded .nav-exp-item {
+      display: flex;
+      flex-direction: column;
+      color: var(--navigation-sidebar-color);
+      cursor: pointer;
+      font-size: var(--font-size-default);
+      transition: color 0.15s;
+      text-decoration: none;
+    }
+    .nav-sidebar-expanded .nav-exp-item > a {
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
       padding: var(--spacing-xs) var(--spacing-sm);
-      color: var(--navigation-sidebar-color);
+      color: inherit;
+      text-decoration: none;
       cursor: pointer;
-      font-size: var(--font-size-default);
       transition: background 0.15s, color 0.15s;
     }
 
-    .nav-sidebar-expanded .nav-exp-item:hover {
+    .nav-sidebar-expanded .nav-exp-item > a:hover {
       background: var(--brand-primary-lighter);
       color: var(--brand-primary);
       border-left: 3px solid var(--brand-primary);
       padding-left: calc(var(--spacing-sm) - 3px);
     }
 
-    .nav-sidebar-expanded .nav-exp-item.active {
+    .nav-sidebar-expanded .nav-exp-item.active > a {
       background: var(--brand-primary-lighter);
       color: var(--brand-primary);
       font-weight: var(--font-weight-semibold);
@@ -526,9 +606,16 @@
     .nav-sub-items {
       display: flex;
       flex-direction: column;
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
     .nav-sub-item {
+      list-style: none;
+    }
+
+    .nav-sub-item, .nav-sub-item > a {
       display: flex;
       align-items: center;
       padding: 6px var(--spacing-sm) 6px 44px;
@@ -536,16 +623,28 @@
       cursor: pointer;
       font-size: 13px;
       transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+    .nav-sub-item > a {
+      padding: 0;
+      flex: 1;
+      height: 100%;
+      color: inherit;
     }
 
-    .nav-sub-item:hover {
+    .nav-sub-item:hover, .nav-sub-item:hover > a {
       background: var(--brand-primary-lighter);
       color: var(--brand-primary);
       border-left: 3px solid var(--brand-primary);
       padding-left: calc(44px - 3px);
     }
+    .nav-sub-item:hover > a {
+      background: none;
+      border-left: none;
+      padding-left: 0;
+    }
 
-    .nav-sub-item.active {
+    .nav-sub-item.active, .nav-sub-item.active > a {
       color: var(--brand-primary);
       font-weight: var(--font-weight-medium);
     }
@@ -604,6 +703,10 @@
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
       user-select: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
     }
 
     .accordion-header:hover {
@@ -753,17 +856,11 @@
     }
 
     .datagrid-table .datagrid-header-row th {
-      padding: var(--spacing-sm) var(--grid-padding-right);
-      font-family: 'Segoe UI', var(--font-family-base);
-      font-size: 11px;
-      font-weight: var(--font-weight-bold);
-      color: var(--font-color-header, #0a1325);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
+      padding: var(--spacing-xs) var(--grid-padding-right);
       text-align: left;
       background: var(--bg-color-secondary);
       border-bottom: 3px solid var(--brand-primary);
-      white-space: nowrap;
+      vertical-align: top;
     }
 
     .datagrid-table .datagrid-header-row th .sort-icon,
@@ -773,11 +870,23 @@
       margin-left: 2px;
       color: var(--gray-primary-light);
     }
-    .datagrid-table .datagrid-filter-row td {
-      height: 32px;
+    .datagrid-filter-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .datagrid-filter-header .filter-header-label {
+      font-family: 'Segoe UI', var(--font-family-base);
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .datagrid-filter-header .filter-header-label .material-icons-outlined {
+      font-size: 14px;
       vertical-align: middle;
-      padding: var(--spacing-sm) var(--grid-padding-right);
-      border-bottom: 1px solid var(--grid-border-color);
     }
     .datagrid-table tbody td {
       padding: var(--spacing-xs) var(--grid-padding-right);
@@ -887,9 +996,36 @@
       background: var(--gray-primary);
     }
 
-    .datagrid-filter-row td {
-      padding: 4px var(--grid-padding-right);
-      background: #ffffff;
+    .datagrid-header-row th .material-icons-outlined {
+      font-size: 16px;
+      vertical-align: middle;
+      color: var(--font-color-detail);
+      margin-left: 2px;
+    }
+    .filter-select-group {
+      position: relative;
+    }
+    .filter-select-input {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 6px 28px 6px 8px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      font-size: 12px;
+      height: 32px;
+      background: #f8f8f8;
+      color: var(--font-color-detail);
+      cursor: pointer;
+      min-width: 80px;
+    }
+    .filter-select-chevron {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--font-color-detail);
+      pointer-events: none;
     }
 
     .datagrid-col-filter {
@@ -1387,7 +1523,7 @@
     .mx-listview-item .leg-number-col {
       font-size: 16px;
       font-weight: var(--font-weight-bold);
-      color: #0a1325;
+      color: var(--font-color-header);
       min-width: 30px;
       text-align: center;
       flex-shrink: 0;
@@ -1411,7 +1547,7 @@
     .mx-listview-item .leg-test-id {
       font-size: var(--font-size-default);
       font-weight: var(--font-weight-normal);
-      color: #3d4350;
+      color: var(--font-color-default);
       line-height: 18px;
       flex-shrink: 0;
     }
@@ -1429,7 +1565,7 @@
       justify-content: space-between;
       font-size: 12px;
       font-weight: var(--font-weight-bold);
-      color: #6c717e;
+      color: var(--font-color-detail);
       gap: 4px;
       white-space: nowrap;
     }
@@ -1520,7 +1656,7 @@
     .listview-item .leg-number-col {
       font-size: 16px;
       font-weight: var(--font-weight-bold);
-      color: #0a1325;
+      color: var(--font-color-header);
       min-width: 30px;
       text-align: center;
       flex-shrink: 0;
@@ -1543,7 +1679,7 @@
     .listview-item .leg-test-id {
       font-size: var(--font-size-default);
       font-weight: var(--font-weight-normal);
-      color: #3d4350;
+      color: var(--font-color-default);
       line-height: 18px;
       flex-shrink: 0;
     }
@@ -1561,7 +1697,7 @@
       justify-content: space-between;
       font-size: 12px;
       font-weight: var(--font-weight-bold);
-      color: #6c717e;
+      color: var(--font-color-detail);
       gap: 4px;
       white-space: nowrap;
     }
@@ -1670,27 +1806,31 @@
       <div class="demo-row">
         <p class="demo-label">Default Tabs with Counts</p>
         <div class="tabs-demo">
-          <div class="tab-bar">
-            <button class="tab-item active">All <span class="tab-badge">33</span></button>
-            <button class="tab-item">Open <span class="tab-badge">12</span></button>
-            <button class="tab-item">In Progress <span class="tab-badge">8</span></button>
-            <button class="tab-item">Closed <span class="tab-badge">13</span></button>
+          <div class="mx-tabcontainer">
+          <ul class="nav nav-tabs tab-bar">
+            <li class="active"><a role="tab" class="tab-item">All <span class="tab-badge">33</span></a></li>
+            <li><a role="tab" class="tab-item">Open <span class="tab-badge">12</span></a></li>
+            <li><a role="tab" class="tab-item">In Progress <span class="tab-badge">8</span></a></li>
+            <li><a role="tab" class="tab-item">Closed <span class="tab-badge">13</span></a></li>
+          </ul>
+          <div class="tab-content tab-pane active" role="tabpanel">Tab panel content appears here. The active tab is indicated by the brand-primary red underline.</div>
           </div>
-          <div class="tab-content">Tab panel content appears here. The active tab is indicated by the brand-primary red underline.</div>
         </div>
       </div>
 
       <div class="demo-row">
         <p class="demo-label">Numbered / Wizard-Style Tabs</p>
         <div class="tabs-demo">
-          <div class="tab-wizard tab-numbered">
-            <button class="tab-item visited"><span class="tab-step-num">1</span> General Details</button>
-            <button class="tab-item active"><span class="tab-step-num">2</span> Personal Details</button>
-            <button class="tab-item"><span class="tab-step-num">3</span> DUT Details</button>
-            <button class="tab-item"><span class="tab-step-num">4</span> Test Selection</button>
-            <button class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Docs</button>
+          <div class="mx-tabcontainer">
+          <ul class="nav nav-tabs tab-wizard tab-numbered">
+            <li class="visited"><a role="tab" class="tab-item"><span class="tab-step-num">1</span> General Details</a></li>
+            <li class="active"><a role="tab" class="tab-item"><span class="tab-step-num">2</span> Personal Details</a></li>
+            <li><a role="tab" class="tab-item"><span class="tab-step-num">3</span> DUT Details</a></li>
+            <li><a role="tab" class="tab-item"><span class="tab-step-num">4</span> Test Selection</a></li>
+            <li><a role="tab" class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Docs</a></li>
+          </ul>
+          <div class="tab-content tab-pane active" role="tabpanel">Step 2 — Personal Details. The numbered tab style matches the Figma wizard pattern with step indicators.</div>
           </div>
-          <div class="tab-content">Step 2 — Personal Details. The numbered tab style matches the Figma wizard pattern with step indicators.</div>
         </div>
       </div>
     </section>
@@ -1710,63 +1850,63 @@
           <!-- Collapsed sidebar -->
           <div>
             <p class="demo-label">Collapsed (52px)</p>
-            <div class="mx-navigationtree nav-sidebar">
-              <div class="nav-sidebar-item" title="Menu">
-                <span class="material-icons-outlined">menu</span>
-              </div>
-              <div class="nav-sidebar-item active" title="Dashboard">
-                <span class="material-icons-outlined">description</span>
-              </div>
-              <div class="nav-sidebar-item" title="Requests">
-                <span class="material-icons-outlined">assignment</span>
-              </div>
-              <div class="nav-sidebar-item" title="Reports">
-                <span class="material-icons-outlined">assessment</span>
-              </div>
-              <div class="nav-sidebar-item" title="Settings">
-                <span class="material-icons-outlined">settings</span>
-              </div>
-              <div class="nav-sidebar-spacer"></div>
-              <div class="nav-sidebar-item" title="Logout">
-                <span class="material-icons-outlined">logout</span>
-              </div>
-            </div>
+            <nav class="mx-navigationtree nav-sidebar">
+              <ul class="nav">
+              <li class="nav-sidebar-item" title="Menu"><a><span class="material-icons-outlined">menu</span></a></li>
+              <li class="nav-sidebar-item active" title="Dashboard"><a><span class="material-icons-outlined">description</span></a></li>
+              <li class="nav-sidebar-item" title="Requests"><a><span class="material-icons-outlined">assignment</span></a></li>
+              <li class="nav-sidebar-item" title="Reports"><a><span class="material-icons-outlined">assessment</span></a></li>
+              <li class="nav-sidebar-item" title="Settings"><a><span class="material-icons-outlined">settings</span></a></li>
+              <li class="nav-sidebar-spacer"></li>
+              <li class="nav-sidebar-item" title="Logout"><a><span class="material-icons-outlined">logout</span></a></li>
+              </ul>
+            </nav>
           </div>
 
           <!-- Expanded sidebar -->
           <div>
             <p class="demo-label">Expanded (240px)</p>
-            <div class="mx-navigationtree nav-sidebar-expanded">
-              <div class="nav-exp-item">
-                <span class="material-icons-outlined">menu</span>
-              </div>
+            <nav class="mx-navigationtree nav-sidebar-expanded">
+              <ul class="nav">
+              <li class="nav-exp-item">
+                <a><span class="material-icons-outlined">menu</span></a>
+              </li>
               <!-- section label removed per Figma -->
-              <div class="mx-navigationtree-has-items nav-exp-item active expanded">
-                <span class="material-icons-outlined">description</span>
-                Test Requests
-                <span class="material-icons-outlined nav-chevron">expand_more</span>
-              </div>
-              <div class="nav-sub-items">
-                <div class="nav-sub-item active">All Requests</div>
-                <div class="nav-sub-item">Open</div>
-                <div class="nav-sub-item">Pending Approval</div>
-                <div class="nav-sub-item">Completed</div>
-              </div>
-              <div class="mx-navigationtree-has-items nav-exp-item">
-                <span class="material-icons-outlined">request_quote</span>
-                Quotes (RFQ)
-                <span class="material-icons-outlined nav-chevron">expand_more</span>
-              </div>
-              <div class="nav-exp-item">
-                <span class="material-icons-outlined">drafts</span>
-                My Drafts
-              </div>
-              <div class="nav-exp-spacer"></div>
-              <div class="nav-exp-item">
-                <span class="material-icons-outlined">logout</span>
-                Sign out
-              </div>
-            </div>
+              <li class="mx-navigationtree-has-items nav-exp-item active expanded">
+                <a>
+                  <span class="material-icons-outlined">description</span>
+                  Test Requests
+                  <span class="material-icons-outlined nav-chevron">expand_more</span>
+                </a>
+                <ul class="nav nav-sub-items">
+                  <li class="nav-sub-item active"><a>All Requests</a></li>
+                  <li class="nav-sub-item"><a>Open</a></li>
+                  <li class="nav-sub-item"><a>Pending Approval</a></li>
+                  <li class="nav-sub-item"><a>Completed</a></li>
+                </ul>
+              </li>
+              <li class="mx-navigationtree-has-items nav-exp-item">
+                <a>
+                  <span class="material-icons-outlined">request_quote</span>
+                  Quotes (RFQ)
+                  <span class="material-icons-outlined nav-chevron">expand_more</span>
+                </a>
+              </li>
+              <li class="nav-exp-item">
+                <a>
+                  <span class="material-icons-outlined">drafts</span>
+                  My Drafts
+                </a>
+              </li>
+              <li class="nav-exp-spacer"></li>
+              <li class="nav-exp-item">
+                <a>
+                  <span class="material-icons-outlined">logout</span>
+                  Sign out
+                </a>
+              </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
@@ -1786,10 +1926,10 @@
         <p class="demo-label">Default Accordion</p>
         <div class="widget-accordion accordion">
           <div class="accordion-item accordion-panel open">
-            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+            <button class="accordion-header" aria-expanded="true" onclick="this.parentElement.classList.toggle('open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('open'))">
               <span>Test Request Details</span>
               <span class="material-icons-outlined">expand_more</span>
-            </div>
+            </button>
             <div class="accordion-content accordion-body">
               <div class="accordion-detail-grid">
                 <div><div class="accordion-detail-label">Request ID</div><div class="accordion-detail-value">TR26-2</div></div>
@@ -1802,28 +1942,28 @@
             </div>
           </div>
           <div class="accordion-item accordion-panel">
-            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+            <button class="accordion-header" aria-expanded="false" onclick="this.parentElement.classList.toggle('open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('open'))">
               <span>DUT Information</span>
               <span class="material-icons-outlined">expand_more</span>
-            </div>
+            </button>
             <div class="accordion-content accordion-body">
               Device Under Test information including part numbers, specifications, and compliance requirements.
             </div>
           </div>
           <div class="accordion-item accordion-panel">
-            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+            <button class="accordion-header" aria-expanded="false" onclick="this.parentElement.classList.toggle('open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('open'))">
               <span>Testing Schedule</span>
               <span class="material-icons-outlined">expand_more</span>
-            </div>
+            </button>
             <div class="accordion-content accordion-body">
               Timeline and scheduling information for the test request, including lab availability and estimated completion dates.
             </div>
           </div>
           <div class="accordion-item accordion-panel">
-            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+            <button class="accordion-header" aria-expanded="false" onclick="this.parentElement.classList.toggle('open'); this.setAttribute('aria-expanded', this.parentElement.classList.contains('open'))">
               <span>Documentation &amp; Attachments</span>
               <span class="material-icons-outlined">expand_more</span>
-            </div>
+            </button>
             <div class="accordion-content accordion-body">
               Upload and manage related documents, test specifications, and supporting files for this request.
             </div>
@@ -1850,22 +1990,13 @@
           <table class="table datagrid-table">
             <thead>
               <tr class="datagrid-header-row">
-                <th>Request ID <span class="material-icons-outlined">unfold_more</span></th>
-                <th>Customer <span class="material-icons-outlined">unfold_more</span></th>
-                <th>Test Type <span class="material-icons-outlined">unfold_more</span></th>
-                <th>Status</th>
-                <th>Requested</th>
-                <th>Assigned To</th>
-                <th></th>
-              </tr>
-              <tr class="datagrid-filter-row">
-                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                <td></td>
+                <th><div class="datagrid-filter-header"><span class="filter-header-label">Request ID<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                <th><div class="datagrid-filter-header"><span class="filter-header-label">Customer<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                <th><div class="datagrid-filter-header"><span class="filter-header-label">Test Type<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                <th><div class="datagrid-filter-header"><span class="filter-header-label">Status<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group filter-select-group"><select class="filter-select-input"><option value="">Select</option></select><span class="material-icons-outlined filter-select-chevron">expand_more</span></span></div></th>
+                <th><div class="datagrid-filter-header"><span class="filter-header-label">Requested<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                <th><div class="datagrid-filter-header"><span class="filter-header-label">Assigned To<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                <th style="width:40px; text-align:center"><span class="material-icons-outlined" style="font-size:18px; color:var(--font-color-detail); cursor:pointer;">visibility</span></th>
               </tr>
             </thead>
             <tbody>
@@ -1965,22 +2096,18 @@
         <div style="display: flex; align-items: center; gap: var(--spacing-md);">
           <div class="btn-toggle-group">
             <button class="btn-toggle active">
-              <span class="material-icons-outlined">grid_view</span>
               Cards
             </button>
             <button class="btn-toggle">
-              <span class="material-icons-outlined">view_list</span>
               List
             </button>
           </div>
 
           <div class="btn-toggle-group">
             <button class="btn-toggle">
-              <span class="material-icons-outlined">grid_view</span>
               Cards
             </button>
             <button class="btn-toggle active">
-              <span class="material-icons-outlined">view_list</span>
               List
             </button>
           </div>

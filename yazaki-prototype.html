@@ -100,6 +100,11 @@
       --btn-default-color: var(--font-color-header);
       --btn-default-border-color: var(--border-color-default);
       --btn-default-bg-hover: var(--bg-color-secondary);
+      --btn-secondary-bg: transparent;
+      --btn-secondary-color: var(--brand-primary);
+      --btn-secondary-border-color: var(--brand-primary);
+      --btn-secondary-bg-hover: var(--brand-primary);
+      --btn-secondary-color-hover: #ffffff;
       --form-input-padding-y: 10px;
       --form-input-padding-x: 12px;
       --form-input-color: var(--font-color-default);
@@ -117,6 +122,7 @@
       --grid-border-color: var(--border-color-default);
       --grid-bg-selected: var(--brand-secondary-lighter);
       --navsidebar-width-closed: 52px;
+      --navigation-sidebar-color-hover: var(--font-color-default);
     }
 
     /* ========================================================
@@ -198,20 +204,6 @@
       font-size: var(--font-size-default);
       color: var(--font-color-default);
     }
-    .topbar-role {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 6px 12px;
-      border: 1px solid var(--border-color-default);
-      border-radius: var(--border-radius-default);
-      background: #ffffff;
-      font-size: 13px;
-      font-weight: var(--font-weight-medium);
-      color: var(--font-color-header);
-      cursor: pointer;
-    }
-    .topbar-role .material-icons-outlined { font-size: 16px; }
 
     /* Body wrapper */
     .app-body {
@@ -234,30 +226,51 @@
       z-index: 50;
     }
     .nav-sidebar.expanded { width: 240px; }
+    .nav-sidebar > ul.nav {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .nav-sidebar > ul.nav > li {
+      list-style: none;
+    }
     .nav-sidebar-item {
       display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      height: 44px;
-      padding: 0 var(--spacing-sm);
+      flex-direction: column;
       color: var(--font-color-detail);
       cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s, color 0.15s;
-      text-decoration: none;
-      border-left: 3px solid transparent;
       font-size: var(--font-size-default);
-      font-weight: var(--font-weight-medium);
+      transition: color 0.15s;
+      text-decoration: none;
+    }
+    .nav-sidebar-item > a {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      height: 44px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      color: inherit;
+      white-space: nowrap;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
     }
     .nav-sidebar-item .material-icons-outlined { font-size: 20px; flex-shrink: 0; }
-    .nav-sidebar-item:hover {
-      background: var(--bg-color-secondary);
-      color: var(--font-color-default);
-    }
-    .nav-sidebar-item.active {
-      border-left-color: var(--brand-primary);
-      color: var(--brand-primary);
+    .nav-sidebar-item > a:hover {
       background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(var(--spacing-sm) - 3px);
+    }
+    .nav-sidebar-item.active > a {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      font-weight: var(--font-weight-semibold);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(var(--spacing-sm) - 3px);
     }
     .nav-sidebar-item .nav-label { display: none; }
     .nav-sidebar.expanded .nav-label { display: inline; }
@@ -269,21 +282,39 @@
     }
     .nav-sidebar.expanded .nav-chevron { display: inline; }
     .nav-sidebar-item.open .nav-chevron { transform: rotate(180deg); }
-    .nav-sub-items { display: none; }
-    .nav-sidebar.expanded .nav-sidebar-item.open + .nav-sub-items { display: block; }
+    .nav-sub-items { display: none; list-style: none; margin: 0; padding: 0; }
+    .nav-sidebar.expanded .nav-sidebar-item.open > .nav-sub-items { display: block; }
     .nav-sub-item {
+      list-style: none;
+    }
+    .nav-sub-item, .nav-sub-item > a {
       display: flex;
       align-items: center;
-      height: 36px;
-      padding-left: 52px;
+      padding: 6px var(--spacing-sm) 6px 44px;
       color: var(--font-color-detail);
       font-size: 13px;
       cursor: pointer;
-      transition: color 0.15s;
-      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
     }
-    .nav-sub-item:hover { color: var(--font-color-default); }
-    .nav-sub-item.active { color: var(--brand-primary); font-weight: var(--font-weight-medium); }
+    .nav-sub-item > a {
+      padding-left: 0;
+      flex: 1;
+      height: 100%;
+      color: inherit;
+    }
+    .nav-sub-item:hover, .nav-sub-item:hover > a {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(44px - 3px);
+    }
+    .nav-sub-item:hover > a {
+      background: none;
+      border-left: none;
+      padding-left: 0;
+    }
+    .nav-sub-item.active, .nav-sub-item.active > a { color: var(--brand-primary); font-weight: var(--font-weight-medium); }
     .nav-section-label {
       font-size: 11px;
       font-weight: var(--font-weight-semibold);
@@ -412,6 +443,15 @@
       border-color: var(--btn-default-border-color);
     }
     .btn-default:hover { background: var(--btn-default-bg-hover); }
+    .btn-secondary {
+      background: var(--btn-secondary-bg);
+      color: var(--btn-secondary-color);
+      border-color: var(--btn-secondary-border-color);
+    }
+    .btn-secondary:hover {
+      background: var(--btn-secondary-bg-hover);
+      color: var(--btn-secondary-color-hover);
+    }
     .btn-link {
       background: none;
       border: none;
@@ -493,9 +533,13 @@
       border-bottom: 1px solid var(--border-color-default);
       gap: 0;
       margin-bottom: var(--spacing-md);
-      margin-left: calc(-1 * var(--spacing-md));
-      margin-right: calc(-1 * var(--spacing-md));
-      padding: 0 var(--spacing-md);
+      padding: var(--spacing-xs) var(--spacing-md) 0;
+      list-style: none;
+    }
+    .tab-numbered > li {
+      flex: 1;
+      min-width: 0;
+      list-style: none;
     }
     .tab-numbered .tab-item {
       display: inline-flex;
@@ -505,8 +549,7 @@
       margin-bottom: -1px;
       padding: var(--spacing-xs) var(--spacing-sm);
       font-size: 12px;
-      flex: 1;
-      min-width: 0;
+      width: 100%;
       text-align: center;
       justify-content: center;
     }
@@ -534,9 +577,18 @@
       color: #ffffff;
     }
     /* Teal wizard variant */
-    .tab-numbered.teal .tab-item.active { color: var(--brand-secondary); border-bottom-color: var(--brand-secondary); }
+    .tab-numbered.teal .tab-item.active,
+    .tab-numbered.teal li.active > .tab-item { color: var(--brand-secondary); border-bottom-color: var(--brand-secondary); }
     .tab-numbered.teal .tab-item:hover { color: var(--brand-secondary); }
-    .tab-numbered.teal .tab-item.active .tab-step-num { background: var(--brand-secondary); }
+    .tab-numbered.teal .tab-item.active .tab-step-num,
+    .tab-numbered.teal li.active > .tab-item .tab-step-num { background: var(--brand-secondary); }
+
+    .modal-body > .mx-tabcontainer .tab-numbered {
+      margin-left: calc(-1 * var(--spacing-md));
+      margin-right: calc(-1 * var(--spacing-md));
+      padding-left: var(--spacing-md);
+      padding-right: var(--spacing-md);
+    }
 
     /* ========================================================
        Button Toggle (Cards / List)
@@ -685,23 +737,11 @@
       white-space: nowrap;
     }
     .datagrid-table .datagrid-header-row th {
-      padding: var(--spacing-sm) var(--grid-padding-right);
-      font-family: 'Segoe UI', var(--font-family-base);
-      font-size: 11px;
-      font-weight: var(--font-weight-bold);
-      color: var(--font-color-header, #0a1325);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
+      padding: var(--spacing-xs) var(--grid-padding-right);
       text-align: left;
       background: var(--bg-color-secondary);
       border-bottom: 3px solid var(--brand-primary);
-      white-space: nowrap;
-    }
-    .datagrid-table .datagrid-filter-row td {
-      height: 32px;
-      vertical-align: middle;
-      padding: var(--spacing-sm) var(--grid-padding-right);
-      border-bottom: 1px solid var(--grid-border-color);
+      vertical-align: top;
     }
     .datagrid-filter-header {
       display: flex;
@@ -712,7 +752,7 @@
       font-family: 'Segoe UI', var(--font-family-base);
       font-size: 11px;
       font-weight: var(--font-weight-bold);
-      color: #0a1325;
+      color: var(--font-color-header);
       text-transform: uppercase;
       letter-spacing: 0.3px;
       white-space: nowrap;
@@ -737,9 +777,36 @@
       background: var(--grid-bg-selected);
       box-shadow: inset 3px 0 0 var(--brand-secondary);
     }
-    .datagrid-filter-row td {
-      padding: 4px var(--grid-padding-right);
-      background: #ffffff;
+    .datagrid-header-row th .material-icons-outlined {
+      font-size: 16px;
+      vertical-align: middle;
+      color: var(--font-color-detail);
+      margin-left: 2px;
+    }
+    .filter-select-group {
+      position: relative;
+    }
+    .filter-select-input {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 6px 28px 6px 8px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      font-size: 12px;
+      height: 32px;
+      background: #f8f8f8;
+      color: var(--font-color-detail);
+      cursor: pointer;
+      min-width: 80px;
+    }
+    .filter-select-chevron {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--font-color-detail);
+      pointer-events: none;
     }
     .datagrid-col-filter {
       display: inline-flex;
@@ -818,6 +885,10 @@
       font-size: var(--font-size-h6);
       color: var(--font-color-header);
       transition: background 0.15s;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
     }
     .accordion-header:hover { background: var(--brand-secondary-lighter); }
     .accordion-header .material-icons-outlined {
@@ -1027,7 +1098,7 @@
     .mx-listview-item .leg-number-col {
       font-size: 16px;
       font-weight: var(--font-weight-bold);
-      color: #0a1325;
+      color: var(--font-color-header);
       min-width: 30px;
       text-align: center;
       flex-shrink: 0;
@@ -1050,7 +1121,7 @@
     .mx-listview-item .leg-test-id {
       font-size: var(--font-size-default);
       font-weight: var(--font-weight-normal);
-      color: #3d4350;
+      color: var(--font-color-default);
       line-height: 18px;
       flex-shrink: 0;
     }
@@ -1068,12 +1139,12 @@
       justify-content: space-between;
       font-size: 12px;
       font-weight: var(--font-weight-bold);
-      color: #6c717e;
+      color: var(--font-color-detail);
       gap: 4px;
       white-space: nowrap;
     }
     .mx-listview-item .leg-info .instructions-no {
-      color: var(--brand-primary);
+      color: var(--font-color-detail);
       font-weight: var(--font-weight-bold);
     }
 
@@ -1451,7 +1522,7 @@
       </div>
       <div class="topbar-right">
         <span class="topbar-user">Jeffrey Malotke</span>
-        <button class="topbar-role" id="topbar-role-btn">Requester <span class="material-icons-outlined">expand_more</span></button>
+        <button class="btn btn-secondary btn-sm" id="topbar-role-btn">Requester <span class="material-icons-outlined">expand_more</span></button>
       </div>
     </header>
 
@@ -1461,38 +1532,46 @@
     <div class="app-body">
       <!-- Sidebar -->
       <nav class="mx-navigationtree nav-sidebar expanded" id="sidebar">
-        <div class="mx-navigationtree-has-items nav-sidebar-item active open" onclick="toggleNavGroup(this)" data-nav="test-requests">
-          <span class="material-icons-outlined">description</span>
-          <span class="nav-label">Test Requests</span>
-          <span class="material-icons-outlined nav-chevron">expand_more</span>
-        </div>
-        <div class="nav-sub-items" id="sub-test-requests">
-          <div class="nav-sub-item active" onclick="navigateTo('dashboard')">All Requests</div>
-          <div class="nav-sub-item">Open</div>
-          <div class="nav-sub-item">Pending Approval</div>
-          <div class="nav-sub-item">Completed</div>
-        </div>
+        <ul class="nav">
+        <li class="mx-navigationtree-has-items nav-sidebar-item active open" data-nav="test-requests">
+          <a onclick="toggleNavGroup(this.parentElement)">
+            <span class="material-icons-outlined">description</span>
+            <span class="nav-label">Test Requests</span>
+            <span class="material-icons-outlined nav-chevron">expand_more</span>
+          </a>
+          <ul class="nav nav-sub-items" id="sub-test-requests">
+            <li class="nav-sub-item active"><a onclick="navigateTo('dashboard')">Open</a></li>
+            <li class="nav-sub-item"><a>Pending Approval</a></li>
+          </ul>
+        </li>
 
-        <div class="mx-navigationtree-has-items nav-sidebar-item" onclick="toggleNavGroup(this)" data-nav="quotes">
-          <span class="material-icons-outlined">request_quote</span>
-          <span class="nav-label">Quotes (RFQ)</span>
-          <span class="material-icons-outlined nav-chevron">expand_more</span>
-        </div>
-        <div class="nav-sub-items" id="sub-quotes">
-          <div class="nav-sub-item">All Quotes</div>
-        </div>
+        <li class="mx-navigationtree-has-items nav-sidebar-item" data-nav="quotes">
+          <a onclick="toggleNavGroup(this.parentElement)">
+            <span class="material-icons-outlined">request_quote</span>
+            <span class="nav-label">RFQ</span>
+            <span class="material-icons-outlined nav-chevron">expand_more</span>
+          </a>
+          <ul class="nav nav-sub-items" id="sub-quotes">
+            <li class="nav-sub-item"><a>All Quotes</a></li>
+          </ul>
+        </li>
 
-        <div class="nav-sidebar-item">
-          <span class="material-icons-outlined">edit_note</span>
-          <span class="nav-label">My Drafts</span>
-        </div>
+        <li class="nav-sidebar-item">
+          <a>
+            <span class="material-icons-outlined">edit_note</span>
+            <span class="nav-label">My Drafts</span>
+          </a>
+        </li>
 
-        <div class="nav-sidebar-spacer"></div>
+        <li class="nav-sidebar-spacer"></li>
 
-        <div class="nav-sidebar-item" onclick="navigateTo('login')">
-          <span class="material-icons-outlined">logout</span>
-          <span class="nav-label">Sign out</span>
-        </div>
+        <li class="nav-sidebar-item">
+          <a onclick="navigateTo('login')">
+            <span class="material-icons-outlined">logout</span>
+            <span class="nav-label">Sign out</span>
+          </a>
+        </li>
+        </ul>
       </nav>
 
       <!-- Main Content -->
@@ -1517,7 +1596,7 @@
                 <p>Select your role to continue</p>
                 <input class="role-filter" type="text" placeholder="Filter roles...">
                 <div class="role-list">
-                  <button class="role-btn" onclick="navigateTo('dashboard')">
+                  <button class="role-btn selected" onclick="navigateTo('dashboard')">
                     <div>
                       <div>Requester</div>
                       <div style="font-size:12px;color:var(--font-color-detail);font-weight:400">Submit and track test requests</div>
@@ -1531,7 +1610,7 @@
                     </div>
                     <span class="material-icons-outlined role-chevron">chevron_right</span>
                   </button>
-                  <button class="role-btn selected" onclick="navigateTo('dashboard')">
+                  <button class="role-btn" onclick="navigateTo('dashboard')">
                     <div>
                       <div>Test Manager</div>
                       <div style="font-size:12px;color:var(--font-color-detail);font-weight:400">Oversee testing operations</div>
@@ -1599,11 +1678,11 @@
             <!-- Filter tabs -->
             <div class="mx-tabcontainer">
             <ul class="nav nav-tabs tab-bar" id="dashboard-tabs">
-              <li class="active"><a role="tab" class="tab-item">All <span class="tab-badge">33</span></a></li>
+              <li><a role="tab" class="tab-item">All <span class="tab-badge">33</span></a></li>
               <li><a role="tab" class="tab-item">Created <span class="tab-badge">2</span></a></li>
               <li><a role="tab" class="tab-item">Rejected <span class="tab-badge">0</span></a></li>
               <li><a role="tab" class="tab-item">Pending Approval <span class="tab-badge">1</span></a></li>
-              <li><a role="tab" class="tab-item">Open <span class="tab-badge">6</span></a></li>
+              <li class="active"><a role="tab" class="tab-item">Open <span class="tab-badge">6</span></a></li>
               <li><a role="tab" class="tab-item">Closed <span class="tab-badge">24</span></a></li>
             </ul>
             </div>
@@ -1703,24 +1782,14 @@
                 <table class="table datagrid-table">
                   <thead>
                     <tr class="datagrid-header-row">
-                      <th>Request #</th>
-                      <th>Description</th>
-                      <th>Type</th>
-                      <th>Status</th>
-                      <th>BU/FG</th>
-                      <th>Completion Date</th>
-                      <th>Requester</th>
-                      <th style="width:40px"></th>
-                    </tr>
-                    <tr class="datagrid-filter-row">
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td style="width:40px"></td>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Request #<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Description<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Type<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Status<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group filter-select-group"><select class="filter-select-input"><option value="">Select</option></select><span class="material-icons-outlined filter-select-chevron">expand_more</span></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">BU/FG<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Completion Date<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Requester<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th style="width:40px; text-align:center"><span class="material-icons-outlined" style="font-size:18px; color:var(--font-color-detail); cursor:pointer;">visibility</span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1834,7 +1903,7 @@
             </div>
 
             <!-- TAB: General Info -->
-            <div class="tab-content active" id="tab-general-info">
+            <div class="tab-content tab-pane active" role="tabpanel" id="tab-general-info">
               <div class="mx-layoutgrid info-sections">
                 <!-- General Information -->
                 <div class="mx-groupbox info-section">
@@ -1976,33 +2045,21 @@
             </div>
 
             <!-- TAB: DUT Details -->
-            <div class="tab-content" id="tab-dut-details">
+            <div class="tab-content tab-pane" role="tabpanel" id="tab-dut-details">
               <div class="widget-datagrid datagrid-wrapper">
                 <table class="table datagrid-table">
                   <thead>
                     <tr class="datagrid-header-row">
-                      <th>DUT #</th>
-                      <th>Part Number</th>
-                      <th>Part Description</th>
-                      <th>Qty Received</th>
-                      <th>Material</th>
-                      <th>Supplier</th>
-                      <th>Drawing Rev</th>
-                      <th>Color</th>
-                      <th>Lot Number</th>
-                      <th style="width:40px"></th>
-                    </tr>
-                    <tr class="datagrid-filter-row">
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                      <td style="width:40px"></td>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">DUT #<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Part Number<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Part Description<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Qty Received<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Material<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Supplier<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Drawing Rev<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Color<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Lot Number<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th style="width:40px; text-align:center"><span class="material-icons-outlined" style="font-size:18px; color:var(--font-color-detail); cursor:pointer;">visibility</span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2048,7 +2105,7 @@
             </div>
 
             <!-- TAB: Test Details (Requested Tests) -->
-            <div class="tab-content" id="tab-test-details">
+            <div class="tab-content tab-pane" role="tabpanel" id="tab-test-details">
               <div class="test-details-layout">
                 <!-- Left: Leg list -->
                 <div class="test-details-left">
@@ -2075,7 +2132,7 @@
                               </div>
                             </div>
                           </li>
-                          <li class="mx-listview-item" onclick="selectLeg(this, 23)">
+                          <li class="mx-listview-item selected" onclick="selectLeg(this, 23)">
                             <span class="leg-number-col">23</span>
                             <div class="leg-details">
                               <div class="leg-details-top">
@@ -2117,7 +2174,7 @@
                               </div>
                             </div>
                           </li>
-                          <li class="mx-listview-item selected" onclick="selectLeg(this, 26)">
+                          <li class="mx-listview-item" onclick="selectLeg(this, 26)">
                             <span class="leg-number-col">26</span>
                             <div class="leg-details">
                               <div class="leg-details-top">
@@ -2143,18 +2200,11 @@
                     <table class="table datagrid-table">
                       <thead>
                         <tr class="datagrid-header-row">
-                          <th>Sequence</th>
-                          <th>Test Description</th>
-                          <th>Status</th>
-                          <th>Completion Date</th>
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Sequence<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Test Description<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Status<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Completion Date<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
                           <th></th>
-                        </tr>
-                        <tr class="datagrid-filter-row">
-                          <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                          <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                          <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                          <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
-                          <td></td>
                         </tr>
                       </thead>
                       <tbody>
@@ -2222,13 +2272,13 @@
 
                   <!-- Test detail accordion -->
                   <div class="accordion-item accordion-panel open" id="accordion-test-ch1">
-                    <div class="accordion-header" onclick="toggleAccordion('accordion-test-ch1')">
+                    <button class="accordion-header" aria-expanded="true" onclick="toggleAccordion('accordion-test-ch1')">
                       <div style="display:flex;align-items:center;gap:var(--spacing-sm)">
                         <span>1- Chapter 1 Test Detail 25-77-26-1 (Failure Analysis)</span>
                         <span class="badge status-badge test-in-progress">Test in Progress</span>
                       </div>
                       <span class="material-icons-outlined">expand_more</span>
-                    </div>
+                    </button>
                     <div class="accordion-content accordion-body">
                       <div class="test-detail-actions">
                         <button class="btn btn-default">Status updates</button>
@@ -2253,13 +2303,13 @@
                   </div>
 
                   <div class="accordion-item accordion-panel" id="accordion-test-ch2">
-                    <div class="accordion-header" onclick="toggleAccordion('accordion-test-ch2')">
+                    <button class="accordion-header" aria-expanded="false" onclick="toggleAccordion('accordion-test-ch2')">
                       <div style="display:flex;align-items:center;gap:var(--spacing-sm)">
                         <span>2 - Chapter 2 Test Detail 25-77-26-2 (Failure Analysis)</span>
                         <span class="badge status-badge received-by-lab">Received by Lab</span>
                       </div>
                       <span class="material-icons-outlined">expand_more</span>
-                    </div>
+                    </button>
                     <div class="accordion-content accordion-body">
                       <div class="accordion-detail-grid">
                         <div><div class="detail-label">Specification</div><div class="detail-value">USCAR-2 REV B</div></div>
@@ -2432,12 +2482,14 @@
         </div>
 
         <!-- Wizard step tabs (teal variant) -->
-        <div class="tab-wizard tab-numbered teal" id="rfq-wizard-tabs">
-          <button class="tab-item active" data-step="1"><span class="tab-step-num">1</span> General Details</button>
-          <button class="tab-item" data-step="2"><span class="tab-step-num">2</span> Personal Details</button>
-          <button class="tab-item" data-step="3"><span class="tab-step-num">3</span> DUT Details</button>
-          <button class="tab-item" data-step="4"><span class="tab-step-num">4</span> Test Selection</button>
-          <button class="tab-item" data-step="5"><span class="tab-step-num">5</span> Timing &amp; Documents</button>
+        <div class="mx-tabcontainer">
+        <ul class="nav nav-tabs tab-wizard tab-numbered teal" id="rfq-wizard-tabs">
+          <li class="active" data-step="1"><a role="tab" class="tab-item"><span class="tab-step-num">1</span> General Details</a></li>
+          <li data-step="2"><a role="tab" class="tab-item"><span class="tab-step-num">2</span> Personal Details</a></li>
+          <li data-step="3"><a role="tab" class="tab-item"><span class="tab-step-num">3</span> DUT Details</a></li>
+          <li data-step="4"><a role="tab" class="tab-item"><span class="tab-step-num">4</span> Test Selection</a></li>
+          <li data-step="5"><a role="tab" class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Documents</a></li>
+        </ul>
         </div>
 
         <!-- Step 1 -->
@@ -2592,9 +2644,10 @@
 
     /* ---- Detail Tab Switching ---- */
     function switchDetailTab(tabId) {
-      // Update tab buttons
-      document.querySelectorAll('#detail-tabs .tab-item').forEach(function(t) { t.classList.remove('active'); });
-      event.currentTarget.classList.add('active');
+      // Update tab li elements
+      document.querySelectorAll('#detail-tabs > li').forEach(function(li) { li.classList.remove('active'); });
+      var clickedA = event.currentTarget;
+      clickedA.parentElement.classList.add('active');
 
       // Update tab content
       document.querySelectorAll('#view-request-details .tab-content').forEach(function(c) { c.classList.remove('active'); });
@@ -2603,10 +2656,10 @@
     }
 
     /* ---- Dashboard Filter Tabs ---- */
-    document.querySelectorAll('#dashboard-tabs .tab-item').forEach(function(tab) {
+    document.querySelectorAll('#dashboard-tabs > li > a').forEach(function(tab) {
       tab.addEventListener('click', function() {
-        document.querySelectorAll('#dashboard-tabs .tab-item').forEach(function(t) { t.classList.remove('active'); });
-        tab.classList.add('active');
+        document.querySelectorAll('#dashboard-tabs > li').forEach(function(li) { li.classList.remove('active'); });
+        tab.parentElement.classList.add('active');
       });
     });
 
@@ -2614,6 +2667,8 @@
     function toggleAccordion(id) {
       var el = document.getElementById(id);
       el.classList.toggle('open');
+      var btn = el.querySelector('.accordion-header');
+      if (btn) btn.setAttribute('aria-expanded', el.classList.contains('open'));
     }
 
     /* ---- Popup Menu ---- */
@@ -2670,10 +2725,10 @@
       }
     }
     function updateRequestWizard() {
-      document.querySelectorAll('#request-wizard-tabs .tab-item').forEach(function(t, i) {
-        t.classList.remove('active', 'visited');
-        if (i + 1 < requestStep) t.classList.add('visited');
-        if (i + 1 === requestStep) t.classList.add('active');
+      document.querySelectorAll('#request-wizard-tabs > li').forEach(function(li, i) {
+        li.classList.remove('active', 'visited');
+        if (i + 1 < requestStep) li.classList.add('visited');
+        if (i + 1 === requestStep) li.classList.add('active');
       });
       document.querySelectorAll('#modal-request .wizard-step').forEach(function(s) { s.style.display = 'none'; });
       var stepEl = document.getElementById('request-step-' + requestStep);
@@ -2703,10 +2758,10 @@
       }
     }
     function updateRfqWizard() {
-      document.querySelectorAll('#rfq-wizard-tabs .tab-item').forEach(function(t, i) {
-        t.classList.remove('active', 'visited');
-        if (i + 1 < rfqStep) t.classList.add('visited');
-        if (i + 1 === rfqStep) t.classList.add('active');
+      document.querySelectorAll('#rfq-wizard-tabs > li').forEach(function(li, i) {
+        li.classList.remove('active', 'visited');
+        if (i + 1 < rfqStep) li.classList.add('visited');
+        if (i + 1 === rfqStep) li.classList.add('active');
       });
       document.querySelectorAll('#modal-rfq .wizard-step').forEach(function(s) { s.style.display = 'none'; });
       var stepEl = document.getElementById('rfq-step-' + rfqStep);
