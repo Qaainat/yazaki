@@ -62,4 +62,118 @@
     .card-top { height: 5px; background: var(--teal); flex-shrink: 0; }
     .card-top.red { background: var(--red); }
     .card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
-    .card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom:
+    .card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+    .card-icon.red-bg { background: #fff0f0; }
+    .card-phase { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+    .card-phase.red { color: var(--red); }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; line-height: 1.3; }
+    .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; flex: 1; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-top: 1px solid var(--border); background: var(--bg); }
+    .card-tag { font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; }
+    .card-arrow { font-size: 16px; color: var(--teal); transition: transform 0.2s; font-weight: 700; }
+    .notice { background: var(--teal-light); border: 1px solid #b2e0e3; border-left: 3px solid var(--teal); border-radius: 6px; padding: 14px 18px; font-size: 13px; color: #004d52; display: flex; gap: 10px; align-items: flex-start; }
+    .notice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    footer { background: var(--charcoal); color: rgba(255,255,255,0.45); font-size: 12px; padding: 24px 48px; text-align: center; }
+    footer strong { color: rgba(255,255,255,0.75); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">YAZAKI<span>—</span>NA</div>
+    <div class="brand-divider"></div>
+    <div class="brand-sub">YNA Test Portal</div>
+    <div class="header-badge">Design Refactor</div>
+  </header>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">UI/UX Deliverables</div>
+      <h1>Test Portal<br><em>Design Refactor</em></h1>
+      <p class="hero-desc">
+        A structured UI audit and proposed redesign for the Yazaki North America Testing Portal, built on Mendix Atlas UI. The deliverables below cover the full audit findings, before/after screen concepts, and implementation guidance — all based on the Yazaki brand identity.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-item"><strong>Project</strong>YNA Test Portal Breakout</div>
+        <div class="meta-item"><strong>Application</strong>Mendix — Atlas UI Core</div>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div class="section-label">Deliverables</div>
+    <div class="cards">
+      <a class="card" href="audit-report.html">
+        <div class="card-top red"></div>
+        <div class="card-body">
+          <div class="card-icon red-bg">🔍</div>
+          <div class="card-phase red">Audit</div>
+          <div class="card-title">UX / UI Audit Report</div>
+          <div class="card-desc">A comprehensive 10-point audit of the existing application — covering layout, navigation, color, typography, data grids, forms, and accessibility issues.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">HTML Report</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+      <a class="card" href="Yazaki_UI_Requestdetails_red.html">
+        <div class="card-top red"></div>
+        <div class="card-body">
+          <div class="card-icon red-bg">📄</div>
+          <div class="card-phase red">Before / After</div>
+          <div class="card-title">Request Details Refactor</div>
+          <div class="card-desc">Before and after for the Test Request list view — virtual scrolling data grid, cleaned-up sidebar navigation, and Option B red treatment applied throughout.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag"></span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+      <a class="card" href="yazaki-prototype.html">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <div class="card-icon">🖥️</div>
+          <div class="card-phase">Prototype</div>
+          <div class="card-title">Yazaki Prototype</div>
+          <div class="card-desc">Interactive HTML prototype of the redesigned Test Portal — clickable screens showing the proposed layout, navigation, and workflows based on Figma designs.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">HTML Prototype</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+      <a class="card" href="yazaki-style-guide.html">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <div class="card-icon">🎨</div>
+          <div class="card-phase">Design System</div>
+          <div class="card-title">Style Guide</div>
+          <div class="card-desc">Yazaki brand style guide — colors, typography, spacing tokens, and SCSS variable references drawn from the design system and applied throughout the refactor.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">HTML Reference</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+      <a class="card" href="yazaki-widgets.html">
+        <div class="card-top"></div>
+        <div class="card-body">
+          <div class="card-icon">🧩</div>
+          <div class="card-phase">Components</div>
+          <div class="card-title">Widget Library</div>
+          <div class="card-desc">A reference of Mendix Atlas UI widgets and custom components used across the portal — buttons, data grids, form inputs, badges, and navigation elements.</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">HTML Reference</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+    </div>
+    <div class="notice">
+      <div class="notice-icon">ℹ️</div>
+      <div>These are design proposals only. No application files have been modified. All SCSS variable changes and screen redesigns are for review and approval before implementation.</div>
+    </div>
+  </main>
+  <footer>
+    <strong>Yazaki North America — YNA Test Portal Design Refactor</strong><br>
+    Prepared for internal design review. All values proposed — pending brand guideline verification.
+  </footer>
+</body>
+</html>
