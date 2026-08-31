@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yazaki Design System — Style Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================================
+       Yazaki Design System — CSS Custom Properties
+       Maps Figma design tokens onto the existing SCSS variable
+       structure from CSSReference/web/variables.scss
+       ======================================================== */
+
+    :root {
+      /* --------------------------------------------------
+         Brand Colors
+         -------------------------------------------------- */
+      --brand-primary: #ed1c24;
+      --brand-primary-lighter: #fff0f0;
+      --brand-primary-light: #f87578;
+      --brand-primary-dark: #a01018;
+      --brand-primary-darker: #a01018;
+
+      --brand-secondary: #37a0af;
+      --brand-secondary-lighter: #e1f1f3;
+      --brand-secondary-light: #9bd0d7;
+      --brand-secondary-dark: #2d8a97;
+      --brand-secondary-darker: #216069;
+
+      --brand-tertiary: #577aa0;
+      --brand-tertiary-lighter: #eaeef4;
+      --brand-tertiary-light: #a7bbd2;
+      --brand-tertiary-dark: #446285;
+      --brand-tertiary-darker: #31445b;
+
+      /* --------------------------------------------------
+         Brand Color Tint/Shade Scale (50–950)
+         Replicates color-variants.scss using color-mix()
+         -------------------------------------------------- */
+      --brand-primary-50:  color-mix(in srgb, white 95%, #ed1c24);
+      --brand-primary-100: color-mix(in srgb, white 90%, #ed1c24);
+      --brand-primary-150: color-mix(in srgb, white 85%, #ed1c24);
+      --brand-primary-200: color-mix(in srgb, white 80%, #ed1c24);
+      --brand-primary-250: color-mix(in srgb, white 75%, #ed1c24);
+      --brand-primary-300: color-mix(in srgb, white 70%, #ed1c24);
+      --brand-primary-350: color-mix(in srgb, white 65%, #ed1c24);
+      --brand-primary-400: color-mix(in srgb, white 60%, #ed1c24);
+      --brand-primary-450: color-mix(in srgb, white 55%, #ed1c24);
+      --brand-primary-500: #ed1c24;
+      --brand-primary-550: color-mix(in srgb, #ed1c24 95%, black);
+      --brand-primary-600: color-mix(in srgb, #ed1c24 90%, black);
+      --brand-primary-650: color-mix(in srgb, #ed1c24 85%, black);
+      --brand-primary-700: color-mix(in srgb, #ed1c24 80%, black);
+      --brand-primary-750: color-mix(in srgb, #ed1c24 75%, black);
+      --brand-primary-800: color-mix(in srgb, #ed1c24 70%, black);
+      --brand-primary-850: color-mix(in srgb, #ed1c24 65%, black);
+      --brand-primary-900: color-mix(in srgb, #ed1c24 60%, black);
+      --brand-primary-950: color-mix(in srgb, #ed1c24 55%, black);
+
+      --brand-secondary-50:  color-mix(in srgb, white 95%, #37a0af);
+      --brand-secondary-100: color-mix(in srgb, white 90%, #37a0af);
+      --brand-secondary-150: color-mix(in srgb, white 85%, #37a0af);
+      --brand-secondary-200: color-mix(in srgb, white 80%, #37a0af);
+      --brand-secondary-250: color-mix(in srgb, white 75%, #37a0af);
+      --brand-secondary-300: color-mix(in srgb, white 70%, #37a0af);
+      --brand-secondary-350: color-mix(in srgb, white 65%, #37a0af);
+      --brand-secondary-400: color-mix(in srgb, white 60%, #37a0af);
+      --brand-secondary-450: color-mix(in srgb, white 55%, #37a0af);
+      --brand-secondary-500: #37a0af;
+      --brand-secondary-550: color-mix(in srgb, #37a0af 95%, black);
+      --brand-secondary-600: color-mix(in srgb, #37a0af 90%, black);
+      --brand-secondary-650: color-mix(in srgb, #37a0af 85%, black);
+      --brand-secondary-700: color-mix(in srgb, #37a0af 80%, black);
+      --brand-secondary-750: color-mix(in srgb, #37a0af 75%, black);
+      --brand-secondary-800: color-mix(in srgb, #37a0af 70%, black);
+      --brand-secondary-850: color-mix(in srgb, #37a0af 65%, black);
+      --brand-secondary-900: color-mix(in srgb, #37a0af 60%, black);
+      --brand-secondary-950: color-mix(in srgb, #37a0af 55%, black);
+
+      --brand-tertiary-50:  color-mix(in srgb, white 95%, #577aa0);
+      --brand-tertiary-100: color-mix(in srgb, white 90%, #577aa0);
+      --brand-tertiary-150: color-mix(in srgb, white 85%, #577aa0);
+      --brand-tertiary-200: color-mix(in srgb, white 80%, #577aa0);
+      --brand-tertiary-250: color-mix(in srgb, white 75%, #577aa0);
+      --brand-tertiary-300: color-mix(in srgb, white 70%, #577aa0);
+      --brand-tertiary-350: color-mix(in srgb, white 65%, #577aa0);
+      --brand-tertiary-400: color-mix(in srgb, white 60%, #577aa0);
+      --brand-tertiary-450: color-mix(in srgb, white 55%, #577aa0);
+      --brand-tertiary-500: #577aa0;
+      --brand-tertiary-550: color-mix(in srgb, #577aa0 95%, black);
+      --brand-tertiary-600: color-mix(in srgb, #577aa0 90%, black);
+      --brand-tertiary-650: color-mix(in srgb, #577aa0 85%, black);
+      --brand-tertiary-700: color-mix(in srgb, #577aa0 80%, black);
+      --brand-tertiary-750: color-mix(in srgb, #577aa0 75%, black);
+      --brand-tertiary-800: color-mix(in srgb, #577aa0 70%, black);
+      --brand-tertiary-850: color-mix(in srgb, #577aa0 65%, black);
+      --brand-tertiary-900: color-mix(in srgb, #577aa0 60%, black);
+      --brand-tertiary-950: color-mix(in srgb, #577aa0 55%, black);
+
+      /* --------------------------------------------------
+         Neutral / Gray
+         -------------------------------------------------- */
+      --gray-primary: #7c7c7c;
+      --gray-primary-lighter: #dcdcdc;
+      --gray-primary-light: #bdbdbd;
+      --gray-primary-dark: #656565;
+      --gray-primary-darker: #464646;
+
+      --brand-gray-50:  color-mix(in srgb, white 95%, #7c7c7c);
+      --brand-gray-100: color-mix(in srgb, white 90%, #7c7c7c);
+      --brand-gray-150: color-mix(in srgb, white 85%, #7c7c7c);
+      --brand-gray-200: color-mix(in srgb, white 80%, #7c7c7c);
+      --brand-gray-250: color-mix(in srgb, white 75%, #7c7c7c);
+      --brand-gray-300: color-mix(in srgb, white 70%, #7c7c7c);
+      --brand-gray-350: color-mix(in srgb, white 65%, #7c7c7c);
+      --brand-gray-400: color-mix(in srgb, white 60%, #7c7c7c);
+      --brand-gray-450: color-mix(in srgb, white 55%, #7c7c7c);
+      --brand-gray-500: #7c7c7c;
+      --brand-gray-550: color-mix(in srgb, #7c7c7c 95%, black);
+      --brand-gray-600: color-mix(in srgb, #7c7c7c 90%, black);
+      --brand-gray-650: color-mix(in srgb, #7c7c7c 85%, black);
+      --brand-gray-700: color-mix(in srgb, #7c7c7c 80%, black);
+      --brand-gray-750: color-mix(in srgb, #7c7c7c 75%, black);
+      --brand-gray-800: color-mix(in srgb, #7c7c7c 70%, black);
+      --brand-gray-850: color-mix(in srgb, #7c7c7c 65%, black);
+      --brand-gray-900: color-mix(in srgb, #7c7c7c 60%, black);
+      --brand-gray-950: color-mix(in srgb, #7c7c7c 55%, black);
+
+      /* --------------------------------------------------
+         Status Colors
+         -------------------------------------------------- */
+      --brand-success: #4a8587;
+      --brand-success-lighter: #dcf0f0;
+      --brand-success-light: #94c6c7;
+      --brand-success-dark: #3a6c6e;
+      --brand-success-darker: #254849;
+
+      --brand-warning: #eca51c;
+      --brand-warning-lighter: #fff3e0;
+      --brand-warning-light: #f5d454;
+      --brand-warning-dark: #d07c0f;
+      --brand-warning-darker: #8d4513;
+
+      --brand-danger: #e33f4e;
+      --brand-danger-lighter: #fde6e6;
+      --brand-danger-light: #f6abae;
+      --brand-danger-dark: #d12d44;
+      --brand-danger-darker: #931e35;
+
+      /* Status tint/shade scales */
+      --brand-success-50:  color-mix(in srgb, white 95%, #4a8587);
+      --brand-success-100: color-mix(in srgb, white 90%, #4a8587);
+      --brand-success-200: color-mix(in srgb, white 80%, #4a8587);
+      --brand-success-300: color-mix(in srgb, white 70%, #4a8587);
+      --brand-success-400: color-mix(in srgb, white 60%, #4a8587);
+      --brand-success-500: #4a8587;
+      --brand-success-600: color-mix(in srgb, #4a8587 90%, black);
+      --brand-success-700: color-mix(in srgb, #4a8587 80%, black);
+      --brand-success-800: color-mix(in srgb, #4a8587 70%, black);
+      --brand-success-900: color-mix(in srgb, #4a8587 60%, black);
+
+      --brand-warning-50:  color-mix(in srgb, white 95%, #eca51c);
+      --brand-warning-100: color-mix(in srgb, white 90%, #eca51c);
+      --brand-warning-200: color-mix(in srgb, white 80%, #eca51c);
+      --brand-warning-300: color-mix(in srgb, white 70%, #eca51c);
+      --brand-warning-400: color-mix(in srgb, white 60%, #eca51c);
+      --brand-warning-500: #eca51c;
+      --brand-warning-600: color-mix(in srgb, #eca51c 90%, black);
+      --brand-warning-700: color-mix(in srgb, #eca51c 80%, black);
+      --brand-warning-800: color-mix(in srgb, #eca51c 70%, black);
+      --brand-warning-900: color-mix(in srgb, #eca51c 60%, black);
+
+      --brand-danger-50:  color-mix(in srgb, white 95%, #e33f4e);
+      --brand-danger-100: color-mix(in srgb, white 90%, #e33f4e);
+      --brand-danger-200: color-mix(in srgb, white 80%, #e33f4e);
+      --brand-danger-300: color-mix(in srgb, white 70%, #e33f4e);
+      --brand-danger-400: color-mix(in srgb, white 60%, #e33f4e);
+      --brand-danger-500: #e33f4e;
+      --brand-danger-600: color-mix(in srgb, #e33f4e 90%, black);
+      --brand-danger-700: color-mix(in srgb, #e33f4e 80%, black);
+      --brand-danger-800: color-mix(in srgb, #e33f4e 70%, black);
+      --brand-danger-900: color-mix(in srgb, #e33f4e 60%, black);
+
+      /* --------------------------------------------------
+         Type Colors
+         -------------------------------------------------- */
+      --font-color-header: #0a1325;
+      --font-color-default: #3d4350;
+      --font-color-detail: #6c717e;
+
+      /* --------------------------------------------------
+         Element Colors
+         -------------------------------------------------- */
+      --bg-color: #f8f8f8;
+      --bg-color-secondary: #f5f6f6;
+      --border-color-default: #ced0d3;
+
+      /* --------------------------------------------------
+         Brand Gradient
+         -------------------------------------------------- */
+      --brand-gradient: linear-gradient(90deg, #a01018 0%, #ed1c24 30%, #37a0af 70%, #2d8a97 100%);
+
+      /* --------------------------------------------------
+         Typography
+         -------------------------------------------------- */
+      --font-family-base: "Roboto", sans-serif;
+
+      --font-size-h1: 2.25rem;    /* 36px */
+      --font-size-h2: 1.75rem;    /* 28px */
+      --font-size-h3: 1.5rem;     /* 24px */
+      --font-size-h4: 1.25rem;    /* 20px */
+      --font-size-h5: 1rem;       /* 16px */
+      --font-size-h6: 0.875rem;   /* 14px */
+      --font-size-default: 1rem;  /* 16px */
+
+      --font-weight-light: 300;
+      --font-weight-normal: 400;
+      --font-weight-semibold: 500;
+      --font-weight-bold: 700;
+
+      --line-height-heading: 1.2;
+      --line-height-body: 1.5;
+
+      /* --------------------------------------------------
+         Spacing (8px grid)
+         -------------------------------------------------- */
+      --spacing-unit: 8px;
+      --spacing-smallest: 2px;
+      --spacing-xxs: 4px;
+      --spacing-xs: 8px;
+      --spacing-sm: 16px;
+      --spacing-md: 24px;
+      --spacing-lg: 32px;
+      --spacing-xl: 40px;
+      --spacing-xxl: 48px;
+
+      /* Layout spacing */
+      --layout-spacing-desktop: 24px;
+      --layout-spacing-tablet: 24px;
+      --layout-spacing-mobile: 16px;
+
+      /* --------------------------------------------------
+         Borders
+         -------------------------------------------------- */
+      --border-radius-default: 4px;
+      --border-radius-small: 2px;
+      --border-radius-large: 8px;
+      --border-radius-circle: 50%;
+      --border-width-default: 1px;
+      --border-width-thick: 2px;
+
+      /* --------------------------------------------------
+         Shadows
+         -------------------------------------------------- */
+      --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.12);
+      --shadow-large: 0 4px 16px rgba(0, 0, 0, 0.16);
+
+      /* --------------------------------------------------
+         Buttons
+         -------------------------------------------------- */
+      --btn-font-size: var(--font-size-default);
+      --btn-font-weight: var(--font-weight-bold);
+      --btn-border-radius: var(--border-radius-default);
+      --btn-padding-y: 8px;
+      --btn-padding-x: 16px;
+
+      --btn-primary-bg: var(--brand-primary);
+      --btn-primary-bg-hover: var(--brand-primary-dark);
+      --btn-primary-color: #ffffff;
+      --btn-primary-border-color: var(--brand-primary);
+
+      --btn-secondary-bg: transparent;
+      --btn-secondary-bg-hover: var(--bg-color-secondary);
+      --btn-secondary-color: var(--font-color-default);
+      --btn-secondary-border-color: var(--gray-primary-dark);
+
+      --btn-danger-bg: var(--brand-danger);
+      --btn-danger-bg-hover: var(--brand-danger-dark);
+      --btn-danger-color: #ffffff;
+      --btn-danger-border-color: var(--brand-danger);
+
+      /* --------------------------------------------------
+         Form Inputs
+         -------------------------------------------------- */
+      --input-bg: #ffffff;
+      --input-color: var(--font-color-default);
+      --input-border-color: var(--border-color-default);
+      --input-border-radius: var(--border-radius-default);
+      --input-focus-border-color: var(--brand-secondary);
+      --input-focus-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+      --input-padding-y: 8px;
+      --input-padding-x: 12px;
+      --input-font-size: var(--font-size-default);
+      --input-placeholder-color: var(--font-color-detail);
+      --input-disabled-bg: var(--bg-color-secondary);
+      --input-label-color: var(--font-color-header);
+      --input-label-weight: var(--font-weight-semibold);
+
+      /* --------------------------------------------------
+         Navigation — Sidebar
+         -------------------------------------------------- */
+      --sidebar-bg: var(--font-color-header);
+      --sidebar-color: #ffffff;
+      --sidebar-width: 260px;
+      --sidebar-item-hover-bg: rgba(255, 255, 255, 0.08);
+      --sidebar-item-active-bg: var(--brand-primary);
+      --sidebar-item-active-color: #ffffff;
+
+      /* --------------------------------------------------
+         Navigation — Topbar
+         -------------------------------------------------- */
+      --topbar-bg: #ffffff;
+      --topbar-color: var(--font-color-default);
+      --topbar-height: 56px;
+      --topbar-border-bottom: 1px solid var(--border-color-default);
+    }
+
+
+    /* ======================================================
+       Style Guide Page Layout
+       ====================================================== */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-normal);
+      line-height: var(--line-height-body);
+      color: var(--font-color-default);
+      background: var(--bg-color);
+    }
+
+    /* Header */
+    .sg-header {
+      background: #ffffff;
+      border-bottom: 3px solid var(--brand-primary);
+      padding: var(--spacing-md) var(--spacing-xl);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+    .sg-header img {
+      height: 40px;
+      width: auto;
+    }
+    .sg-header h1 {
+      font-size: var(--font-size-h2);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+    }
+
+    /* Main Content */
+    .sg-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--spacing-xl);
+    }
+
+    /* Section */
+    .sg-section {
+      margin-bottom: var(--spacing-xl);
+      background: #ffffff;
+      border-radius: var(--border-radius-large);
+      box-shadow: var(--shadow-small);
+      padding: var(--spacing-lg);
+    }
+    .sg-section-title {
+      font-size: var(--font-size-h3);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-xs);
+      padding-bottom: var(--spacing-xs);
+      border-bottom: 2px solid var(--border-color-default);
+    }
+    .sg-section-subtitle {
+      font-size: var(--font-size-h5);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-detail);
+      margin-bottom: var(--spacing-md);
+    }
+    .sg-subsection {
+      margin-top: var(--spacing-md);
+    }
+    .sg-subsection-title {
+      font-size: var(--font-size-h5);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    /* Color Swatch Grid */
+    .sg-swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--spacing-sm);
+    }
+    .sg-swatch-card {
+      border-radius: var(--border-radius-default);
+      overflow: hidden;
+      border: 1px solid var(--border-color-default);
+    }
+    .sg-swatch-color {
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--spacing-xs);
+    }
+    .sg-swatch-info {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: #ffffff;
+    }
+    .sg-swatch-name {
+      font-weight: var(--font-weight-bold);
+      font-size: 0.8125rem;
+      color: var(--font-color-header);
+    }
+    .sg-swatch-value {
+      font-size: 0.75rem;
+      color: var(--font-color-detail);
+      font-family: "Roboto Mono", monospace;
+    }
+
+    /* Tint/shade strip */
+    .sg-shade-strip {
+      display: flex;
+      border-radius: var(--border-radius-default);
+      overflow: hidden;
+      border: 1px solid var(--border-color-default);
+      margin-top: var(--spacing-xs);
+    }
+    .sg-shade-cell {
+      flex: 1;
+      height: 48px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 4px;
+      font-size: 0.625rem;
+      font-weight: var(--font-weight-semibold);
+    }
+
+    /* Gradient bar */
+    .sg-gradient-bar {
+      height: 64px;
+      border-radius: var(--border-radius-default);
+      background: var(--brand-gradient);
+    }
+    .sg-gradient-info {
+      font-size: 0.8125rem;
+      color: var(--font-color-detail);
+      margin-top: var(--spacing-xs);
+      font-family: "Roboto Mono", monospace;
+    }
+
+    /* Typography samples */
+    .sg-type-sample {
+      margin-bottom: var(--spacing-sm);
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-md);
+    }
+    .sg-type-label {
+      min-width: 100px;
+      font-size: 0.75rem;
+      color: var(--font-color-detail);
+      font-family: "Roboto Mono", monospace;
+      flex-shrink: 0;
+    }
+
+    /* Spacing blocks */
+    .sg-spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-xs);
+    }
+    .sg-spacing-block {
+      height: 32px;
+      background: var(--brand-secondary-light);
+      border-radius: var(--border-radius-small);
+    }
+    .sg-spacing-label {
+      font-size: 0.75rem;
+      color: var(--font-color-detail);
+      font-family: "Roboto Mono", monospace;
+      min-width: 160px;
+      flex-shrink: 0;
+    }
+
+    /* Buttons */
+    .sg-button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      align-items: center;
+    }
+    .sg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--btn-padding-y) var(--btn-padding-x);
+      font-family: var(--font-family-base);
+      font-size: var(--btn-font-size);
+      font-weight: var(--btn-font-weight);
+      border-radius: var(--btn-border-radius);
+      cursor: pointer;
+      border: var(--border-width-default) solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+      text-decoration: none;
+      line-height: 1.4;
+    }
+    .sg-btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color);
+      border-color: var(--btn-primary-border-color);
+    }
+    .sg-btn-primary:hover { background: var(--btn-primary-bg-hover); }
+    .sg-btn-secondary {
+      background: var(--btn-secondary-bg);
+      color: var(--btn-secondary-color);
+      border-color: var(--btn-secondary-border-color);
+    }
+    .sg-btn-secondary:hover { background: var(--btn-secondary-bg-hover); }
+    .sg-btn-danger {
+      background: var(--btn-danger-bg);
+      color: var(--btn-danger-color);
+      border-color: var(--btn-danger-border-color);
+    }
+    .sg-btn-danger:hover { background: var(--btn-danger-bg-hover); }
+    .sg-btn-tertiary {
+      background: none;
+      border: none;
+      color: var(--brand-tertiary);
+      font-weight: var(--font-weight-medium);
+    }
+    .sg-btn-tertiary:hover {
+      color: var(--brand-tertiary-dark);
+      text-decoration: underline;
+    }
+    .sg-btn-warning {
+      background: var(--brand-warning);
+      color: #ffffff;
+      border-color: var(--brand-warning);
+    }
+    .sg-btn-warning:hover {
+      background: var(--brand-warning-dark);
+      border-color: var(--brand-warning-dark);
+    }
+    .sg-btn-success {
+      background: var(--brand-success);
+      color: #ffffff;
+      border-color: var(--brand-success);
+    }
+    .sg-btn-success:hover {
+      background: var(--brand-success-dark);
+      border-color: var(--brand-success-dark);
+    }
+
+    /* Form Inputs */
+    .sg-input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+    }
+    .sg-input-field {
+      flex: 1;
+      min-width: 240px;
+    }
+    .sg-input-field label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: var(--input-label-weight);
+      color: var(--input-label-color);
+      margin-bottom: var(--spacing-xxs);
+    }
+    .sg-input-field input,
+    .sg-input-field select {
+      width: 100%;
+      padding: var(--input-padding-y) var(--input-padding-x);
+      font-family: var(--font-family-base);
+      font-size: var(--input-font-size);
+      color: var(--input-color);
+      background: var(--input-bg);
+      border: var(--border-width-default) solid var(--input-border-color);
+      border-radius: var(--input-border-radius);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .sg-input-field input:focus,
+    .sg-input-field select:focus {
+      border-color: var(--input-focus-border-color);
+      box-shadow: 0 0 0 2px rgba(55, 160, 175, 0.25);
+    }
+    .sg-input-field input::placeholder {
+      color: var(--input-placeholder-color);
+    }
+    .sg-input-field input:disabled {
+      background: var(--input-disabled-bg);
+      cursor: not-allowed;
+    }
+
+    .sg-checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+    .sg-checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand-primary);
+    }
+
+    /* Accessibility callout */
+    .sg-callout {
+      background: var(--brand-warning-lighter);
+      border-left: 4px solid var(--brand-warning);
+      border-radius: var(--border-radius-default);
+      padding: var(--spacing-sm);
+      margin-top: var(--spacing-sm);
+    }
+    .sg-callout-title {
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-xxs);
+    }
+    .sg-callout p {
+      font-size: 0.875rem;
+      color: var(--font-color-default);
+      line-height: 1.5;
+    }
+    .sg-callout code {
+      background: rgba(0,0,0,0.06);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 0.8125rem;
+    }
+
+    /* Variable reference table */
+    .sg-var-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--spacing-sm);
+      font-size: 0.8125rem;
+    }
+    .sg-var-table th,
+    .sg-var-table td {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      text-align: left;
+      border-bottom: 1px solid var(--border-color-default);
+    }
+    .sg-var-table th {
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      background: var(--bg-color-secondary);
+    }
+    .sg-var-table td:first-child {
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.75rem;
+      color: var(--brand-tertiary-dark);
+    }
+
+    /* Borders demo */
+    .sg-border-demos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+    }
+    .sg-border-demo {
+      width: 100px;
+      height: 100px;
+      background: #ffffff;
+      border: var(--border-width-default) solid var(--border-color-default);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--font-color-detail);
+      text-align: center;
+      font-family: "Roboto Mono", monospace;
+    }
+
+    /* Footer */
+    .sg-footer {
+      text-align: center;
+      padding: var(--spacing-lg) var(--spacing-xl);
+      font-size: 0.75rem;
+      color: var(--font-color-detail);
+      border-top: 1px solid var(--border-color-default);
+      margin-top: var(--spacing-xl);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="sg-header">
+    <img src="../Logo/fig01.jpg" alt="Yazaki Logo">
+    <h1>Yazaki Design System</h1>
+  </header>
+
+  <main class="sg-main">
+
+    <!-- ==================== BRAND COLORS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Brand Colors</h2>
+      <p class="sg-section-subtitle">Primary, secondary, and tertiary brand colors with tint and shade variants.</p>
+
+      <!-- Primary -->
+      <div class="sg-subsection">
+        <h3 class="sg-subsection-title">Primary</h3>
+        <div class="sg-swatches">
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-primary-lighter);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Lighter</div><div class="sg-swatch-value">#fff0f0</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-primary-light);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Light</div><div class="sg-swatch-value">#f87578</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-primary);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Base</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Primary (Base)</div><div class="sg-swatch-value">#ed1c24</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-primary-dark);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Dark</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Dark / Darker</div><div class="sg-swatch-value">#a01018</div></div>
+          </div>
+        </div>
+        <div class="sg-shade-strip" style="margin-top: var(--spacing-sm);">
+          <div class="sg-shade-cell" style="background: var(--brand-primary-50); color: #333;">50</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-100); color: #333;">100</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-200); color: #333;">200</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-300); color: #fff;">300</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-400); color: #fff;">400</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-500); color: #fff;">500</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-600); color: #fff;">600</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-700); color: #fff;">700</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-800); color: #fff;">800</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-900); color: #fff;">900</div>
+          <div class="sg-shade-cell" style="background: var(--brand-primary-950); color: #fff;">950</div>
+        </div>
+      </div>
+
+      <!-- Secondary -->
+      <div class="sg-subsection">
+        <h3 class="sg-subsection-title">Secondary</h3>
+        <div class="sg-swatches">
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-secondary-lighter);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Lighter</div><div class="sg-swatch-value">#e1f1f3</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-secondary-light);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Light</div><div class="sg-swatch-value">#9bd0d7</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-secondary);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Base</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Secondary (Base)</div><div class="sg-swatch-value">#37a0af</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-secondary-dark);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Dark</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Dark</div><div class="sg-swatch-value">#2d8a97</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-secondary-darker);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Darker</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Darker</div><div class="sg-swatch-value">#216069</div></div>
+          </div>
+        </div>
+        <div class="sg-shade-strip" style="margin-top: var(--spacing-sm);">
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-50); color: #333;">50</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-100); color: #333;">100</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-200); color: #333;">200</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-300); color: #333;">300</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-400); color: #fff;">400</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-500); color: #fff;">500</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-600); color: #fff;">600</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-700); color: #fff;">700</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-800); color: #fff;">800</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-900); color: #fff;">900</div>
+          <div class="sg-shade-cell" style="background: var(--brand-secondary-950); color: #fff;">950</div>
+        </div>
+      </div>
+
+      <!-- Tertiary -->
+      <div class="sg-subsection">
+        <h3 class="sg-subsection-title">Tertiary</h3>
+        <div class="sg-swatches">
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-tertiary-lighter);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Lighter</div><div class="sg-swatch-value">#eaeef4</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-tertiary-light);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Light</div><div class="sg-swatch-value">#a7bbd2</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-tertiary);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Base</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Tertiary (Base)</div><div class="sg-swatch-value">#577aa0</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-tertiary-dark);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Dark</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Dark</div><div class="sg-swatch-value">#446285</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-tertiary-darker);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Darker</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Darker</div><div class="sg-swatch-value">#31445b</div></div>
+          </div>
+        </div>
+        <div class="sg-shade-strip" style="margin-top: var(--spacing-sm);">
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-50); color: #333;">50</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-100); color: #333;">100</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-200); color: #333;">200</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-300); color: #333;">300</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-400); color: #fff;">400</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-500); color: #fff;">500</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-600); color: #fff;">600</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-700); color: #fff;">700</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-800); color: #fff;">800</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-900); color: #fff;">900</div>
+          <div class="sg-shade-cell" style="background: var(--brand-tertiary-950); color: #fff;">950</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== BRAND GRADIENT ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Brand Gradient</h2>
+      <p class="sg-section-subtitle">Horizontal gradient from primary dark through primary to secondary.</p>
+      <div class="sg-gradient-bar"></div>
+      <div class="sg-gradient-info">linear-gradient(90deg, #a01018 0%, #ed1c24 30%, #37a0af 70%, #2d8a97 100%)</div>
+    </section>
+
+    <!-- ==================== NEUTRALS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Neutrals</h2>
+      <p class="sg-section-subtitle">Gray scale for UI elements, borders, and disabled states.</p>
+      <div class="sg-swatches">
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--gray-primary-lighter);"></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Lighter</div><div class="sg-swatch-value">#dcdcdc</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--gray-primary-light);"></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Light</div><div class="sg-swatch-value">#bdbdbd</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--gray-primary);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Base</span></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Gray (Base)</div><div class="sg-swatch-value">#7c7c7c</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--gray-primary-dark);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Dark</span></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Dark</div><div class="sg-swatch-value">#656565</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--gray-primary-darker);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Darker</span></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Darker</div><div class="sg-swatch-value">#464646</div></div>
+        </div>
+      </div>
+      <div class="sg-shade-strip" style="margin-top: var(--spacing-sm);">
+        <div class="sg-shade-cell" style="background: var(--brand-gray-50); color: #333;">50</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-100); color: #333;">100</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-200); color: #333;">200</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-300); color: #333;">300</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-400); color: #333;">400</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-500); color: #fff;">500</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-600); color: #fff;">600</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-700); color: #fff;">700</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-800); color: #fff;">800</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-900); color: #fff;">900</div>
+        <div class="sg-shade-cell" style="background: var(--brand-gray-950); color: #fff;">950</div>
+      </div>
+    </section>
+
+    <!-- ==================== STATUS COLORS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Status Colors</h2>
+      <p class="sg-section-subtitle">Used for success, warning, and danger states throughout the application.</p>
+
+      <!-- Success -->
+      <div class="sg-subsection">
+        <h3 class="sg-subsection-title">Success</h3>
+        <div class="sg-swatches">
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-success-lighter);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Lighter</div><div class="sg-swatch-value">#dcf0f0</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-success-light);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Light</div><div class="sg-swatch-value">#94c6c7</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-success);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Base</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Success (Base)</div><div class="sg-swatch-value">#4a8587</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-success-dark);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Dark</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Dark</div><div class="sg-swatch-value">#3a6c6e</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-success-darker);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Darker</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Darker</div><div class="sg-swatch-value">#254849</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning -->
+      <div class="sg-subsection">
+        <h3 class="sg-subsection-title">Warning</h3>
+        <div class="sg-swatches">
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-warning-lighter);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Lighter</div><div class="sg-swatch-value">#fff3e0</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-warning-light);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Light</div><div class="sg-swatch-value">#f5d454</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-warning);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Base</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Warning (Base)</div><div class="sg-swatch-value">#eca51c</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-warning-dark);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Dark</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Dark</div><div class="sg-swatch-value">#d07c0f</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-warning-darker);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Darker</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Darker</div><div class="sg-swatch-value">#8d4513</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danger -->
+      <div class="sg-subsection">
+        <h3 class="sg-subsection-title">Danger</h3>
+        <div class="sg-swatches">
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-danger-lighter);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Lighter</div><div class="sg-swatch-value">#fde6e6</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-danger-light);"></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Light</div><div class="sg-swatch-value">#f6abae</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-danger);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Base</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Danger (Base)</div><div class="sg-swatch-value">#e33f4e</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-danger-dark);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Dark</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Dark</div><div class="sg-swatch-value">#d12d44</div></div>
+          </div>
+          <div class="sg-swatch-card">
+            <div class="sg-swatch-color" style="background: var(--brand-danger-darker);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Darker</span></div>
+            <div class="sg-swatch-info"><div class="sg-swatch-name">Darker</div><div class="sg-swatch-value">#931e35</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STATUS BADGE MAPPING ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Status Badge Color Mapping</h2>
+      <p class="sg-section-subtitle">Each application status maps to a unique brand color family, ensuring visual distinction across all 7 statuses used in datagrids, cards, and list views.</p>
+
+      <div class="demo-row" style="margin-top: var(--spacing-lg);">
+        <table style="width: 100%; border-collapse: collapse; font-size: var(--font-size-sm);">
+          <thead>
+            <tr style="text-align: left; border-bottom: 2px solid var(--border-color-default);">
+              <th style="padding: var(--spacing-sm);">Status</th>
+              <th style="padding: var(--spacing-sm);">Badge Preview</th>
+              <th style="padding: var(--spacing-sm);">CSS Class</th>
+              <th style="padding: var(--spacing-sm);">Color Family</th>
+              <th style="padding: var(--spacing-sm);">Background Token</th>
+              <th style="padding: var(--spacing-sm);">Text Token</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color-default);">
+              <td style="padding: var(--spacing-sm);">Created</td>
+              <td style="padding: var(--spacing-sm);"><span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;background:var(--brand-secondary-lighter);color:var(--brand-secondary-dark);">Created</span></td>
+              <td style="padding: var(--spacing-sm);"><code>.status-badge.created</code></td>
+              <td style="padding: var(--spacing-sm);">Secondary (Teal)</td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-secondary-lighter</code></td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-secondary-dark</code></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color-default);">
+              <td style="padding: var(--spacing-sm);">Open</td>
+              <td style="padding: var(--spacing-sm);"><span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;background:var(--brand-success-lighter);color:var(--brand-success-dark);">Open</span></td>
+              <td style="padding: var(--spacing-sm);"><code>.status-badge.open</code></td>
+              <td style="padding: var(--spacing-sm);">Success (Green)</td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-success-lighter</code></td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-success-dark</code></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color-default);">
+              <td style="padding: var(--spacing-sm);">Awaiting Quote</td>
+              <td style="padding: var(--spacing-sm);"><span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;background:var(--brand-warning-lighter);color:var(--brand-warning-dark);">Awaiting Quote</span></td>
+              <td style="padding: var(--spacing-sm);"><code>.status-badge.awaiting-quote</code></td>
+              <td style="padding: var(--spacing-sm);">Warning (Orange)</td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-warning-lighter</code></td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-warning-dark</code></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color-default);">
+              <td style="padding: var(--spacing-sm);">Received by Lab</td>
+              <td style="padding: var(--spacing-sm);"><span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;background:var(--brand-primary-lighter);color:var(--brand-primary-dark);">Received by Lab</span></td>
+              <td style="padding: var(--spacing-sm);"><code>.status-badge.received-by-lab</code></td>
+              <td style="padding: var(--spacing-sm);">Primary (Red)</td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-primary-lighter</code></td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-primary-dark</code></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color-default);">
+              <td style="padding: var(--spacing-sm);">Test in Progress</td>
+              <td style="padding: var(--spacing-sm);"><span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;background:var(--brand-tertiary-lighter);color:var(--brand-tertiary-dark);">Test in Progress</span></td>
+              <td style="padding: var(--spacing-sm);"><code>.status-badge.test-in-progress</code></td>
+              <td style="padding: var(--spacing-sm);">Tertiary (Blue)</td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-tertiary-lighter</code></td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-tertiary-dark</code></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color-default);">
+              <td style="padding: var(--spacing-sm);">Waiting on Deliverables</td>
+              <td style="padding: var(--spacing-sm);"><span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;background:var(--brand-danger-lighter);color:var(--brand-danger-dark);">Waiting on Deliverables</span></td>
+              <td style="padding: var(--spacing-sm);"><code>.status-badge.waiting-deliverables</code></td>
+              <td style="padding: var(--spacing-sm);">Danger (Pink)</td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-danger-lighter</code></td>
+              <td style="padding: var(--spacing-sm);"><code>--brand-danger-dark</code></td>
+            </tr>
+            <tr>
+              <td style="padding: var(--spacing-sm);">Closed</td>
+              <td style="padding: var(--spacing-sm);"><span style="display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;background:var(--bg-color-secondary);color:var(--font-color-detail);">Closed</span></td>
+              <td style="padding: var(--spacing-sm);"><code>.status-badge.closed</code></td>
+              <td style="padding: var(--spacing-sm);">Neutral (Gray)</td>
+              <td style="padding: var(--spacing-sm);"><code>--bg-color-secondary</code></td>
+              <td style="padding: var(--spacing-sm);"><code>--font-color-detail</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== TYPE COLORS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Type Colors</h2>
+      <p class="sg-section-subtitle">Text color hierarchy for headings, body text, and secondary details.</p>
+      <div class="sg-swatches">
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--font-color-header);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Header</span></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Header</div><div class="sg-swatch-value">--font-color-header: #0a1325</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--font-color-default);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Default</span></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Default</div><div class="sg-swatch-value">--font-color-default: #3d4350</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--font-color-detail);"><span style="color: #fff; font-size: 0.75rem; font-weight: 700;">Detail</span></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Detail</div><div class="sg-swatch-value">--font-color-detail: #6c717e</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ELEMENT COLORS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Element Colors</h2>
+      <p class="sg-section-subtitle">Background and border tokens used for containers, cards, and dividers.</p>
+      <div class="sg-swatches">
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--bg-color); border-bottom: 1px solid var(--border-color-default);"></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Background</div><div class="sg-swatch-value">--bg-color: #f8f8f8</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--bg-color-secondary); border-bottom: 1px solid var(--border-color-default);"></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Background Secondary</div><div class="sg-swatch-value">--bg-color-secondary: #f5f6f6</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: var(--border-color-default);"></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">Border</div><div class="sg-swatch-value">--border-color-default: #ced0d3</div></div>
+        </div>
+        <div class="sg-swatch-card">
+          <div class="sg-swatch-color" style="background: #ffffff; border-bottom: 1px solid var(--border-color-default);"></div>
+          <div class="sg-swatch-info"><div class="sg-swatch-name">White (Cards)</div><div class="sg-swatch-value">#ffffff</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TYPOGRAPHY ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Typography</h2>
+      <p class="sg-section-subtitle">Roboto font family with heading and body text scales.</p>
+
+      <div class="sg-type-sample">
+        <span class="sg-type-label">H1 — 36px / 700</span>
+        <span style="font-size: var(--font-size-h1); font-weight: var(--font-weight-bold); color: var(--font-color-header); line-height: var(--line-height-heading);">Heading One</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">H2 — 28px / 700</span>
+        <span style="font-size: var(--font-size-h2); font-weight: var(--font-weight-bold); color: var(--font-color-header); line-height: var(--line-height-heading);">Heading Two</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">H3 — 24px / 700</span>
+        <span style="font-size: var(--font-size-h3); font-weight: var(--font-weight-bold); color: var(--font-color-header); line-height: var(--line-height-heading);">Heading Three</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">H4 — 20px / 700</span>
+        <span style="font-size: var(--font-size-h4); font-weight: var(--font-weight-bold); color: var(--font-color-header); line-height: var(--line-height-heading);">Heading Four</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">H5 — 16px / 700</span>
+        <span style="font-size: var(--font-size-h5); font-weight: var(--font-weight-bold); color: var(--font-color-header); line-height: var(--line-height-heading);">Heading Five</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">H6 — 14px / 700</span>
+        <span style="font-size: var(--font-size-h6); font-weight: var(--font-weight-bold); color: var(--font-color-header); line-height: var(--line-height-heading);">Heading Six</span>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color-default); margin: var(--spacing-md) 0;">
+
+      <div class="sg-type-sample">
+        <span class="sg-type-label">Body — 16px / 400</span>
+        <span style="font-size: var(--font-size-default); font-weight: var(--font-weight-normal); color: var(--font-color-default);">The quick brown fox jumps over the lazy dog. Regular body text for paragraphs, descriptions, and general content.</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">Body — 16px / 500</span>
+        <span style="font-size: var(--font-size-default); font-weight: var(--font-weight-semibold); color: var(--font-color-default);">Semi-bold body text for labels and emphasis.</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">Body — 16px / 700</span>
+        <span style="font-size: var(--font-size-default); font-weight: var(--font-weight-bold); color: var(--font-color-default);">Bold body text for strong emphasis and key data.</span>
+      </div>
+      <div class="sg-type-sample">
+        <span class="sg-type-label">Detail — 14px / 400</span>
+        <span style="font-size: var(--font-size-h6); font-weight: var(--font-weight-normal); color: var(--font-color-detail);">Secondary detail text for timestamps, metadata, and helper content.</span>
+      </div>
+
+      <div class="sg-subsection" style="margin-top: var(--spacing-md);">
+        <h3 class="sg-subsection-title">Font Weights</h3>
+        <table class="sg-var-table">
+          <thead><tr><th>Variable</th><th>Value</th><th>Sample</th></tr></thead>
+          <tbody>
+            <tr><td>--font-weight-light</td><td>300</td><td style="font-weight: 300;">Light weight text</td></tr>
+            <tr><td>--font-weight-normal</td><td>400</td><td style="font-weight: 400;">Normal weight text</td></tr>
+            <tr><td>--font-weight-semibold</td><td>500</td><td style="font-weight: 500;">Semibold weight text</td></tr>
+            <tr><td>--font-weight-bold</td><td>700</td><td style="font-weight: 700;">Bold weight text</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== SPACING ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Spacing</h2>
+      <p class="sg-section-subtitle">8px base grid. All spacing tokens are multiples of the base unit.</p>
+
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-smallest: 2px</span>
+        <div class="sg-spacing-block" style="width: 2px;"></div>
+      </div>
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-xxs: 4px</span>
+        <div class="sg-spacing-block" style="width: 4px;"></div>
+      </div>
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-xs: 8px</span>
+        <div class="sg-spacing-block" style="width: 8px;"></div>
+      </div>
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-sm: 16px</span>
+        <div class="sg-spacing-block" style="width: 16px;"></div>
+      </div>
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-md: 24px</span>
+        <div class="sg-spacing-block" style="width: 24px;"></div>
+      </div>
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-lg: 32px</span>
+        <div class="sg-spacing-block" style="width: 32px;"></div>
+      </div>
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-xl: 40px</span>
+        <div class="sg-spacing-block" style="width: 40px;"></div>
+      </div>
+      <div class="sg-spacing-row">
+        <span class="sg-spacing-label">--spacing-xxl: 48px</span>
+        <div class="sg-spacing-block" style="width: 48px;"></div>
+      </div>
+
+      <div class="sg-subsection" style="margin-top: var(--spacing-md);">
+        <h3 class="sg-subsection-title">Layout Spacing</h3>
+        <table class="sg-var-table">
+          <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>--layout-spacing-desktop</td><td>24px</td></tr>
+            <tr><td>--layout-spacing-tablet</td><td>24px</td></tr>
+            <tr><td>--layout-spacing-mobile</td><td>16px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== BORDERS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Borders</h2>
+      <p class="sg-section-subtitle">Border radius and width tokens.</p>
+
+      <div class="sg-border-demos">
+        <div class="sg-border-demo" style="border-radius: var(--border-radius-small);">2px<br>small</div>
+        <div class="sg-border-demo" style="border-radius: var(--border-radius-default);">4px<br>default</div>
+        <div class="sg-border-demo" style="border-radius: var(--border-radius-large);">8px<br>large</div>
+        <div class="sg-border-demo" style="border-radius: var(--border-radius-circle); width: 100px; height: 100px;">50%<br>circle</div>
+      </div>
+
+      <table class="sg-var-table" style="margin-top: var(--spacing-md);">
+        <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>--border-radius-small</td><td>2px</td></tr>
+          <tr><td>--border-radius-default</td><td>4px</td></tr>
+          <tr><td>--border-radius-large</td><td>8px</td></tr>
+          <tr><td>--border-radius-circle</td><td>50%</td></tr>
+          <tr><td>--border-width-default</td><td>1px</td></tr>
+          <tr><td>--border-width-thick</td><td>2px</td></tr>
+          <tr><td>--border-color-default</td><td>#ced0d3</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==================== BUTTONS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Buttons</h2>
+      <p class="sg-section-subtitle">Primary, secondary, danger, tertiary, warning, and success button styles using brand tokens.</p>
+
+      <div class="sg-button-row">
+        <button class="sg-btn sg-btn-primary">Primary Button</button>
+        <button class="sg-btn sg-btn-secondary">Secondary Button</button>
+        <button class="sg-btn sg-btn-danger">Danger Button</button>
+        <button class="sg-btn sg-btn-tertiary">Tertiary Button</button>
+        <button class="sg-btn sg-btn-warning">Warning Button</button>
+        <button class="sg-btn sg-btn-success">Success Button</button>
+      </div>
+
+      <table class="sg-var-table" style="margin-top: var(--spacing-md);">
+        <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>--btn-primary-bg</td><td>var(--brand-primary) / #ed1c24</td></tr>
+          <tr><td>--btn-primary-bg-hover</td><td>var(--brand-primary-dark) / #a01018</td></tr>
+          <tr><td>--btn-primary-color</td><td>#ffffff</td></tr>
+          <tr><td>--btn-secondary-bg</td><td>transparent</td></tr>
+          <tr><td>--btn-secondary-color</td><td>var(--font-color-default) / #2b2b2b</td></tr>
+          <tr><td>--btn-secondary-border-color</td><td>var(--gray-primary-dark) / #656565</td></tr>
+          <tr><td>--btn-danger-bg</td><td>var(--brand-danger) / #e33f4e</td></tr>
+          <tr><td>--btn-danger-bg-hover</td><td>var(--brand-danger-dark) / #d12d44</td></tr>
+          <tr><td>--btn-tertiary-bg</td><td>transparent (link style)</td></tr>
+          <tr><td>--btn-tertiary-color</td><td>var(--brand-tertiary) / #577aa0</td></tr>
+          <tr><td>--btn-tertiary-color-hover</td><td>var(--brand-tertiary-dark) / #446285 + underline</td></tr>
+          <tr><td>--btn-warning-bg</td><td>var(--brand-warning) / #eca51c</td></tr>
+          <tr><td>--btn-warning-bg-hover</td><td>var(--brand-warning-dark) / #d07c0f</td></tr>
+          <tr><td>--btn-warning-color</td><td>#ffffff</td></tr>
+          <tr><td>--btn-warning-border-color</td><td>var(--brand-warning) / #eca51c</td></tr>
+          <tr><td>--btn-success-bg</td><td>var(--brand-success) / #4a8587</td></tr>
+          <tr><td>--btn-success-bg-hover</td><td>var(--brand-success-dark) / #3a6c6e</td></tr>
+          <tr><td>--btn-success-color</td><td>#ffffff</td></tr>
+          <tr><td>--btn-success-border-color</td><td>var(--brand-success) / #4a8587</td></tr>
+          <tr><td>--btn-padding-y / --btn-padding-x</td><td>8px / 16px</td></tr>
+          <tr><td>--btn-border-radius</td><td>var(--border-radius-default) / 4px</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==================== FORM INPUTS ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Form Inputs</h2>
+      <p class="sg-section-subtitle">Text inputs, selects, and checkbox styling tokens.</p>
+
+      <div class="sg-input-group">
+        <div class="sg-input-field">
+          <label>Text Input</label>
+          <input type="text" placeholder="Placeholder text...">
+        </div>
+        <div class="sg-input-field">
+          <label>Select</label>
+          <select>
+            <option>Option One</option>
+            <option>Option Two</option>
+            <option>Option Three</option>
+          </select>
+        </div>
+        <div class="sg-input-field">
+          <label>Disabled Input</label>
+          <input type="text" placeholder="Disabled" disabled>
+        </div>
+      </div>
+
+      <div class="sg-checkbox-row">
+        <input type="checkbox" id="check1" checked>
+        <label for="check1">Checked checkbox</label>
+        <input type="checkbox" id="check2" style="margin-left: var(--spacing-sm);">
+        <label for="check2">Unchecked checkbox</label>
+      </div>
+
+      <table class="sg-var-table" style="margin-top: var(--spacing-md);">
+        <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>--input-bg</td><td>#ffffff</td></tr>
+          <tr><td>--input-color</td><td>var(--font-color-default) / #3d4350</td></tr>
+          <tr><td>--input-border-color</td><td>var(--border-color-default) / #ced0d3</td></tr>
+          <tr><td>--input-focus-border-color</td><td>var(--brand-secondary) / #37a0af</td></tr>
+          <tr><td>--input-padding-y / --input-padding-x</td><td>8px / 12px</td></tr>
+          <tr><td>--input-placeholder-color</td><td>var(--font-color-detail) / #6c717e</td></tr>
+          <tr><td>--input-disabled-bg</td><td>var(--bg-color-secondary) / #f5f6f6</td></tr>
+          <tr><td>--input-label-color</td><td>var(--font-color-header) / #0a1325</td></tr>
+          <tr><td>--input-label-weight</td><td>500 (semibold)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==================== ACCESSIBILITY ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Accessibility Notes</h2>
+      <p class="sg-section-subtitle">Contrast and usability considerations for the Yazaki palette.</p>
+
+      <div class="sg-callout">
+        <div class="sg-callout-title">Brand Primary Contrast Warning</div>
+        <p>
+          The brand primary color <code>#ed1c24</code> on a white background has a contrast ratio of approximately <strong>4.0:1</strong>, which <strong>fails WCAG AA</strong> for normal-sized text (requires 4.5:1).
+        </p>
+        <p style="margin-top: var(--spacing-xs);">
+          <strong>Recommendations:</strong>
+        </p>
+        <ul style="margin: var(--spacing-xs) 0 0 var(--spacing-md); font-size: 0.875rem;">
+          <li>Use the darker variant <code>#a01018</code> (--brand-primary-dark) for text on white backgrounds.</li>
+          <li>Use white text on <code>#ed1c24</code> backgrounds (passes AA at 4.0:1 for large text / bold 14px+).</li>
+          <li>Reserve <code>#ed1c24</code> for large headings, icons, and decorative elements where AA Large applies.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top: var(--spacing-md);">
+        <h3 class="sg-subsection-title">Contrast Samples</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
+          <div style="background: var(--brand-primary); color: #fff; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-default); font-weight: 700;">
+            White on Primary — AA Large
+          </div>
+          <div style="background: var(--brand-primary-dark); color: #fff; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-default); font-weight: 700;">
+            White on Primary Dark — AA
+          </div>
+          <div style="background: #fff; color: var(--brand-primary-dark); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-default); font-weight: 700; border: 1px solid var(--border-color-default);">
+            Primary Dark on White — AA
+          </div>
+          <div style="background: var(--brand-secondary); color: #fff; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-default); font-weight: 700;">
+            White on Secondary — AA
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VARIABLE REFERENCE ==================== -->
+    <section class="sg-section">
+      <h2 class="sg-section-title">Variable Quick Reference</h2>
+      <p class="sg-section-subtitle">Complete mapping of Yazaki design tokens to CSS custom property names.</p>
+
+      <table class="sg-var-table">
+        <thead><tr><th>Variable</th><th>Yazaki Value</th><th>Original Default</th></tr></thead>
+        <tbody>
+          <tr><td>--brand-primary</td><td>#ed1c24</td><td>#264ae5</td></tr>
+          <tr><td>--brand-secondary</td><td>#37a0af</td><td>#7d3389</td></tr>
+          <tr><td>--brand-tertiary</td><td>#577aa0</td><td>#e7e7e9</td></tr>
+          <tr><td>--brand-success</td><td>#4a8587</td><td>#007167</td></tr>
+          <tr><td>--brand-warning</td><td>#eca51c</td><td>#FFA400</td></tr>
+          <tr><td>--brand-danger</td><td>#e33f4e</td><td>#E33F4E</td></tr>
+          <tr><td>--gray-primary</td><td>#7c7c7c</td><td>#7c7c7c</td></tr>
+          <tr><td>--font-color-header</td><td>#0a1325</td><td>#0a1325</td></tr>
+          <tr><td>--font-color-default</td><td>#3d4350</td><td>#3d4350</td></tr>
+          <tr><td>--font-color-detail</td><td>#6c717e</td><td>#6c717e</td></tr>
+          <tr><td>--bg-color</td><td>#f8f8f8</td><td>—</td></tr>
+          <tr><td>--bg-color-secondary</td><td>#f5f6f6</td><td>—</td></tr>
+          <tr><td>--border-color-default</td><td>#ced0d3</td><td>—</td></tr>
+          <tr><td>--font-size-h1</td><td>2.25rem (36px)</td><td>2rem (32px)</td></tr>
+          <tr><td>--font-size-h6</td><td>0.875rem (14px)</td><td>0.75rem (12px)</td></tr>
+          <tr><td>--spacing-unit</td><td>8px</td><td>14px</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <footer class="sg-footer">
+    Yazaki Design System Style Guide &mdash; Generated from Figma design tokens &mdash; For use with Mendix Atlas UI
+  </footer>
+
+</body>
+</html>

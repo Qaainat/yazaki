@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yazaki Design System — Widget Prototypes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    /* ========================================================
+       Yazaki Design System — CSS Custom Properties
+       Base tokens from yazaki-style-guide.html
+       ======================================================== */
+
+    :root {
+      /* Brand Colors */
+      --brand-primary: #ed1c24;
+      --brand-primary-lighter: #fff0f0;
+      --brand-primary-light: #f87578;
+      --brand-primary-dark: #a01018;
+      --brand-primary-darker: #a01018;
+
+      --brand-secondary: #37a0af;
+      --brand-secondary-lighter: #e1f1f3;
+      --brand-secondary-light: #9bd0d7;
+      --brand-secondary-dark: #2d8a97;
+      --brand-secondary-darker: #216069;
+
+      --brand-tertiary: #577aa0;
+      --brand-tertiary-lighter: #eaeef4;
+      --brand-tertiary-light: #a7bbd2;
+      --brand-tertiary-dark: #446285;
+      --brand-tertiary-darker: #31445b;
+
+      /* Neutral / Gray */
+      --gray-primary: #7c7c7c;
+      --gray-primary-lighter: #dcdcdc;
+      --gray-primary-light: #bdbdbd;
+      --gray-primary-dark: #656565;
+      --gray-primary-darker: #464646;
+
+      /* Status Colors */
+      --brand-success: #4a8587;
+      --brand-success-lighter: #dcf0f0;
+      --brand-success-light: #94c6c7;
+      --brand-success-dark: #3a6c6e;
+
+      --brand-warning: #eca51c;
+      --brand-warning-lighter: #fff3e0;
+      --brand-warning-light: #f5d454;
+      --brand-warning-dark: #d07c0f;
+
+      --brand-danger: #e33f4e;
+      --brand-danger-lighter: #fde6e6;
+      --brand-danger-light: #f6abae;
+      --brand-danger-dark: #d12d44;
+
+      /* Type Colors */
+      --font-color-header: #0a1325;
+      --font-color-default: #3d4350;
+      --font-color-detail: #6c717e;
+
+      /* Element Colors */
+      --bg-color: #f8f8f8;
+      --bg-color-secondary: #f5f6f6;
+      --border-color-default: #ced0d3;
+      --color-white: #ffffff;
+
+      /* Brand Gradient */
+      --brand-gradient: linear-gradient(90deg, #a01018 0%, #ed1c24 30%, #37a0af 70%, #2d8a97 100%);
+
+      /* Typography */
+      --font-family-base: "Roboto", sans-serif;
+      --font-size-h1: 2.25rem;
+      --font-size-h2: 1.75rem;
+      --font-size-h3: 1.5rem;
+      --font-size-h4: 1.25rem;
+      --font-size-h5: 1rem;
+      --font-size-h6: 0.875rem;
+      --font-size-default: 14px;
+      --font-weight-light: 300;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 600;
+      --font-weight-bold: 700;
+      --line-height-heading: 1.2;
+      --line-height-body: 1.5;
+
+      /* Spacing (8px grid) */
+      --spacing-unit: 8px;
+      --spacing-smallest: 2px;
+      --spacing-xxs: 4px;
+      --spacing-xs: 8px;
+      --spacing-sm: 16px;
+      --spacing-md: 24px;
+      --spacing-lg: 32px;
+      --spacing-xl: 40px;
+      --spacing-xxl: 48px;
+
+      /* Borders */
+      --border-radius-default: 4px;
+      --border-radius-small: 2px;
+      --border-radius-large: 8px;
+      --border-radius-circle: 50%;
+      --border-width-default: 1px;
+      --border-width-thick: 2px;
+
+      /* Shadows */
+      --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.12);
+      --shadow-large: 0 4px 16px rgba(0, 0, 0, 0.16);
+
+      /* ------------------------------------------------
+         Widget-Specific Tokens (mapped to SCSS structure)
+         ------------------------------------------------ */
+
+      /* Buttons */
+      --btn-font-size: var(--font-size-default);
+      --btn-font-weight: var(--font-weight-bold);
+      --btn-border-radius: var(--border-radius-default);
+      --btn-padding-y: 8px;
+      --btn-padding-x: 16px;
+      --btn-border-width: 1px;
+
+      --btn-primary-bg: var(--brand-primary);
+      --btn-primary-bg-hover: var(--brand-primary-dark);
+      --btn-primary-color: #ffffff;
+      --btn-primary-border-color: var(--brand-primary);
+
+      --btn-secondary-bg: transparent;
+      --btn-secondary-bg-hover: var(--brand-secondary-lighter);
+      --btn-secondary-color: var(--brand-secondary);
+      --btn-secondary-border-color: var(--brand-secondary);
+
+      --btn-danger-bg: var(--brand-danger);
+      --btn-danger-bg-hover: var(--brand-danger-dark);
+      --btn-danger-color: #ffffff;
+      --btn-danger-border-color: var(--brand-danger);
+
+      --btn-default-bg: #ffffff;
+      --btn-default-color: var(--font-color-header);
+      --btn-default-border-color: var(--border-color-default);
+      --btn-default-bg-hover: var(--bg-color-secondary);
+
+      --btn-tertiary-color: var(--brand-tertiary);
+
+      /* Tab Containers */
+      --tabs-color: var(--font-color-default);
+      --tabs-border-color: var(--border-color-default);
+      --tabs-active-color: var(--brand-primary);
+      --tabs-active-border-color: var(--brand-primary);
+      --tabs-active-border-width: 2px;
+      --tabs-bg: transparent;
+      --tabs-bg-hover: transparent;
+
+      /* Navigation Sidebar */
+      --navsidebar-width-closed: 52px;
+      --navigation-sidebar-bg: #ffffff;
+      --navigation-sidebar-color: var(--font-color-detail);
+      --navigation-sidebar-bg-hover: var(--bg-color-secondary);
+      --navigation-sidebar-color-hover: var(--font-color-default);
+      --navigation-sidebar-bg-active: var(--brand-primary);
+      --navigation-sidebar-color-active: #ffffff;
+      --navigation-border-color: var(--border-color-default);
+      --navigation-glyph-size: 20px;
+      --sidebar-icon-width: 52px;
+      --sidebar-icon-height: 52px;
+
+      /* Accordion */
+      --accordion-bg: transparent;
+      --accordion-header-default-bg: transparent;
+      --accordion-default-border-color: var(--border-color-default);
+      --accordion-header-default-color: var(--font-color-default);
+      --accordion-header-default-color-hover: var(--brand-primary);
+      --accordion-header-default-bg-hover: var(--bg-color-secondary);
+      --accordion-padding-content-default: 16px;
+
+      /* Datagrid */
+      --grid-padding-top: 16px;
+      --grid-padding-right: 16px;
+      --grid-padding-bottom: 16px;
+      --grid-padding-left: 16px;
+      --grid-bg: var(--bg-color);
+      --grid-border-color: var(--border-color-default);
+      --grid-bg-header: transparent;
+      --grid-bg-hover: var(--bg-color-secondary);
+      --grid-bg-selected: var(--brand-secondary-lighter);
+      --grid-paging-color: var(--gray-primary-light);
+      --grid-paging-color-hover: var(--brand-primary);
+
+      /* Form Inputs */
+      --form-input-height: auto;
+      --form-input-padding-y: 10px;
+      --form-input-padding-x: 12px;
+      --form-input-color: var(--font-color-default);
+      --form-input-placeholder-color: var(--font-color-detail);
+      --form-input-font-size: var(--font-size-default);
+      --form-input-border-color: var(--border-color-default);
+      --form-input-border-radius: var(--border-radius-default);
+      --form-input-bg: #ffffff;
+      --form-input-border-focus-color: var(--brand-secondary);
+      --form-label-weight: var(--font-weight-semibold);
+      --form-label-size: var(--font-size-default);
+      --form-label-gutter: 8px;
+      --form-group-margin-bottom: 16px;
+    }
+
+    /* ========================================================
+       Reset & Base
+       ======================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      line-height: var(--line-height-body);
+      background: var(--bg-color);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========================================================
+       Page Layout
+       ======================================================== */
+    .page-header {
+      background: #ffffff;
+      border-bottom: 3px solid transparent;
+      border-image: var(--brand-gradient) 1;
+      padding: var(--spacing-sm) var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .page-header img {
+      height: 32px;
+    }
+
+    .page-header h1 {
+      font-size: var(--font-size-h4);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+    }
+
+    .jump-nav {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color-default);
+      padding: var(--spacing-xs) var(--spacing-md);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+    }
+
+    .jump-nav a {
+      color: var(--brand-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: var(--font-weight-medium);
+      padding: var(--spacing-xxs) var(--spacing-xs);
+      border-radius: var(--border-radius-default);
+      transition: background 0.15s;
+    }
+
+    .jump-nav a:hover {
+      background: var(--brand-secondary-lighter);
+    }
+
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--spacing-md);
+    }
+
+    section {
+      background: #ffffff;
+      border-radius: var(--border-radius-large);
+      box-shadow: var(--shadow-small);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+
+    section h2 {
+      font-size: var(--font-size-h4);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-xxs);
+    }
+
+    .section-desc {
+      color: var(--font-color-detail);
+      font-size: 13px;
+      margin-bottom: var(--spacing-sm);
+      padding-bottom: var(--spacing-sm);
+      border-bottom: 1px solid var(--border-color-default);
+    }
+
+    .demo-label {
+      font-size: 11px;
+      font-weight: var(--font-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--font-color-detail);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .demo-row {
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .var-ref {
+      display: inline-block;
+      background: var(--bg-color-secondary);
+      font-family: "Roboto Mono", monospace;
+      font-size: 11px;
+      color: var(--brand-tertiary-dark);
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-left: 4px;
+    }
+
+    /* ========================================================
+       1. TAB CONTAINERS
+       ======================================================== */
+    .tabs-demo {
+      background: var(--bg-color);
+      border-radius: var(--border-radius-default);
+      padding: var(--spacing-sm);
+    }
+
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid var(--tabs-border-color);
+      gap: 0;
+    }
+
+    .tab-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-medium);
+      color: var(--tabs-color);
+      background: var(--tabs-bg);
+      border: none;
+      border-bottom: var(--tabs-active-border-width) solid transparent;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      margin-bottom: -1px;
+    }
+
+    .tab-item:hover {
+      color: var(--tabs-active-color);
+    }
+
+    .tab-item.active {
+      color: var(--tabs-active-color);
+      border-bottom-color: var(--tabs-active-border-color);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .tab-item .tab-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: var(--font-weight-semibold);
+      background: var(--bg-color-secondary);
+      color: var(--font-color-detail);
+    }
+
+    .tab-item.active .tab-badge,
+    .tab-item:hover .tab-badge {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+    }
+
+    .tab-content {
+      padding: var(--spacing-sm);
+      color: var(--font-color-detail);
+      font-size: 13px;
+    }
+
+    /* Numbered tabs (wizard-style) */
+    .tab-numbered {
+      display: flex;
+      background: #ffffff;
+      border-bottom: 1px solid var(--tabs-border-color);
+      gap: 0;
+      padding: 0;
+    }
+
+    .tab-numbered .tab-item {
+      gap: 8px;
+      font-size: 13px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    .tab-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: var(--border-radius-default);
+      font-size: 12px;
+      font-weight: var(--font-weight-bold);
+      background: var(--border-color-default);
+      color: var(--font-color-detail);
+    }
+
+    .tab-item.active .tab-step-num {
+      background: var(--brand-primary);
+      color: #ffffff;
+    }
+
+    .tab-item.visited .tab-step-num {
+      background: var(--gray-primary-dark);
+      color: #ffffff;
+    }
+
+    .tab-numbered.teal .tab-item.active { color: var(--brand-secondary); border-bottom-color: var(--brand-secondary); }
+    .tab-numbered.teal .tab-item:hover { color: var(--brand-secondary); }
+    .tab-numbered.teal .tab-item.active .tab-step-num { background: var(--brand-secondary); }
+
+    /* ========================================================
+       2. NAVIGATION TREE (Sidebar)
+       ======================================================== */
+    .nav-demo {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+
+    .nav-sidebar {
+      width: var(--navsidebar-width-closed);
+      background: var(--navigation-sidebar-bg);
+      border: 1px solid var(--navigation-border-color);
+      border-radius: var(--border-radius-default);
+      display: flex;
+      flex-direction: column;
+      padding: var(--spacing-xxs) 0;
+      min-height: 420px;
+    }
+
+    .nav-sidebar-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--sidebar-icon-width);
+      height: var(--sidebar-icon-height);
+      color: var(--navigation-sidebar-color);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border-radius: 0;
+      position: relative;
+    }
+
+    .nav-sidebar-item:hover {
+      background: var(--brand-primary-lighter);
+      color: var(--navigation-sidebar-color-hover);
+      border-left: 3px solid var(--brand-primary);
+    }
+
+    .nav-sidebar-item.active {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      border-left: 3px solid var(--brand-primary);
+    }
+
+    .nav-sidebar-item .material-icons-outlined {
+      font-size: var(--navigation-glyph-size);
+    }
+
+    .nav-sidebar-spacer {
+      flex: 1;
+    }
+
+    /* Expanded sidebar demo */
+    .nav-sidebar-expanded {
+      width: 240px;
+      background: var(--navigation-sidebar-bg);
+      border: 1px solid var(--navigation-border-color);
+      border-radius: var(--border-radius-default);
+      display: flex;
+      flex-direction: column;
+      padding: var(--spacing-xs) 0;
+      min-height: 420px;
+    }
+
+    .nav-sidebar-expanded .nav-exp-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      color: var(--navigation-sidebar-color);
+      cursor: pointer;
+      font-size: var(--font-size-default);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-sidebar-expanded .nav-exp-item:hover {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(var(--spacing-sm) - 3px);
+    }
+
+    .nav-sidebar-expanded .nav-exp-item.active {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      font-weight: var(--font-weight-semibold);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(var(--spacing-sm) - 3px);
+    }
+
+    .nav-sidebar-expanded .nav-exp-item.active .material-icons-outlined {
+      color: var(--brand-primary);
+    }
+
+    .nav-sub-items {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-sub-item {
+      display: flex;
+      align-items: center;
+      padding: 6px var(--spacing-sm) 6px 44px;
+      color: var(--font-color-detail);
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-sub-item:hover {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(44px - 3px);
+    }
+
+    .nav-sub-item.active {
+      color: var(--brand-primary);
+      font-weight: var(--font-weight-medium);
+    }
+
+    .nav-exp-item .nav-chevron {
+      margin-left: auto;
+      font-size: 18px;
+      color: var(--font-color-detail);
+      transition: transform 0.2s;
+    }
+
+    .nav-exp-item.expanded .nav-chevron {
+      transform: rotate(180deg);
+    }
+
+    .nav-sidebar-expanded .nav-exp-item .material-icons-outlined {
+      font-size: var(--navigation-glyph-size);
+    }
+
+    .nav-sidebar-expanded .nav-exp-spacer {
+      flex: 1;
+    }
+
+    .nav-sidebar-expanded .nav-section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--font-color-detail);
+      padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-xxs);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    /* ========================================================
+       3. ACCORDION
+       ======================================================== */
+    .accordion {
+      border-radius: var(--border-radius-default);
+      overflow: hidden;
+    }
+
+    .accordion-panel {
+      border: none;
+      border-bottom: 1px solid var(--border-color-default);
+      background: #ffffff;
+    }
+
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: #ffffff;
+      color: var(--font-color-header);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-h6);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      background: var(--brand-secondary-lighter);
+    }
+
+    .accordion-header .material-icons-outlined {
+      font-size: 20px;
+      transition: transform 0.2s;
+      color: var(--font-color-detail);
+    }
+
+    .accordion-panel.open .accordion-header {
+      background: #ffffff;
+    }
+
+    .accordion-panel.open .accordion-header .material-icons-outlined {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      display: none;
+      margin: 0 var(--spacing-md) var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: var(--bg-color-secondary);
+      border: 1px dashed var(--border-color-default);
+      position: relative;
+    }
+
+    .accordion-panel.open .accordion-body {
+      display: block;
+    }
+
+    .accordion-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-sm) var(--spacing-lg);
+    }
+    .accordion-detail-label {
+      font-size: 12px;
+      color: var(--font-color-detail);
+      margin-bottom: 2px;
+    }
+    .accordion-detail-value {
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      font-weight: var(--font-weight-medium);
+    }
+
+    /* ========================================================
+       4. DATAGRID
+       ======================================================== */
+    .datagrid-wrapper {
+      border: 1px solid var(--grid-border-color);
+      border-radius: 2px;
+      overflow: hidden;
+      background: var(--grid-bg);
+    }
+
+    .datagrid-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-xs) var(--grid-padding-right);
+      background: #ffffff;
+      border-bottom: 1px solid var(--grid-border-color);
+      gap: var(--spacing-xs);
+    }
+
+    .datagrid-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+
+    .datagrid-search {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--form-input-border-color);
+      border-radius: var(--form-input-border-radius);
+      padding: 6px 10px;
+      background: var(--form-input-bg);
+      min-width: 200px;
+    }
+
+    .datagrid-search .material-icons-outlined {
+      font-size: 18px;
+      color: var(--font-color-detail);
+    }
+
+    .datagrid-search input {
+      border: none;
+      outline: none;
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      color: var(--form-input-color);
+      background: transparent;
+      width: 100%;
+    }
+
+    .datagrid-search input::placeholder {
+      color: var(--form-input-placeholder-color);
+    }
+
+    .datagrid-filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      background: #ffffff;
+      color: var(--font-color-default);
+      font-size: var(--font-size-default);
+      font-family: var(--font-family-base);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .datagrid-filter-btn .material-icons-outlined {
+      font-size: 16px;
+      color: var(--brand-primary);
+    }
+
+    .datagrid-filter-btn:hover {
+      background: var(--bg-color-secondary);
+    }
+
+    .datagrid-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .datagrid-table thead th {
+      padding: var(--spacing-sm) var(--grid-padding-right);
+      text-align: left;
+      font-family: 'Segoe UI', var(--font-family-base);
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header, #0a1325);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      background: var(--bg-color-secondary);
+      border-bottom: 3px solid var(--brand-primary);
+      white-space: nowrap;
+    }
+
+    .datagrid-table .datagrid-header-row th {
+      padding: var(--spacing-sm) var(--grid-padding-right);
+      font-family: 'Segoe UI', var(--font-family-base);
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header, #0a1325);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      text-align: left;
+      background: var(--bg-color-secondary);
+      border-bottom: 3px solid var(--brand-primary);
+      white-space: nowrap;
+    }
+
+    .datagrid-table .datagrid-header-row th .sort-icon,
+    .datagrid-table thead th .sort-icon {
+      font-size: 14px;
+      vertical-align: middle;
+      margin-left: 2px;
+      color: var(--gray-primary-light);
+    }
+    .datagrid-table .datagrid-filter-row td {
+      height: 32px;
+      vertical-align: middle;
+      padding: var(--spacing-sm) var(--grid-padding-right);
+      border-bottom: 1px solid var(--grid-border-color);
+    }
+    .datagrid-table tbody td {
+      padding: var(--spacing-xs) var(--grid-padding-right);
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      border-bottom: 1px solid var(--grid-border-color);
+      white-space: nowrap;
+    }
+
+    .datagrid-table tbody tr {
+      background: #ffffff;
+      transition: background 0.1s;
+    }
+
+    .datagrid-table tbody tr:hover {
+      background: var(--brand-secondary-lighter);
+      box-shadow: inset 3px 0 0 var(--brand-secondary);
+    }
+
+    .datagrid-table tbody tr.selected {
+      background: var(--grid-bg-selected);
+      box-shadow: inset 3px 0 0 var(--brand-secondary);
+    }
+
+    .row-action-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 0;
+      color: var(--font-color-detail);
+      font-size: 16px;
+      line-height: 1;
+    }
+    .row-action-btn:hover {
+      color: var(--font-color-default);
+    }
+
+    .row-action-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .popup-menu {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      z-index: 10;
+      background: #ffffff;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      min-width: 180px;
+      padding: 4px 0;
+      display: none;
+    }
+    .popup-menu.visible {
+      display: block;
+    }
+    .popup-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .popup-menu-item:hover {
+      background: var(--bg-color-secondary);
+    }
+    .popup-menu-item .material-icons-outlined {
+      font-size: 18px;
+      color: var(--font-color-detail);
+    }
+    .popup-menu-item.danger {
+      color: var(--brand-primary);
+    }
+    .popup-menu-item.danger .material-icons-outlined {
+      color: var(--brand-primary);
+    }
+
+    .datagrid-scroll-container {
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .datagrid-scroll-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .datagrid-scroll-container::-webkit-scrollbar-track {
+      background: var(--bg-color-secondary);
+      border-radius: 3px;
+    }
+
+    .datagrid-scroll-container::-webkit-scrollbar-thumb {
+      background: var(--gray-primary-light);
+      border-radius: 3px;
+    }
+
+    .datagrid-scroll-container::-webkit-scrollbar-thumb:hover {
+      background: var(--gray-primary);
+    }
+
+    .datagrid-filter-row td {
+      padding: 4px var(--grid-padding-right);
+      background: #ffffff;
+    }
+
+    .datagrid-col-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      background: #ffffff;
+      color: var(--font-color-detail);
+      font-size: 12px;
+      font-family: var(--font-family-base);
+      cursor: pointer;
+    }
+
+    .datagrid-col-filter .material-icons-outlined {
+      font-size: 14px;
+    }
+
+    .filter-text-input {
+      padding: 8px;
+      border: 1px solid var(--border-color-default);
+      border-left: none;
+      border-radius: 0 var(--border-radius-default) var(--border-radius-default) 0;
+      font-size: 12px;
+      font-family: var(--font-family-base);
+      width: 80px;
+      outline: none;
+      background: #f8f8f8;
+      height: 32px;
+      box-sizing: border-box;
+    }
+    .filter-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      color: var(--brand-primary);
+      border: 1px solid var(--border-color-default);
+      border-right: none;
+      background: #f8f8f8;
+      box-sizing: border-box;
+    }
+    .filter-label.red { background: #f8f8f8; color: var(--brand-primary); }
+    .filter-col-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .status-badge.created { background: var(--brand-secondary-lighter); color: var(--brand-secondary-dark); }
+    .status-badge.open { background: var(--brand-success-lighter); color: var(--brand-success-dark); }
+    .status-badge.awaiting-quote { background: var(--brand-warning-lighter); color: var(--brand-warning-dark); }
+    .status-badge.received-by-lab { background: var(--brand-primary-lighter); color: var(--brand-primary-dark); }
+    .status-badge.test-in-progress { background: var(--brand-tertiary-lighter); color: var(--brand-tertiary-dark); }
+    .status-badge.waiting-deliverables { background: var(--brand-danger-lighter); color: var(--brand-danger-dark); }
+    .status-badge.closed { background: var(--bg-color-secondary); color: var(--font-color-detail); }
+
+    /* ========================================================
+       5. BUTTON TOGGLE
+       ======================================================== */
+    .btn-toggle-group {
+      display: inline-flex;
+      gap: 0;
+      border-radius: var(--border-radius-default);
+      overflow: hidden;
+      border: 1px solid var(--border-color-default);
+    }
+
+    .btn-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--btn-padding-y) var(--btn-padding-x);
+      border: none;
+      background: transparent;
+      color: var(--font-color-detail);
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .btn-toggle + .btn-toggle {
+      border-left: 1px solid var(--border-color-default);
+    }
+
+    .btn-toggle:hover {
+      color: var(--brand-primary);
+      background: var(--brand-primary-lighter);
+    }
+
+    .btn-toggle.active {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      box-shadow: inset 0 -2px 0 0 var(--brand-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .btn-toggle.active .material-icons-outlined {
+      color: var(--brand-primary);
+    }
+
+    .btn-toggle .material-icons-outlined {
+      font-size: 16px;
+      color: inherit;
+    }
+
+    /* ========================================================
+       CARDS
+       ======================================================== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--spacing-md);
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      padding: var(--spacing-md);
+      transition: box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .card.card-request {
+      border-top: 3px solid var(--brand-primary);
+    }
+    .card.card-rfq {
+      border-top: 3px solid var(--brand-secondary);
+    }
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-sm);
+    }
+    .card-header h4 {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+    }
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card-field {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    .card-field-label {
+      color: var(--font-color-detail);
+    }
+    .card-field-value {
+      color: var(--font-color-default);
+      font-weight: var(--font-weight-medium);
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--spacing-sm);
+      padding-top: var(--spacing-sm);
+      border-top: 1px solid var(--border-color-default);
+      font-size: 12px;
+      color: var(--font-color-detail);
+    }
+
+    /* ========================================================
+       6. FORM INPUTS
+       ======================================================== */
+    .form-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+    }
+
+    .form-group {
+      margin-bottom: var(--form-group-margin-bottom);
+    }
+
+    .form-label {
+      display: block;
+      font-size: var(--form-label-size);
+      font-weight: var(--form-label-weight);
+      color: var(--font-color-header);
+      margin-bottom: var(--form-label-gutter);
+    }
+
+    .form-label .required {
+      color: var(--brand-danger);
+      margin-left: 2px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--form-input-padding-y) var(--form-input-padding-x);
+      font-family: var(--font-family-base);
+      font-size: var(--form-input-font-size);
+      color: var(--form-input-color);
+      background: var(--form-input-bg);
+      border: var(--border-width-default) solid var(--form-input-border-color);
+      border-radius: var(--form-input-border-radius);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      line-height: var(--line-height-body);
+    }
+
+    .form-input::placeholder {
+      color: var(--form-input-placeholder-color);
+    }
+
+    .form-input:focus {
+      border-color: var(--form-input-border-focus-color);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+    }
+
+    .form-input:disabled {
+      background: var(--bg-color-secondary);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .form-input.validation-error {
+      border-color: var(--brand-danger);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-danger) 20%, transparent);
+    }
+
+    .form-error-box {
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--brand-danger-lighter);
+      border: 1px solid var(--brand-danger);
+      border-radius: var(--border-radius-default);
+      font-size: 13px;
+      color: var(--brand-danger);
+      margin-top: var(--spacing-xs);
+    }
+
+    .form-input-icon-wrapper {
+      position: relative;
+    }
+
+    .form-input-icon-wrapper .form-input {
+      padding-right: 36px;
+    }
+
+    .form-input-icon-wrapper .input-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: var(--font-color-detail);
+      pointer-events: none;
+    }
+
+    /* Dropdown */
+    .form-select {
+      width: 100%;
+      padding: var(--form-input-padding-y) var(--form-input-padding-x);
+      padding-right: 36px;
+      font-family: var(--font-family-base);
+      font-size: var(--form-input-font-size);
+      color: var(--form-input-color);
+      background: var(--form-input-bg);
+      border: var(--border-width-default) solid var(--form-input-border-color);
+      border-radius: var(--form-input-border-radius);
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236c717e' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .form-select:focus {
+      border-color: var(--form-input-border-focus-color);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+    }
+
+    /* Radio Buttons */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      cursor: pointer;
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+    }
+
+    .radio-item input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border-color-default);
+      border-radius: var(--border-radius-circle);
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .radio-item input[type="radio"]:checked {
+      border-color: var(--brand-primary);
+    }
+
+    .radio-item input[type="radio"]:checked::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      border-radius: var(--border-radius-circle);
+      background: var(--brand-primary);
+    }
+
+    .radio-item input[type="radio"]:focus {
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+    }
+
+    /* Checkbox */
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      cursor: pointer;
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border-color-default);
+      border-radius: var(--border-radius-small);
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+
+    .checkbox-item input[type="checkbox"]:checked {
+      border-color: var(--brand-primary);
+      background: var(--brand-primary);
+    }
+
+    .checkbox-item input[type="checkbox"]:checked::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 5px;
+      width: 5px;
+      height: 9px;
+      border: solid #ffffff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    /* Form helper text */
+    .form-helper {
+      font-size: 12px;
+      color: var(--font-color-detail);
+      margin-top: 4px;
+    }
+
+    .form-error {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: var(--brand-primary-lighter);
+      border: 1px solid var(--brand-primary);
+      border-radius: var(--border-radius-default);
+      font-size: 13px;
+      color: var(--brand-primary);
+      margin-top: var(--spacing-xs);
+      display: block;
+    }
+
+    /* ========================================================
+       7. LIST VIEW — Mendix Atlas mx-listview structure
+       ======================================================== */
+    .legs-card {
+      border: 1px solid var(--border-color-default);
+      border-radius: 2px;
+      background: var(--bg-color-secondary);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .legs-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px var(--spacing-sm);
+      padding-top: 20px;
+      flex-shrink: 0;
+    }
+    .legs-card-header h3 {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+      margin: 0;
+    }
+    .legs-card-header .legs-count {
+      font-size: 13px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--brand-tertiary);
+    }
+    .legs-card-body {
+      background: var(--bg-color-secondary);
+      padding: var(--spacing-md);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .legs-card-body .form-control {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border-color-default);
+      border-radius: 1px;
+      font-family: var(--font-family-base);
+      font-size: 13px;
+      margin-bottom: var(--spacing-sm);
+      outline: none;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .legs-card-body .form-control:focus {
+      border-color: var(--brand-secondary);
+    }
+    .mx-listview {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .mx-listview-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mx-listview-item {
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-sm);
+      background: #ffffff;
+      border: 1px solid var(--border-color-default);
+      border-radius: 2px;
+      transition: all 0.15s;
+      cursor: pointer;
+      gap: 12px;
+      min-height: 70px;
+    }
+    .mx-listview-item:hover {
+      background: var(--brand-secondary-lighter);
+      border-color: var(--brand-secondary);
+    }
+    .mx-listview-item.selected {
+      background: var(--brand-secondary-lighter);
+      border-color: var(--brand-secondary);
+      box-shadow: inset 4px 0 0 var(--brand-secondary);
+    }
+    .mx-listview-item .leg-number-col {
+      font-size: 16px;
+      font-weight: var(--font-weight-bold);
+      color: #0a1325;
+      min-width: 30px;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1;
+      align-self: center;
+    }
+    .mx-listview-item .leg-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .mx-listview-item .leg-details-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+    }
+    .mx-listview-item .leg-test-id {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-normal);
+      color: #3d4350;
+      line-height: 18px;
+      flex-shrink: 0;
+    }
+    .mx-listview-item .leg-details-top .status-badge {
+      margin-left: auto;
+      flex-shrink: 0;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      line-height: normal;
+    }
+    .mx-listview-item .leg-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: var(--font-weight-bold);
+      color: #6c717e;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .mx-listview-item .leg-info .instructions-no {
+      color: var(--brand-primary);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .listview {
+      width: 391px;
+      border: 1px solid var(--border-color-default);
+      border-radius: 2px;
+      background: var(--bg-color-secondary);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .listview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px var(--spacing-sm);
+      padding-top: 20px;
+      border-bottom: 1px solid var(--border-color-default);
+    }
+    .listview-header h3 {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+      margin: 0;
+    }
+    .listview-header .listview-count {
+      font-size: 13px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--brand-tertiary);
+    }
+    .listview-body {
+      background: var(--bg-color-secondary);
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .listview-body .form-control {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border-color-default);
+      border-radius: 1px;
+      font-family: var(--font-family-base);
+      font-size: 13px;
+      margin-bottom: var(--spacing-sm);
+      outline: none;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .listview-body .form-control:focus {
+      border-color: var(--brand-secondary);
+    }
+    .listview-items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .listview-item {
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-sm);
+      background: #ffffff;
+      border: 1px solid var(--border-color-default);
+      border-radius: 2px;
+      transition: all 0.15s;
+      cursor: pointer;
+      gap: 12px;
+      min-height: 70px;
+    }
+    .listview-item:hover {
+      background: var(--brand-secondary-lighter);
+      border-color: var(--brand-secondary);
+    }
+    .listview-item.selected {
+      background: var(--brand-secondary-lighter);
+      border-color: var(--brand-secondary);
+      box-shadow: inset 4px 0 0 var(--brand-secondary);
+    }
+    .listview-item .leg-number-col {
+      font-size: 16px;
+      font-weight: var(--font-weight-bold);
+      color: #0a1325;
+      min-width: 30px;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1;
+      align-self: center;
+    }
+    .listview-item .leg-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      flex: 1;
+      min-width: 0;
+    }
+    .listview-item .leg-details-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+    }
+    .listview-item .leg-test-id {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-normal);
+      color: #3d4350;
+      line-height: 18px;
+      flex-shrink: 0;
+    }
+    .listview-item .leg-details-top .status-badge {
+      margin-left: auto;
+      flex-shrink: 0;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      line-height: normal;
+    }
+    .listview-item .leg-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: var(--font-weight-bold);
+      color: #6c717e;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .listview-item .leg-info .instructions-no {
+      color: var(--brand-primary);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .listview-item-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--border-radius-default);
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    .listview-item-icon .material-icons-outlined {
+      font-size: 20px;
+    }
+
+    .listview-item-text h4 {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-medium);
+      color: var(--font-color-header);
+      margin-bottom: 2px;
+    }
+
+    .listview-item-text p {
+      font-size: 13px;
+      color: var(--font-color-detail);
+    }
+
+    .listview-item-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .listview-item-date {
+      font-size: 13px;
+      color: var(--font-color-detail);
+    }
+
+    .listview-item-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius-default);
+      color: var(--font-color-detail);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .listview-item:hover .listview-item-action {
+      color: var(--brand-secondary);
+    }
+
+    /* ========================================================
+       Footer
+       ======================================================== */
+    .page-footer {
+      text-align: center;
+      padding: var(--spacing-md);
+      color: var(--font-color-detail);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="page-header">
+    <img src="../Logo/yazaki-logo.png" alt="Yazaki" onerror="this.style.display='none'">
+    <h1>Widget Prototypes</h1>
+  </header>
+
+  <!-- Jump Nav -->
+  <nav class="jump-nav">
+    <a href="#tabs">Tab Containers</a>
+    <a href="#navigation">Navigation Tree</a>
+    <a href="#accordion">Accordion</a>
+    <a href="#datagrid">Datagrid</a>
+    <a href="#toggle">Button Toggle</a>
+    <a href="#cards">Cards</a>
+    <a href="#forms">Form Inputs</a>
+    <a href="#listview">List View</a>
+  </nav>
+
+  <main class="content">
+
+    <!-- ============================================
+         1. TAB CONTAINERS
+         ============================================ -->
+    <section id="tabs">
+      <h2>Tab Containers</h2>
+      <p class="section-desc">
+        Horizontal tab navigation for switching between content panels.
+        Maps to <span class="var-ref">--tabs-*</span> variables in variables.scss (lines 283–307).
+      </p>
+
+      <div class="demo-row">
+        <p class="demo-label">Default Tabs with Counts</p>
+        <div class="tabs-demo">
+          <div class="tab-bar">
+            <button class="tab-item active">All <span class="tab-badge">33</span></button>
+            <button class="tab-item">Open <span class="tab-badge">12</span></button>
+            <button class="tab-item">In Progress <span class="tab-badge">8</span></button>
+            <button class="tab-item">Closed <span class="tab-badge">13</span></button>
+          </div>
+          <div class="tab-content">Tab panel content appears here. The active tab is indicated by the brand-primary red underline.</div>
+        </div>
+      </div>
+
+      <div class="demo-row">
+        <p class="demo-label">Numbered / Wizard-Style Tabs</p>
+        <div class="tabs-demo">
+          <div class="tab-wizard tab-numbered">
+            <button class="tab-item visited"><span class="tab-step-num">1</span> General Details</button>
+            <button class="tab-item active"><span class="tab-step-num">2</span> Personal Details</button>
+            <button class="tab-item"><span class="tab-step-num">3</span> DUT Details</button>
+            <button class="tab-item"><span class="tab-step-num">4</span> Test Selection</button>
+            <button class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Docs</button>
+          </div>
+          <div class="tab-content">Step 2 — Personal Details. The numbered tab style matches the Figma wizard pattern with step indicators.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         2. NAVIGATION TREE
+         ============================================ -->
+    <section id="navigation">
+      <h2>Navigation Tree</h2>
+      <p class="section-desc">
+        Vertical sidebar navigation in collapsed (icon-only) and expanded states.
+        Maps to <span class="var-ref">--navigation-sidebar-*</span> and <span class="var-ref">--navsidebar-*</span> variables (lines 117–174).
+      </p>
+
+      <div class="demo-row">
+        <div class="nav-demo">
+          <!-- Collapsed sidebar -->
+          <div>
+            <p class="demo-label">Collapsed (52px)</p>
+            <div class="mx-navigationtree nav-sidebar">
+              <div class="nav-sidebar-item" title="Menu">
+                <span class="material-icons-outlined">menu</span>
+              </div>
+              <div class="nav-sidebar-item active" title="Dashboard">
+                <span class="material-icons-outlined">description</span>
+              </div>
+              <div class="nav-sidebar-item" title="Requests">
+                <span class="material-icons-outlined">assignment</span>
+              </div>
+              <div class="nav-sidebar-item" title="Reports">
+                <span class="material-icons-outlined">assessment</span>
+              </div>
+              <div class="nav-sidebar-item" title="Settings">
+                <span class="material-icons-outlined">settings</span>
+              </div>
+              <div class="nav-sidebar-spacer"></div>
+              <div class="nav-sidebar-item" title="Logout">
+                <span class="material-icons-outlined">logout</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expanded sidebar -->
+          <div>
+            <p class="demo-label">Expanded (240px)</p>
+            <div class="mx-navigationtree nav-sidebar-expanded">
+              <div class="nav-exp-item">
+                <span class="material-icons-outlined">menu</span>
+              </div>
+              <!-- section label removed per Figma -->
+              <div class="mx-navigationtree-has-items nav-exp-item active expanded">
+                <span class="material-icons-outlined">description</span>
+                Test Requests
+                <span class="material-icons-outlined nav-chevron">expand_more</span>
+              </div>
+              <div class="nav-sub-items">
+                <div class="nav-sub-item active">All Requests</div>
+                <div class="nav-sub-item">Open</div>
+                <div class="nav-sub-item">Pending Approval</div>
+                <div class="nav-sub-item">Completed</div>
+              </div>
+              <div class="mx-navigationtree-has-items nav-exp-item">
+                <span class="material-icons-outlined">request_quote</span>
+                Quotes (RFQ)
+                <span class="material-icons-outlined nav-chevron">expand_more</span>
+              </div>
+              <div class="nav-exp-item">
+                <span class="material-icons-outlined">drafts</span>
+                My Drafts
+              </div>
+              <div class="nav-exp-spacer"></div>
+              <div class="nav-exp-item">
+                <span class="material-icons-outlined">logout</span>
+                Sign out
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         3. ACCORDION
+         ============================================ -->
+    <section id="accordion">
+      <h2>Accordion</h2>
+      <p class="section-desc">
+        Collapsible content panels for organizing long-form information.
+        Maps to <span class="var-ref">--accordion-*</span> variables (lines 179–188).
+      </p>
+
+      <div class="demo-row">
+        <p class="demo-label">Default Accordion</p>
+        <div class="widget-accordion accordion">
+          <div class="accordion-item accordion-panel open">
+            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+              <span>Test Request Details</span>
+              <span class="material-icons-outlined">expand_more</span>
+            </div>
+            <div class="accordion-content accordion-body">
+              <div class="accordion-detail-grid">
+                <div><div class="accordion-detail-label">Request ID</div><div class="accordion-detail-value">TR26-2</div></div>
+                <div><div class="accordion-detail-label">Customer</div><div class="accordion-detail-value">Toyota</div></div>
+                <div><div class="accordion-detail-label">Test Type</div><div class="accordion-detail-value">Mechanical</div></div>
+                <div><div class="accordion-detail-label">Status</div><div class="accordion-detail-value">Open</div></div>
+                <div><div class="accordion-detail-label">Requested Date</div><div class="accordion-detail-value">2026-08-16</div></div>
+                <div><div class="accordion-detail-label">Assigned To</div><div class="accordion-detail-value">Lab B — Johnson</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item accordion-panel">
+            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+              <span>DUT Information</span>
+              <span class="material-icons-outlined">expand_more</span>
+            </div>
+            <div class="accordion-content accordion-body">
+              Device Under Test information including part numbers, specifications, and compliance requirements.
+            </div>
+          </div>
+          <div class="accordion-item accordion-panel">
+            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+              <span>Testing Schedule</span>
+              <span class="material-icons-outlined">expand_more</span>
+            </div>
+            <div class="accordion-content accordion-body">
+              Timeline and scheduling information for the test request, including lab availability and estimated completion dates.
+            </div>
+          </div>
+          <div class="accordion-item accordion-panel">
+            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+              <span>Documentation &amp; Attachments</span>
+              <span class="material-icons-outlined">expand_more</span>
+            </div>
+            <div class="accordion-content accordion-body">
+              Upload and manage related documents, test specifications, and supporting files for this request.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         4. DATAGRID
+         ============================================ -->
+    <section id="datagrid">
+      <h2>Datagrid</h2>
+      <p class="section-desc">
+        Data table with search, filtering, sorting, row selection, and pagination.
+        Maps to <span class="var-ref">--grid-*</span> variables (lines 262–280).
+      </p>
+
+      <div class="demo-row">
+        <p class="demo-label">Test Requests Datagrid</p>
+        <div class="widget-datagrid datagrid-wrapper">
+          <!-- Table -->
+          <div class="datagrid-scroll-container">
+          <table class="table datagrid-table">
+            <thead>
+              <tr class="datagrid-header-row">
+                <th>Request ID <span class="material-icons-outlined">unfold_more</span></th>
+                <th>Customer <span class="material-icons-outlined">unfold_more</span></th>
+                <th>Test Type <span class="material-icons-outlined">unfold_more</span></th>
+                <th>Status</th>
+                <th>Requested</th>
+                <th>Assigned To</th>
+                <th></th>
+              </tr>
+              <tr class="datagrid-filter-row">
+                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
+                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
+                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
+                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
+                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
+                <td><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></td>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TR26-1</td>
+                <td>Honda</td>
+                <td>Environmental</td>
+                <td><span class="badge status-badge created">Created</span></td>
+                <td>2026-08-15</td>
+                <td>Unassigned</td>
+                <td><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu"><span class="material-icons-outlined">more_vert</span></button></div></td>
+              </tr>
+              <tr class="selected">
+                <td>TR26-2</td>
+                <td>Toyota</td>
+                <td>Mechanical</td>
+                <td><span class="badge status-badge open">Open</span></td>
+                <td>2026-08-16</td>
+                <td>Lab B — Johnson</td>
+                <td>
+                  <div class="widget-popup-menu row-action-wrapper">
+                    <button class="row-action-btn" aria-haspopup="menu"><span class="material-icons-outlined">more_vert</span></button>
+                    <div class="dropdown-menu popup-menu visible" role="menu">
+                      <button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Copy File Path</button>
+                      <button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">attach_file</span> Attach Document</button>
+                      <button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>TR26-3</td>
+                <td>Ford</td>
+                <td>Electrical</td>
+                <td><span class="badge status-badge awaiting-quote">Awaiting Quote</span></td>
+                <td>2026-08-18</td>
+                <td>Unassigned</td>
+                <td><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu"><span class="material-icons-outlined">more_vert</span></button></div></td>
+              </tr>
+              <tr>
+                <td>TR26-4</td>
+                <td>BMW</td>
+                <td>Environmental</td>
+                <td><span class="badge status-badge received-by-lab">Received by Lab</span></td>
+                <td>2026-08-20</td>
+                <td>Lab A — Davis</td>
+                <td><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu"><span class="material-icons-outlined">more_vert</span></button></div></td>
+              </tr>
+              <tr>
+                <td>TR26-5</td>
+                <td>Stellantis</td>
+                <td>Durability</td>
+                <td><span class="badge status-badge test-in-progress">Test in Progress</span></td>
+                <td>2026-08-10</td>
+                <td>Lab C — Wilson</td>
+                <td><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu"><span class="material-icons-outlined">more_vert</span></button></div></td>
+              </tr>
+              <tr>
+                <td>TR26-6</td>
+                <td>Honda</td>
+                <td>Thermal</td>
+                <td><span class="badge status-badge waiting-deliverables">Waiting on Deliverables</span></td>
+                <td>2026-08-22</td>
+                <td>Unassigned</td>
+                <td><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu"><span class="material-icons-outlined">more_vert</span></button></div></td>
+              </tr>
+              <tr>
+                <td>TR26-7</td>
+                <td>Mazda</td>
+                <td>Mechanical</td>
+                <td><span class="badge status-badge closed">Closed</span></td>
+                <td>2026-07-28</td>
+                <td>Lab B — Johnson</td>
+                <td><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu"><span class="material-icons-outlined">more_vert</span></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+
+          </div><!-- end .datagrid-scroll-container -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         5. BUTTON TOGGLE
+         ============================================ -->
+    <section id="toggle">
+      <h2>Button Toggle</h2>
+      <p class="section-desc">
+        Segmented control for switching between views. Uses button-level tokens
+        <span class="var-ref">--btn-default-*</span> and <span class="var-ref">--btn-primary-*</span>.
+        No dedicated SCSS variable group exists.
+      </p>
+
+      <div class="demo-row">
+        <p class="demo-label">View Toggle (Cards / List)</p>
+        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+          <div class="btn-toggle-group">
+            <button class="btn-toggle active">
+              <span class="material-icons-outlined">grid_view</span>
+              Cards
+            </button>
+            <button class="btn-toggle">
+              <span class="material-icons-outlined">view_list</span>
+              List
+            </button>
+          </div>
+
+          <div class="btn-toggle-group">
+            <button class="btn-toggle">
+              <span class="material-icons-outlined">grid_view</span>
+              Cards
+            </button>
+            <button class="btn-toggle active">
+              <span class="material-icons-outlined">view_list</span>
+              List
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-row">
+        <p class="demo-label">Filter Toggle (3 Options)</p>
+        <div class="btn-toggle-group">
+          <button class="btn-toggle active">All</button>
+          <button class="btn-toggle">Open</button>
+          <button class="btn-toggle">Closed</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         CARDS
+         ============================================ -->
+    <section id="cards">
+      <h2>Cards</h2>
+      <p class="section-desc">
+        Card grid for overview/dashboard views. Responsive 3-column layout using CSS Grid.
+      </p>
+
+      <div class="demo-row">
+        <p class="demo-label">Test Request Cards</p>
+        <div class="card-grid">
+          <div class="card card-request">
+            <div class="card-header">
+              <h4>TR25-139</h4>
+              <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+            </div>
+            <div class="card-body">
+              <div class="card-field"><span class="card-field-label">2019 A123 ddd ddd ANALYSIS</span></div>
+              <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - SUBARU</span></div>
+              <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jeffrey Malotke</span></div>
+              <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+            </div>
+            <div class="card-footer">
+              <span>Analysis</span>
+              <span>RTCD 12/10/25</span>
+            </div>
+          </div>
+          <div class="card card-rfq">
+            <div class="card-header">
+              <h4>RFQ26-12</h4>
+              <span class="badge status-badge created">Created</span>
+            </div>
+            <div class="card-body">
+              <div class="card-field"><span class="card-field-label">2026 HONDA B456 CONNECTOR QUOTE</span></div>
+              <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - HONDA</span></div>
+              <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Unassigned</span></div>
+              <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+            </div>
+            <div class="card-footer">
+              <span>RFQ</span>
+              <span>RFQ 3/20/26</span>
+            </div>
+          </div>
+          <div class="card card-request">
+            <div class="card-header">
+              <h4>TR25-120</h4>
+              <span class="badge status-badge received-by-lab">Received by Lab</span>
+            </div>
+            <div class="card-body">
+              <div class="card-field"><span class="card-field-label">2019 A123 ddd ddd ANALYSIS</span></div>
+              <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">STELLANTIS BU</span></div>
+              <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jeffrey Malotke</span></div>
+              <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+            </div>
+            <div class="card-footer">
+              <span>Analysis</span>
+              <span>RTCD 9/25/25</span>
+            </div>
+          </div>
+          <div class="card card-request">
+            <div class="card-header">
+              <h4>TR26-8</h4>
+              <span class="badge status-badge test-in-progress">Test in Progress</span>
+            </div>
+            <div class="card-body">
+              <div class="card-field"><span class="card-field-label">2019 A123 ddd ddd ANALYSIS</span></div>
+              <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - HONDA</span></div>
+              <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Unassigned</span></div>
+              <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jennifer Simko</span></div>
+            </div>
+            <div class="card-footer">
+              <span>Analysis</span>
+              <span>RTCD 5/13/26</span>
+            </div>
+          </div>
+          <div class="card card-request">
+            <div class="card-header">
+              <h4>TR25-101</h4>
+              <span class="badge status-badge waiting-deliverables">Waiting on Deliverables</span>
+            </div>
+            <div class="card-body">
+              <div class="card-field"><span class="card-field-label">2019 WAYMO ddd ddd CTD CRIMP VALIDATION</span></div>
+              <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - MAZDA</span></div>
+              <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jeffrey Malotke</span></div>
+              <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+            </div>
+            <div class="card-footer">
+              <span>CTD Crimp Validation</span>
+              <span>RTCD 7/15/25</span>
+            </div>
+          </div>
+          <div class="card card-rfq">
+            <div class="card-header">
+              <h4>RFQ25-44</h4>
+              <span class="badge status-badge closed">Closed</span>
+            </div>
+            <div class="card-body">
+              <div class="card-field"><span class="card-field-label">2019 FORD ddd ddd WIRE PULL QUOTE</span></div>
+              <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - FORD</span></div>
+              <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jennifer Simko</span></div>
+              <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jennifer Simko</span></div>
+            </div>
+            <div class="card-footer">
+              <span>RFQ</span>
+              <span>RFQ 6/30/25</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         6. FORM INPUTS
+         ============================================ -->
+    <section id="forms">
+      <h2>Form Inputs</h2>
+      <p class="section-desc">
+        Text inputs, date pickers, dropdowns, radio buttons, and checkboxes.
+        Maps to <span class="var-ref">--form-input-*</span> and <span class="var-ref">--form-label-*</span> variables (lines 225–249).
+      </p>
+
+      <div class="form-demo">
+        <!-- Textbox -->
+        <div>
+          <p class="demo-label">Textbox</p>
+          <div class="form-group">
+            <label class="control-label form-label">Request Title <span class="required">*</span></label>
+            <input type="text" class="form-control form-input" placeholder="Enter request title">
+          </div>
+          <div class="form-group">
+            <label class="control-label form-label">Description</label>
+            <input type="text" class="form-control form-input" value="TR26-6 — Honda Thermal Test">
+          </div>
+          <div class="form-group">
+            <label class="control-label form-label">Customer Code</label>
+            <input type="text" class="form-control form-input" disabled value="HON-2026">
+            <span class="form-helper">Auto-generated from customer record</span>
+          </div>
+        </div>
+
+        <!-- DatePicker -->
+        <div>
+          <p class="demo-label">DatePicker</p>
+          <div class="form-group">
+            <label class="control-label form-label">Requested Date <span class="required">*</span></label>
+            <div class="form-input-icon-wrapper">
+              <input type="text" class="form-control form-input" placeholder="MM/DD/YYYY" value="08/28/2026">
+              <span class="material-icons-outlined input-icon">calendar_today</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label form-label">Target Completion</label>
+            <div class="form-input-icon-wrapper">
+              <input type="text" class="form-control form-input" placeholder="MM/DD/YYYY">
+              <span class="material-icons-outlined input-icon">calendar_today</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dropdown -->
+        <div>
+          <p class="demo-label">Dropdown</p>
+          <div class="form-group">
+            <label class="control-label form-label">Test Type <span class="required">*</span></label>
+            <select class="form-control form-select">
+              <option value="" disabled>Select test type</option>
+              <option value="env">Environmental</option>
+              <option value="mech" selected>Mechanical</option>
+              <option value="elec">Electrical</option>
+              <option value="therm">Thermal</option>
+              <option value="dur">Durability</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label form-label">Priority</label>
+            <select class="form-control form-select">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Radio Buttons -->
+        <div>
+          <p class="demo-label">Radio Buttons</p>
+          <div class="form-group">
+            <label class="control-label form-label">Request Type</label>
+            <div class="mx-radiobuttons radio-group">
+              <label class="radio radio-item">
+                <input type="radio" name="req-type" checked>
+                New Request
+              </label>
+              <label class="radio radio-item">
+                <input type="radio" name="req-type">
+                Re-Test
+              </label>
+              <label class="radio radio-item">
+                <input type="radio" name="req-type">
+                Follow-Up
+              </label>
+            </div>
+          </div>
+
+          <p class="demo-label" style="margin-top: var(--spacing-sm);">Checkbox</p>
+          <div class="form-group">
+            <label class="mx-checkbox label-after checkbox-item">
+              <input type="checkbox" checked>
+              Expedited processing required
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="mx-checkbox label-after checkbox-item">
+              <input type="checkbox">
+              Notify customer on completion
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-row" style="margin-top: var(--spacing-sm);">
+        <p class="demo-label">Validation States</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+          <div class="form-group">
+            <label class="control-label form-label">Product Type <span class="required">*</span></label>
+            <input type="text" class="form-control form-input validation-error" value="">
+            <span class="form-error">Product type required</span>
+          </div>
+          <div class="form-group">
+            <label class="control-label form-label">Email Address <span class="required">*</span></label>
+            <input type="text" class="form-control form-input validation-error" value="invalid-email">
+            <span class="form-error">Please enter a valid email address</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         7. LIST VIEW
+         ============================================ -->
+    <section id="listview">
+      <h2>List View</h2>
+      <p class="section-desc">
+        Vertical list of selectable items with leg number, test ID, status badge, and metadata.
+        Listview SCSS variables are commented out (lines 376–379); styling derives from spacing, shadow, and border tokens.
+      </p>
+
+      <div class="demo-row">
+        <p class="demo-label">Number of Legs</p>
+        <div class="mx-listview listview">
+          <div class="listview-header">
+            <h3>Number of Legs</h3>
+            <span class="listview-count">7</span>
+          </div>
+          <div class="listview-body">
+            <input type="text" class="form-control" placeholder="Search..." />
+            <ul class="mx-listview-list listview-items" role="list">
+              <li class="mx-listview-item listview-item">
+                <span class="leg-number-col">22</span>
+                <div class="leg-details">
+                  <div class="leg-details-top">
+                    <span class="leg-test-id">25-77-22</span>
+                    <span class="badge status-badge created">Created</span>
+                  </div>
+                  <div class="leg-info">
+                    <span>46 hrs</span>
+                    <span class="instructions-no">Instructions : NO</span>
+                    <span>Dependent: Leg 24</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mx-listview-item listview-item selected">
+                <span class="leg-number-col">23</span>
+                <div class="leg-details">
+                  <div class="leg-details-top">
+                    <span class="leg-test-id">25-77-23</span>
+                    <span class="badge status-badge open">Open</span>
+                  </div>
+                  <div class="leg-info">
+                    <span>24 hrs</span>
+                    <span class="instructions-no">Instructions : NO</span>
+                    <span>Dependent: Leg 25</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mx-listview-item listview-item">
+                <span class="leg-number-col">24</span>
+                <div class="leg-details">
+                  <div class="leg-details-top">
+                    <span class="leg-test-id">25-77-24</span>
+                    <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+                  </div>
+                  <div class="leg-info">
+                    <span>12 hrs</span>
+                    <span class="instructions-no">Instructions : NO</span>
+                    <span>Dependent: Leg 26</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mx-listview-item listview-item">
+                <span class="leg-number-col">25</span>
+                <div class="leg-details">
+                  <div class="leg-details-top">
+                    <span class="leg-test-id">25-77-25</span>
+                    <span class="badge status-badge received-by-lab">Received by Lab</span>
+                  </div>
+                  <div class="leg-info">
+                    <span>36 hrs</span>
+                    <span>Instructions : YES</span>
+                    <span>Dependent: None</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mx-listview-item listview-item">
+                <span class="leg-number-col">26</span>
+                <div class="leg-details">
+                  <div class="leg-details-top">
+                    <span class="leg-test-id">25-77-26</span>
+                    <span class="badge status-badge test-in-progress">Test in Progress</span>
+                  </div>
+                  <div class="leg-info">
+                    <span>48 hrs</span>
+                    <span class="instructions-no">Instructions : NO</span>
+                    <span>Dependent: Leg 22</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mx-listview-item listview-item">
+                <span class="leg-number-col">27</span>
+                <div class="leg-details">
+                  <div class="leg-details-top">
+                    <span class="leg-test-id">25-77-27</span>
+                    <span class="badge status-badge waiting-deliverables">Waiting on Deliverables</span>
+                  </div>
+                  <div class="leg-info">
+                    <span>8 hrs</span>
+                    <span>Instructions : YES</span>
+                    <span>Dependent: None</span>
+                  </div>
+                </div>
+              </li>
+
+              <li class="mx-listview-item listview-item">
+                <span class="leg-number-col">28</span>
+                <div class="leg-details">
+                  <div class="leg-details-top">
+                    <span class="leg-test-id">25-77-28</span>
+                    <span class="badge status-badge closed">Closed</span>
+                  </div>
+                  <div class="leg-info">
+                    <span>16 hrs</span>
+                    <span>Instructions : YES</span>
+                    <span>Dependent: None</span>
+                  </div>
+                </div>
+              </li>
+            </ul><!-- end listview-items -->
+          </div><!-- end listview-body -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="page-footer">
+    Yazaki Design System — Widget Prototypes &bull; Built from Figma designs-draft page
+  </footer>
+
+</body>
+</html>
