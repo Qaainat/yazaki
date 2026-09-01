@@ -1235,6 +1235,104 @@
     .file-date { font-size: 12px; color: var(--font-color-detail); }
 
     /* ========================================================
+       Documents Section
+       ======================================================== */
+    .doc-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-sm);
+    }
+    .doc-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .doc-section-title h4 {
+      font-weight: var(--font-weight-semibold);
+      margin: 0;
+    }
+    .doc-badge-new {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--brand-secondary);
+      background: var(--brand-secondary-lighter);
+      border-radius: 10px;
+    }
+    .doc-count {
+      font-size: 12px;
+      color: var(--font-color-detail);
+      margin-left: 4px;
+    }
+    .doc-list {
+      border-top: 1px solid var(--border-color-default);
+    }
+    .doc-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-color-default);
+    }
+    .doc-item:last-child {
+      border-bottom: none;
+    }
+    .doc-icon {
+      font-size: 24px;
+      color: var(--font-color-detail);
+      flex-shrink: 0;
+    }
+    .doc-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .doc-name {
+      font-size: 13px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .doc-name a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .doc-name a:hover {
+      color: var(--brand-secondary);
+      text-decoration: underline;
+    }
+    .doc-meta {
+      font-size: 12px;
+      color: var(--font-color-detail);
+      margin-top: 2px;
+    }
+    .doc-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .doc-action-link {
+      color: var(--font-color-detail);
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+    .doc-action-link:hover {
+      color: var(--brand-secondary);
+    }
+    .doc-action-link .material-icons-outlined {
+      font-size: 20px;
+    }
+
+    /* ========================================================
        Modal
        ======================================================== */
     .modal-overlay {
@@ -2298,6 +2396,74 @@
                         No updates yet.<br>
                         <a href="#" style="color:var(--brand-secondary);text-decoration:none">+ Add Update</a>
                       </div>
+
+                      <hr style="border:none;border-top:1px solid var(--border-color-default);margin:var(--spacing-sm) 0">
+
+                      <div class="doc-section-header">
+                        <div class="doc-section-title">
+                          <h4>Documents</h4>
+                          <span class="doc-badge-new">NEW</span>
+                          <span class="doc-count">(4 documents)</span>
+                        </div>
+                        <button class="btn btn-default btn-sm">
+                          <span class="material-icons-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">upload</span>
+                          Upload Document
+                        </button>
+                      </div>
+
+                      <div class="doc-list">
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name"><a href="#">USCAR-2_RevB_Failure_Analysis_Report.pdf</a></div>
+                            <div class="doc-meta">Uploaded by J. Malotke · Aug 14, 2026 · 2.4 MB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name"><a href="#">Chapter1_Test_Data_Log.xlsx</a></div>
+                            <div class="doc-meta">Uploaded by S. Torres · Aug 20, 2026 · 548 KB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name"><a href="#">Crimp_Cross_Section_Photo_01.png</a></div>
+                            <div class="doc-meta">Uploaded by R. Chen · Aug 27, 2026 · 1.1 MB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name">
+                              <a href="#">Failure_Analysis_Procedure_Notes.docx</a>
+                              <span class="doc-badge-new" style="margin-left:8px;font-size:9px">NEW</span>
+                            </div>
+                            <div class="doc-meta">Uploaded by J. Malotke · Sep 1, 2026 · 312 KB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
 
