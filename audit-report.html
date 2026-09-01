@@ -3,10 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <header>
-    <img src="Logo.png" alt="Yazaki — YNA Testing Portal" style="height: 36px;">
-    <div class="header-badge">Design Refactor</div>
-  </header>
 <style>
   :root {
     color-scheme: light;
@@ -61,17 +57,14 @@
   }
   nav::-webkit-scrollbar { display: none; }
 
-  .nav-brand {
-    font-size: 13px;
-    font-weight: 700;
-    color: #008C95;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    margin-right: 32px;
+  .nav-logo {
+    display: block;
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+    margin-right: 28px;
     flex-shrink: 0;
   }
-  .nav-brand span { color: var(--red); }
 
   nav a {
     color: #5a6070;
@@ -726,9 +719,11 @@
 </head>
 <body>
 
+
+
 <!-- NAV -->
 <nav>
-  <span class="nav-brand">Yazaki <span>Test Portal</span></span>
+  <img class="nav-logo" src="Logo.png" alt="Yazaki — YNA Testing Portal">
   <a href="#audit">Overview</a>
   <a href="#patterns">Layout</a>
   <a href="#visual">Color + Visual</a>
