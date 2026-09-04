@@ -1,0 +1,3389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yazaki YNA Testing Portal — Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    /* ========================================================
+       CSS Custom Properties — Yazaki Design Tokens
+       ======================================================== */
+    :root {
+      --brand-primary: #ed1c24;
+      --brand-primary-lighter: #fff0f0;
+      --brand-primary-light: #f87578;
+      --brand-primary-dark: #a01018;
+      --brand-primary-darker: #a01018;
+      --brand-secondary: #37a0af;
+      --brand-secondary-lighter: #e1f1f3;
+      --brand-secondary-light: #9bd0d7;
+      --brand-secondary-dark: #2d8a97;
+      --brand-secondary-darker: #216069;
+      --brand-tertiary: #577aa0;
+      --brand-tertiary-lighter: #eaeef4;
+      --brand-tertiary-light: #a7bbd2;
+      --brand-tertiary-dark: #446285;
+      --brand-tertiary-darker: #31445b;
+      --gray-primary: #7c7c7c;
+      --gray-primary-lighter: #dcdcdc;
+      --gray-primary-light: #bdbdbd;
+      --gray-primary-dark: #656565;
+      --gray-primary-darker: #464646;
+      --brand-success: #4a8587;
+      --brand-success-lighter: #dcf0f0;
+      --brand-success-light: #94c6c7;
+      --brand-success-dark: #3a6c6e;
+      --brand-warning: #eca51c;
+      --brand-warning-lighter: #fff3e0;
+      --brand-warning-light: #f5d454;
+      --brand-warning-dark: #d07c0f;
+      --brand-danger: #e33f4e;
+      --brand-danger-lighter: #fde6e6;
+      --brand-danger-light: #f6abae;
+      --brand-danger-dark: #d12d44;
+      --font-color-header: #0a1325;
+      --font-color-default: #3d4350;
+      --font-color-detail: #6c717e;
+      --bg-color: #f8f8f8;
+      --bg-color-secondary: #f5f6f6;
+      --border-color-default: #ced0d3;
+      --color-white: #ffffff;
+      --brand-gradient: linear-gradient(90deg, #a01018 0%, #ed1c24 30%, #37a0af 70%, #2d8a97 100%);
+      --font-family-base: "Roboto", sans-serif;
+      --font-size-h1: 2.25rem;
+      --font-size-h2: 1.75rem;
+      --font-size-h3: 1.5rem;
+      --font-size-h4: 1.25rem;
+      --font-size-h5: 1rem;
+      --font-size-h6: 0.875rem;
+      --font-size-default: 14px;
+      --font-size-small: 14px;
+      --font-weight-light: 300;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 600;
+      --font-weight-bold: 700;
+      --line-height-heading: 1.2;
+      --line-height-body: 1.5;
+      --spacing-unit: 8px;
+      --spacing-smallest: 2px;
+      --spacing-xxs: 4px;
+      --spacing-xs: 8px;
+      --spacing-sm: 16px;
+      --spacing-md: 24px;
+      --spacing-lg: 32px;
+      --spacing-xl: 40px;
+      --spacing-xxl: 48px;
+      --border-radius-default: 4px;
+      --border-radius-small: 2px;
+      --border-radius-large: 8px;
+      --border-radius-circle: 50%;
+      --border-width-default: 1px;
+      --border-width-thick: 2px;
+      --shadow-small: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-medium: 0 2px 8px rgba(0,0,0,0.12);
+      --shadow-large: 0 4px 16px rgba(0,0,0,0.16);
+      --btn-font-size: var(--font-size-default);
+      --btn-font-weight: var(--font-weight-bold);
+      --btn-border-radius: var(--border-radius-default);
+      --btn-padding-y: 8px;
+      --btn-padding-x: 16px;
+      --btn-border-width: 1px;
+      --btn-primary-bg: var(--brand-primary);
+      --btn-primary-bg-hover: var(--brand-primary-dark);
+      --btn-primary-color: #ffffff;
+      --btn-primary-border-color: var(--brand-primary);
+      --btn-default-bg: #ffffff;
+      --btn-default-color: var(--font-color-header);
+      --btn-default-border-color: var(--border-color-default);
+      --btn-default-bg-hover: var(--bg-color-secondary);
+      --btn-secondary-bg: transparent;
+      --btn-secondary-color: var(--brand-primary);
+      --btn-secondary-border-color: var(--brand-primary);
+      --btn-secondary-bg-hover: var(--brand-primary);
+      --btn-secondary-color-hover: #ffffff;
+      --form-input-padding-y: 10px;
+      --form-input-padding-x: 12px;
+      --form-input-color: var(--font-color-default);
+      --form-input-placeholder-color: var(--font-color-detail);
+      --form-input-font-size: var(--font-size-default);
+      --form-input-border-color: var(--border-color-default);
+      --form-input-border-radius: var(--border-radius-default);
+      --form-input-bg: #ffffff;
+      --form-input-border-focus-color: var(--brand-secondary);
+      --form-label-weight: var(--font-weight-semibold);
+      --form-label-size: var(--font-size-default);
+      --form-label-gutter: 8px;
+      --form-group-margin-bottom: 16px;
+      --grid-padding-right: 16px;
+      --grid-border-color: var(--border-color-default);
+      --grid-bg-selected: var(--brand-secondary-lighter);
+      --navsidebar-width-closed: 52px;
+      --navigation-sidebar-color-hover: var(--font-color-default);
+    }
+
+    /* ========================================================
+       Reset + Base
+       ======================================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      line-height: var(--line-height-body);
+      background: var(--bg-color);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ========================================================
+       App Shell Layout
+       ======================================================== */
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Topbar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      background: var(--color-white);
+      border-bottom: 3px solid transparent;
+      border-image: var(--brand-gradient) 1;
+      padding: 0 var(--spacing-sm);
+      z-index: 100;
+      flex-shrink: 0;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    .topbar-hamburger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      background: none;
+      cursor: pointer;
+      color: var(--font-color-default);
+      font-size: 20px;
+    }
+    .topbar-hamburger:hover { background: var(--bg-color-secondary); }
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      margin-left: var(--spacing-xs);
+    }
+    .topbar-logo img { height: 24px; }
+    .topbar-logo span {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      letter-spacing: 0.5px;
+    }
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    .topbar-user {
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+    }
+
+    /* Body wrapper */
+    .app-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .nav-sidebar {
+      width: var(--navsidebar-width-closed);
+      background: var(--color-white);
+      border-right: 1px solid var(--border-color-default);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      transition: width 0.2s ease;
+      z-index: 50;
+    }
+    .nav-sidebar.expanded { width: 240px; }
+    .nav-sidebar > ul.nav {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .nav-sidebar > ul.nav > li {
+      list-style: none;
+    }
+    .nav-sidebar-item {
+      display: flex;
+      flex-direction: column;
+      color: var(--font-color-detail);
+      cursor: pointer;
+      font-size: var(--font-size-default);
+      transition: color 0.15s;
+      text-decoration: none;
+    }
+    .nav-sidebar-item > a {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      height: 44px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      color: inherit;
+      white-space: nowrap;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-sidebar-item .material-icons-outlined { font-size: 20px; flex-shrink: 0; }
+    .nav-sidebar-item > a:hover {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(var(--spacing-sm) - 3px);
+    }
+    .nav-sidebar-item.active > a {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      font-weight: var(--font-weight-semibold);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(var(--spacing-sm) - 3px);
+    }
+    .nav-sidebar-item .nav-label { display: none; }
+    .nav-sidebar.expanded .nav-label { display: inline; }
+    .nav-sidebar-item .nav-chevron {
+      margin-left: auto;
+      font-size: 18px;
+      transition: transform 0.2s;
+      display: none;
+    }
+    .nav-sidebar.expanded .nav-chevron { display: inline; }
+    .nav-sidebar-item.open .nav-chevron { transform: rotate(180deg); }
+    .nav-sub-items { display: none; list-style: none; margin: 0; padding: 0; }
+    .nav-sidebar.expanded .nav-sidebar-item.open > .nav-sub-items { display: block; }
+    .nav-sub-item {
+      list-style: none;
+    }
+    .nav-sub-item, .nav-sub-item > a {
+      display: flex;
+      align-items: center;
+      padding: 6px var(--spacing-sm) 6px 44px;
+      color: var(--font-color-detail);
+      font-size: var(--font-size-small);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+    .nav-sub-item > a {
+      padding-left: 0;
+      flex: 1;
+      height: 100%;
+      color: inherit;
+    }
+    .nav-sub-item:hover, .nav-sub-item:hover > a {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      border-left: 3px solid var(--brand-primary);
+      padding-left: calc(44px - 3px);
+    }
+    .nav-sub-item:hover > a {
+      background: none;
+      border-left: none;
+      padding-left: 0;
+    }
+    .nav-sub-item.active, .nav-sub-item.active > a { color: var(--brand-primary); font-weight: var(--font-weight-medium); }
+    .nav-section-label {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-detail);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-xs);
+      display: none;
+    }
+    .nav-sidebar.expanded .nav-section-label { display: block; }
+    .nav-sidebar-spacer { flex: 1; }
+
+    /* Main content area */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      position: relative;
+    }
+    .main-content-inner {
+      padding: var(--spacing-md) var(--spacing-lg);
+      min-height: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Background wave pattern */
+    .bg-wave {
+      position: absolute;
+      top: 120px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 15%);
+      mask-image: linear-gradient(to bottom, transparent 0%, white 15%);
+    }
+    .bg-wave svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ========================================================
+       Views
+       ======================================================== */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ========================================================
+       Breadcrumb
+       ======================================================== */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--font-size-small);
+      color: var(--font-color-detail);
+      margin-bottom: var(--spacing-sm);
+    }
+    .breadcrumb a {
+      color: var(--font-color-detail);
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .breadcrumb a:hover { color: var(--brand-primary); }
+    .breadcrumb .material-icons-outlined { font-size: 16px; }
+    .breadcrumb-sep { color: var(--gray-primary-light); }
+
+    /* ========================================================
+       Page header bar
+       ======================================================== */
+    .page-title-bar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-md);
+    }
+    .page-title-bar h1 {
+      font-size: var(--font-size-h1);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      line-height: var(--line-height-heading);
+    }
+    .page-title-bar .subtitle {
+      font-size: var(--font-size-default);
+      color: var(--font-color-detail);
+      margin-top: 4px;
+    }
+    .page-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+
+    /* ========================================================
+       Buttons
+       ======================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--btn-padding-y) var(--btn-padding-x);
+      font-family: var(--font-family-base);
+      font-size: var(--btn-font-size);
+      font-weight: var(--btn-font-weight);
+      border-radius: var(--btn-border-radius);
+      border: var(--btn-border-width) solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      line-height: 1.4;
+    }
+    .btn .material-icons-outlined { font-size: 16px; }
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color);
+      border-color: var(--btn-primary-border-color);
+    }
+    .btn-primary:hover { background: var(--btn-primary-bg-hover); }
+    .btn-default {
+      background: var(--btn-default-bg);
+      color: var(--btn-default-color);
+      border-color: var(--btn-default-border-color);
+    }
+    .btn-default:hover { background: var(--btn-default-bg-hover); }
+    .btn-secondary {
+      background: var(--btn-secondary-bg);
+      color: var(--btn-secondary-color);
+      border-color: var(--btn-secondary-border-color);
+    }
+    .btn-secondary:hover {
+      background: var(--btn-secondary-bg-hover);
+      color: var(--btn-secondary-color-hover);
+    }
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--font-color-detail);
+      font-weight: var(--font-weight-medium);
+      padding: var(--btn-padding-y) var(--btn-padding-x);
+    }
+    .btn-link:hover { color: var(--font-color-default); }
+    .btn-sm {
+      padding: 4px 12px;
+      font-size: var(--font-size-small);
+    }
+
+    /* ========================================================
+       Tab Container
+       ======================================================== */
+    .tab-bar, .nav-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color-default);
+      gap: 0;
+      margin-bottom: var(--spacing-md);
+      list-style: none;
+      margin-top: 0;
+      padding: 0;
+    }
+    .nav-tabs > li {
+      list-style: none;
+    }
+    .tab-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-medium);
+      color: var(--font-color-detail);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      text-decoration: none;
+    }
+    .tab-item:hover { color: var(--brand-primary); }
+    .tab-item:hover { color: var(--brand-primary); }
+    .tab-item.active,
+    li.active > .tab-item {
+      color: var(--brand-primary);
+      border-bottom-color: var(--brand-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+    .tab-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 10px;
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-semibold);
+      background: var(--bg-color-secondary);
+      color: var(--font-color-detail);
+    }
+    .tab-item.active .tab-badge,
+    li.active > .tab-item .tab-badge,
+    .tab-item:hover .tab-badge {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+    }
+    .tab-content, .tab-pane { display: none; }
+    .tab-content.active, .tab-pane.active { display: block; }
+
+    /* Wizard step tabs */
+    .tab-numbered {
+      display: flex;
+      background: var(--bg-color-secondary);
+      border-bottom: 1px solid var(--border-color-default);
+      gap: 0;
+      margin-bottom: var(--spacing-md);
+      padding: var(--spacing-xs) var(--spacing-md) 0;
+      list-style: none;
+    }
+    .tab-numbered > li {
+      flex: 1;
+      min-width: 0;
+      list-style: none;
+    }
+    .tab-numbered .tab-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: var(--font-size-small);
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+    .tab-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      border-radius: var(--border-radius-default);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      background: var(--gray-primary-lighter);
+      color: var(--font-color-detail);
+    }
+    .tab-item.active .tab-step-num,
+    li.active > .tab-item .tab-step-num {
+      background: var(--brand-primary);
+      color: var(--color-white);
+    }
+    .tab-item.visited .tab-step-num,
+    li.visited > .tab-item .tab-step-num {
+      background: var(--gray-primary-dark);
+      color: var(--color-white);
+    }
+    /* Teal wizard variant */
+    .tab-numbered.teal .tab-item.active,
+    .tab-numbered.teal li.active > .tab-item { color: var(--brand-secondary); border-bottom-color: var(--brand-secondary); }
+    .tab-numbered.teal .tab-item:hover { color: var(--brand-secondary); }
+    .tab-numbered.teal .tab-item.active .tab-step-num,
+    .tab-numbered.teal li.active > .tab-item .tab-step-num { background: var(--brand-secondary); }
+
+    .modal-body > .mx-tabcontainer .tab-numbered {
+      margin-left: calc(-1 * var(--spacing-md));
+      margin-right: calc(-1 * var(--spacing-md));
+      padding-left: var(--spacing-md);
+      padding-right: var(--spacing-md);
+    }
+
+    /* ========================================================
+       Button Toggle (Cards / List)
+       ======================================================== */
+    .btn-toggle-group {
+      display: inline-flex;
+      border-radius: var(--border-radius-default);
+      overflow: hidden;
+      border: 1px solid var(--border-color-default);
+    }
+    .btn-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: none;
+      background: transparent;
+      color: var(--font-color-detail);
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .btn-toggle + .btn-toggle { border-left: 1px solid var(--border-color-default); }
+    .btn-toggle:hover { color: var(--brand-primary); background: var(--brand-primary-lighter); }
+    .btn-toggle.active {
+      background: var(--brand-primary-lighter);
+      color: var(--brand-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+    .btn-toggle .material-icons-outlined { font-size: 16px; }
+
+    /* ========================================================
+       Status Badges
+       ======================================================== */
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .status-badge.created { background: var(--brand-secondary-lighter); color: var(--brand-secondary-dark); }
+    .status-badge.open { background: var(--brand-success-lighter); color: var(--brand-success-dark); }
+    .status-badge.awaiting-quote { background: var(--brand-warning-lighter); color: var(--brand-warning-dark); }
+    .status-badge.received-by-lab { background: var(--brand-primary-lighter); color: var(--brand-primary-dark); }
+    .status-badge.test-in-progress { background: var(--brand-tertiary-lighter); color: var(--brand-tertiary-dark); }
+    .status-badge.waiting-deliverables { background: var(--brand-danger-lighter); color: var(--brand-danger-dark); }
+    .status-badge.closed { background: var(--bg-color-secondary); color: var(--font-color-detail); }
+
+    /* ========================================================
+       Card Grid
+       ======================================================== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--spacing-md);
+    }
+    .card {
+      background: var(--color-white);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      padding: var(--spacing-md);
+      transition: box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .card.card-request { border-top: 3px solid var(--brand-primary); }
+    .card.card-rfq { border-top: 3px solid var(--brand-secondary); }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-sm);
+    }
+    .card-header h4 {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+    }
+    .card-title-desc {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-sm);
+    }
+    .card-body { display: flex; flex-direction: column; gap: 6px; }
+    .card-field { display: flex; justify-content: space-between; font-size: var(--font-size-small); }
+    .card-field-label { color: var(--font-color-detail); }
+    .card-field-value { color: var(--font-color-default); font-weight: var(--font-weight-medium); }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--spacing-sm);
+      padding-top: var(--spacing-sm);
+      border-top: 1px solid var(--border-color-default);
+      font-size: var(--font-size-small);
+      color: var(--font-color-detail);
+    }
+
+    /* ========================================================
+       Datagrid
+       ======================================================== */
+    .datagrid-wrapper {
+      border: 1px solid var(--grid-border-color);
+      border-radius: 2px;
+      background: var(--color-white);
+      overflow: hidden;
+    }
+    .datagrid-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-sm);
+      border-bottom: 1px solid var(--grid-border-color);
+    }
+    .datagrid-toolbar-left { display: flex; align-items: center; gap: var(--spacing-xs); }
+    .datagrid-search {
+      padding: 6px 10px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-small);
+      width: 200px;
+      outline: none;
+    }
+    .datagrid-search:focus { border-color: var(--brand-secondary); }
+    .datagrid-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .datagrid-table thead th {
+      padding: var(--spacing-xs) var(--grid-padding-right);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-detail);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      text-align: left;
+      border-bottom: 1px solid var(--grid-border-color);
+      white-space: nowrap;
+    }
+    .datagrid-table .datagrid-header-row th {
+      padding: var(--spacing-xs) var(--grid-padding-right);
+      text-align: left;
+      background: var(--bg-color-secondary);
+      border-bottom: 3px solid var(--brand-primary);
+      vertical-align: top;
+    }
+    .datagrid-filter-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .datagrid-filter-header .filter-header-label {
+      font-family: 'Segoe UI', var(--font-family-base);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .datagrid-filter-header .filter-header-label .material-icons-outlined {
+      font-size: 14px;
+      vertical-align: middle;
+    }
+    .datagrid-table tbody td {
+      padding: var(--spacing-xs) var(--grid-padding-right);
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      border-bottom: 1px solid var(--grid-border-color);
+      white-space: nowrap;
+    }
+    .datagrid-table tbody tr { background: var(--color-white); transition: background 0.1s; cursor: pointer; }
+    .datagrid-table tbody tr:hover {
+      background: var(--brand-secondary-lighter);
+      box-shadow: inset 3px 0 0 var(--brand-secondary);
+    }
+    .datagrid-table tbody tr.selected {
+      background: var(--grid-bg-selected);
+      box-shadow: inset 3px 0 0 var(--brand-secondary);
+    }
+    .datagrid-header-row th .material-icons-outlined {
+      font-size: 16px;
+      vertical-align: middle;
+      color: var(--font-color-detail);
+      margin-left: 2px;
+    }
+    .filter-select-group {
+      position: relative;
+    }
+    .filter-select-input {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 6px 28px 6px 8px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      font-size: var(--font-size-small);
+      height: 32px;
+      background: var(--bg-color);
+      color: var(--font-color-detail);
+      cursor: pointer;
+      min-width: 80px;
+    }
+    .filter-select-chevron {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--font-color-detail);
+      pointer-events: none;
+    }
+    .datagrid-col-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      background: var(--color-white);
+      color: var(--font-color-detail);
+      font-size: var(--font-size-small);
+      font-family: var(--font-family-base);
+      cursor: pointer;
+    }
+    .datagrid-col-filter .material-icons-outlined { font-size: 14px; }
+    .row-action-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 0;
+      color: var(--font-color-detail);
+      font-size: 16px;
+      line-height: 1;
+    }
+    .row-action-btn:hover { color: var(--font-color-default); }
+    .row-action-wrapper { position: relative; display: inline-block; }
+    .popup-menu {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      z-index: 10;
+      background: var(--color-white);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      min-width: 180px;
+      padding: 4px 0;
+      display: none;
+    }
+    .popup-menu.visible { display: block; }
+    .popup-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .popup-menu-item:hover { background: var(--bg-color-secondary); }
+    .popup-menu-item .material-icons-outlined { font-size: 18px; color: var(--font-color-detail); }
+    .popup-menu-item.danger { color: var(--brand-primary); }
+    .popup-menu-item.danger .material-icons-outlined { color: var(--brand-primary); }
+
+    /* ========================================================
+       Accordion
+       ======================================================== */
+    .accordion-panel {
+      border: none;
+      border-bottom: 1px solid var(--border-color-default);
+      background: var(--color-white);
+    }
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--color-white);
+      cursor: pointer;
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-h6);
+      color: var(--font-color-header);
+      transition: background 0.15s;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .accordion-header:hover { background: var(--brand-secondary-lighter); }
+    .accordion-header .material-icons-outlined {
+      transition: transform 0.2s;
+      font-size: 20px;
+      color: var(--font-color-detail);
+    }
+    .accordion-panel.open .accordion-header { background: var(--color-white); }
+    .accordion-panel.open .accordion-header .material-icons-outlined { transform: rotate(180deg); }
+    .accordion-body {
+      display: none;
+      margin: 0 var(--spacing-md) var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: var(--bg-color-secondary);
+      border: 1px dashed var(--border-color-default);
+      position: relative;
+    }
+    .accordion-panel.open .accordion-body { display: block; }
+    .test-detail-actions {
+      display: flex;
+      gap: var(--spacing-sm);
+      justify-content: flex-end;
+      padding-bottom: var(--spacing-sm);
+    }
+    .accordion-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-sm) var(--spacing-lg);
+    }
+    .detail-label {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 4px;
+    }
+    .detail-value {
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+    }
+
+    /* ========================================================
+       Form Inputs
+       ======================================================== */
+    .form-group { margin-bottom: var(--form-group-margin-bottom); }
+    .form-label {
+      display: block;
+      font-size: var(--form-label-size);
+      font-weight: var(--form-label-weight);
+      color: var(--font-color-header);
+      margin-bottom: var(--form-label-gutter);
+    }
+    .form-label .required { color: var(--brand-danger); margin-left: 2px; }
+    .form-input {
+      width: 100%;
+      padding: var(--form-input-padding-y) var(--form-input-padding-x);
+      font-family: var(--font-family-base);
+      font-size: var(--form-input-font-size);
+      color: var(--form-input-color);
+      background: var(--form-input-bg);
+      border: var(--border-width-default) solid var(--form-input-border-color);
+      border-radius: var(--form-input-border-radius);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      line-height: var(--line-height-body);
+    }
+    .form-input::placeholder { color: var(--form-input-placeholder-color); }
+    .form-input:focus {
+      border-color: var(--form-input-border-focus-color);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+    }
+    .form-input.validation-error {
+      border-color: var(--brand-danger);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-danger) 20%, transparent);
+    }
+    .form-error-box {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      background: var(--brand-danger-lighter);
+      border: 1px solid var(--brand-danger);
+      border-radius: var(--border-radius-default);
+      font-size: var(--font-size-small);
+      color: var(--brand-danger);
+      margin-top: var(--spacing-xs);
+    }
+    .form-select {
+      width: 100%;
+      padding: var(--form-input-padding-y) var(--form-input-padding-x);
+      padding-right: 36px;
+      font-family: var(--font-family-base);
+      font-size: var(--form-input-font-size);
+      color: var(--form-input-color);
+      background: var(--form-input-bg);
+      border: var(--border-width-default) solid var(--form-input-border-color);
+      border-radius: var(--form-input-border-radius);
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236c717e' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+    }
+    .form-select:focus {
+      border-color: var(--form-input-border-focus-color);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+    }
+    .form-helper {
+      font-size: var(--font-size-small);
+      color: var(--font-color-detail);
+      margin-top: 4px;
+    }
+    .form-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+    }
+
+    /* ========================================================
+       Listview — Mendix Atlas mx-listview structure
+       ======================================================== */
+    .legs-card {
+      border: 1px solid var(--border-color-default);
+      border-radius: 2px;
+      background: var(--bg-color-secondary);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .legs-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px var(--spacing-sm);
+      padding-top: 20px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border-color-default);
+    }
+    .legs-card-header h3 {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+      margin: 0;
+    }
+    .legs-card-header .legs-count {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-semibold);
+      color: var(--brand-tertiary);
+    }
+    .legs-card-body {
+      background: var(--bg-color-secondary);
+      padding: var(--spacing-md);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .legs-card-body .form-control {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border-color-default);
+      border-radius: 1px;
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-small);
+      margin-bottom: var(--spacing-sm);
+      outline: none;
+      background: var(--color-white);
+      flex-shrink: 0;
+    }
+    .legs-card-body .form-control:focus {
+      border-color: var(--brand-secondary);
+    }
+    .mx-listview {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+    .mx-listview-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mx-listview-item {
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-sm);
+      background: var(--color-white);
+      border: 1px solid var(--border-color-default);
+      border-radius: 2px;
+      transition: all 0.15s;
+      cursor: pointer;
+      gap: 12px;
+      min-height: 70px;
+    }
+    .mx-listview-item:hover {
+      background: var(--brand-secondary-lighter);
+      border-color: var(--brand-secondary);
+    }
+    .mx-listview-item.selected {
+      background: var(--brand-secondary-lighter);
+      border-color: var(--brand-secondary);
+      box-shadow: inset 4px 0 0 var(--brand-secondary);
+    }
+    .mx-listview-item .leg-number-col {
+      font-size: 16px;
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      min-width: 30px;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1;
+      align-self: center;
+    }
+    .mx-listview-item .leg-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      flex: 1;
+      min-width: 0;
+    }
+    .mx-listview-item .leg-details-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+    }
+    .mx-listview-item .leg-test-id {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-normal);
+      color: var(--font-color-default);
+      line-height: 18px;
+      flex-shrink: 0;
+    }
+    .mx-listview-item .leg-details-top .status-badge {
+      margin-left: auto;
+      flex-shrink: 0;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: var(--font-size-small);
+      letter-spacing: 0.5px;
+      line-height: normal;
+    }
+    .mx-listview-item .leg-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-detail);
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .mx-listview-item .leg-info .instructions-no {
+      color: var(--font-color-detail);
+      font-weight: var(--font-weight-bold);
+    }
+
+    /* ========================================================
+       Section panels (General Info grouped sections)
+       ======================================================== */
+    .info-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+    .info-section {
+      background: var(--color-white);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      padding: var(--spacing-md);
+    }
+    .mx-dataview-content, .mx-groupbox-body { display: contents; }
+    .info-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-md)) var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-bottom: 1px solid var(--border-color-default);
+      background: var(--bg-color-secondary);
+    }
+    .info-section-header h3 {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--font-color-header);
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: var(--font-size-small);
+      border-bottom: 1px solid var(--border-color-default);
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-row-label { color: var(--font-color-detail); min-width: 120px; }
+    .info-row-value { color: var(--font-color-header); font-weight: var(--font-weight-medium); text-align: right; }
+    .warning-box {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-sm);
+      background: var(--brand-warning-lighter);
+      border-left: 3px solid var(--brand-warning);
+      border-radius: var(--border-radius-default);
+      font-size: var(--font-size-small);
+      color: var(--font-color-default);
+      margin-top: var(--spacing-xs);
+    }
+    .warning-box .material-icons-outlined { font-size: 18px; color: var(--brand-warning-dark); flex-shrink: 0; }
+    .info-note {
+      font-size: var(--font-size-small);
+      color: var(--font-color-detail);
+      font-style: italic;
+      border-left: 3px solid var(--brand-secondary);
+      padding-left: var(--spacing-xs);
+      margin-top: var(--spacing-xs);
+    }
+    .file-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--brand-tertiary);
+      font-size: var(--font-size-small);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .file-link span:first-child {
+      text-decoration: underline;
+    }
+    .file-link .delete-icon {
+      color: var(--brand-danger);
+      font-size: 18px;
+      cursor: pointer;
+      margin-left: auto;
+      text-decoration: none;
+    }
+    .file-date { font-size: var(--font-size-small); color: var(--font-color-detail); }
+
+    /* ========================================================
+       Documents Section
+       ======================================================== */
+    .doc-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-sm);
+    }
+    .doc-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .doc-section-title h4 {
+      font-weight: var(--font-weight-semibold);
+      margin: 0;
+    }
+    .doc-list {
+      border-top: 1px solid var(--border-color-default);
+    }
+    .doc-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-color-default);
+    }
+    .doc-item:last-child {
+      border-bottom: none;
+    }
+    .doc-icon {
+      font-size: 24px;
+      color: var(--font-color-detail);
+      flex-shrink: 0;
+    }
+    .doc-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .doc-name {
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .doc-name a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .doc-name a:hover {
+      color: var(--brand-secondary);
+      text-decoration: underline;
+    }
+    .doc-meta {
+      font-size: var(--font-size-small);
+      color: var(--font-color-detail);
+      margin-top: 2px;
+    }
+    .doc-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .doc-action-link {
+      color: var(--font-color-detail);
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+    .doc-action-link:hover {
+      color: var(--brand-secondary);
+    }
+    .doc-action-link .material-icons-outlined {
+      font-size: 20px;
+    }
+
+    /* ========================================================
+       Modal
+       ======================================================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.visible { display: flex; }
+    .modal-dialog {
+      background: var(--color-white);
+      border-radius: var(--border-radius-large);
+      box-shadow: var(--shadow-large);
+      width: 100%;
+      max-width: 740px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px var(--spacing-md);
+      border-bottom: 1px solid var(--border-color-default);
+    }
+    .modal-header h2 {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--font-color-detail);
+      font-size: 22px;
+      padding: 4px;
+    }
+    .modal-close:hover { color: var(--font-color-default); }
+    .modal-body {
+      padding: var(--spacing-md);
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex: 1;
+    }
+    .modal-title-block {
+      margin-bottom: var(--spacing-sm);
+    }
+    .modal-title-block h3 {
+      font-size: var(--font-size-h3);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin: 0;
+    }
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px var(--spacing-md);
+      border-top: 1px solid var(--border-color-default);
+    }
+    .modal-type-label {
+      font-size: 14px;
+      font-weight: var(--font-weight-bold);
+      color: var(--brand-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .modal-subtitle {
+      font-size: var(--font-size-h5);
+      font-weight: var(--font-weight-semibold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    /* ========================================================
+       Login View
+       ======================================================== */
+    .login-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 51px);
+    }
+    .login-card {
+      background: var(--color-white);
+      border-radius: var(--border-radius-large);
+      box-shadow: var(--shadow-large);
+      padding: var(--spacing-xxl);
+      width: 400px;
+      text-align: center;
+    }
+    .login-card h2 {
+      font-size: var(--font-size-h3);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-xs);
+    }
+    .login-card p {
+      color: var(--font-color-detail);
+      margin-bottom: var(--spacing-lg);
+    }
+    .role-filter {
+      width: 100%;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      margin-bottom: var(--spacing-sm);
+      outline: none;
+    }
+    .role-filter:focus {
+      border-color: var(--brand-secondary);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+    }
+    .role-list { display: flex; flex-direction: column; gap: 0; }
+    .role-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm);
+      border: 1px solid var(--border-color-default);
+      border-top: none;
+      background: var(--color-white);
+      cursor: pointer;
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-medium);
+      color: var(--font-color-header);
+      text-align: left;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .role-btn:first-child {
+      border-top: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default) var(--border-radius-default) 0 0;
+    }
+    .role-btn:last-child {
+      border-radius: 0 0 var(--border-radius-default) var(--border-radius-default);
+    }
+    .role-btn:hover {
+      background: var(--bg-color-secondary);
+    }
+    .role-btn.selected {
+      border-left: 3px solid var(--brand-primary);
+      background: var(--brand-primary-lighter);
+    }
+    .role-btn .role-chevron {
+      margin-left: auto;
+      font-size: 20px;
+      color: var(--font-color-detail);
+    }
+    .role-btn.selected .role-chevron {
+      color: var(--brand-primary);
+    }
+
+    /* ========================================================
+       Test Details Layout
+       ======================================================== */
+    .test-details-layout {
+      display: grid;
+      grid-template-columns: min-content 1fr;
+      gap: var(--spacing-md);
+    }
+    .test-details-left {
+      width: 391px;
+      min-width: 391px;
+      max-width: 391px;
+      align-self: stretch;
+    }
+    /* Confirmation view */
+    .confirmation-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+    }
+    .confirmation-card {
+      background: var(--color-white);
+      border-radius: var(--border-radius-large);
+      box-shadow: var(--shadow-medium);
+      padding: var(--spacing-xxl);
+      text-align: center;
+      max-width: 480px;
+    }
+    .confirmation-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--border-radius-circle);
+      background: var(--brand-success-lighter);
+      color: var(--brand-success);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: var(--spacing-md);
+    }
+    .confirmation-card h2 {
+      font-size: var(--font-size-h3);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-xs);
+    }
+    .confirmation-card p {
+      color: var(--font-color-detail);
+      margin-bottom: var(--spacing-md);
+    }
+    .confirmation-ref {
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-semibold);
+      color: var(--brand-primary);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    /* ========================================================
+       Utility
+       ======================================================== */
+    .flex-between { display: flex; align-items: center; justify-content: space-between; }
+    .gap-sm { gap: var(--spacing-sm); }
+    .gap-xs { gap: var(--spacing-xs); }
+    .mb-md { margin-bottom: var(--spacing-md); }
+    .mb-sm { margin-bottom: var(--spacing-sm); }
+    .mb-xs { margin-bottom: var(--spacing-xs); }
+    .mt-md { margin-top: var(--spacing-md); }
+    .text-detail { color: var(--font-color-detail); font-size: var(--font-size-small); }
+
+    .filter-text-input {
+      padding: 8px;
+      border: 1px solid var(--border-color-default);
+      border-left: none;
+      border-radius: 0 var(--border-radius-default) var(--border-radius-default) 0;
+      font-size: var(--font-size-small);
+      font-family: var(--font-family-base);
+      width: 80px;
+      outline: none;
+      background: var(--bg-color);
+      height: 32px;
+      box-sizing: border-box;
+    }
+    .filter-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius-default) 0 0 var(--border-radius-default);
+      font-size: var(--font-size-small);
+      font-weight: var(--font-weight-bold);
+      color: var(--brand-primary);
+      border: 1px solid var(--border-color-default);
+      border-right: none;
+      background: var(--bg-color);
+      box-sizing: border-box;
+    }
+    .filter-label.red { background: var(--bg-color); color: var(--brand-primary); }
+    .filter-col-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ========================================================
+       Responsive — Tablet Breakpoints
+       ======================================================== */
+
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 55;
+    }
+
+    /* ---- Tablet Landscape (≤ 1024px) ---- */
+    @media (max-width: 1024px) {
+      .main-content-inner {
+        padding: var(--spacing-sm) var(--spacing-md);
+      }
+      .nav-sidebar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 60;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease, width 0.2s ease;
+        width: 240px;
+      }
+      .nav-sidebar.expanded {
+        transform: translateX(0);
+        box-shadow: 4px 0 16px rgba(0,0,0,0.15);
+      }
+      .nav-sidebar .nav-label { display: inline; }
+      .nav-sidebar .nav-section-label { display: block; }
+      .nav-sidebar .nav-chevron { display: inline; }
+      .info-sections {
+        grid-template-columns: 1fr 1fr;
+      }
+      .datagrid-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .datagrid-table {
+        min-width: 900px;
+      }
+      .tab-numbered .tab-item {
+        font-size: var(--font-size-small);
+        padding: var(--spacing-xs) 6px;
+      }
+      .tab-step-num {
+        width: 20px;
+        height: 20px;
+        font-size: var(--font-size-small);
+      }
+      .modal-dialog {
+        max-width: calc(100vw - 32px);
+      }
+      .test-details-left {
+        width: 320px;
+        min-width: 320px;
+        max-width: 320px;
+      }
+      .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+      .login-card {
+        width: 380px;
+      }
+      .page-actions {
+        flex-wrap: wrap;
+        gap: var(--spacing-xs);
+      }
+    }
+
+    /* ---- Tablet Mid-range (≤ 834px) ---- */
+    @media (max-width: 834px) {
+      .main-content-inner {
+        padding: var(--spacing-sm);
+      }
+      .info-sections {
+        gap: var(--spacing-sm);
+      }
+      .test-details-left {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+      }
+      .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: var(--spacing-sm);
+      }
+      .tab-bar, .nav-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+      }
+      .tab-item {
+        flex-shrink: 0;
+      }
+      .page-title-bar h1 {
+        font-size: var(--font-size-h2);
+      }
+      .modal-body > .mx-tabcontainer .tab-numbered {
+        margin-left: calc(-1 * var(--spacing-sm));
+        margin-right: calc(-1 * var(--spacing-sm));
+        padding-left: var(--spacing-sm);
+        padding-right: var(--spacing-sm);
+      }
+      .modal-body {
+        padding: var(--spacing-sm);
+      }
+      .modal-footer,
+      .modal-header {
+        padding: 12px var(--spacing-sm);
+      }
+      .page-title-bar {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        align-items: flex-start;
+      }
+      .page-actions {
+        width: 100%;
+      }
+      .form-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Tablet Leg Selector (hidden on desktop, shown on tablet) */
+    .tablet-leg-selector {
+      display: none;
+    }
+
+    /* ========================================================
+       TABLET RESPONSIVE: 768px – 1199px
+       ======================================================== */
+    @media (min-width: 768px) and (max-width: 1199px) {
+
+      /* --- Page Header: stack title and actions vertically --- */
+      .page-title-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+      }
+      .page-title-bar h1 {
+        font-size: var(--font-size-h2);
+      }
+      .page-actions {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      /* --- Tabs: allow wrapping on narrow tablets --- */
+      .nav-tabs {
+        flex-wrap: wrap;
+        gap: var(--spacing-xxs);
+      }
+
+      /* --- Test Details Layout: stack vertically instead of side-by-side --- */
+      .test-details-layout {
+        display: flex !important;
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+
+      /* --- Hide the desktop legs sidebar --- */
+      .test-details-left {
+        display: none !important;
+      }
+
+      /* --- Show the tablet leg selector dropdown --- */
+      .tablet-leg-selector {
+        display: block;
+      }
+      .tablet-leg-selector-bar {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        background: var(--bg-color-default);
+        border: 1px solid var(--border-color-default);
+        border-radius: var(--border-radius-default);
+        margin-bottom: var(--spacing-md);
+      }
+      .tablet-leg-selector-bar .leg-selector-label {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-semibold);
+        color: var(--font-color-detail);
+        white-space: nowrap;
+      }
+      .tablet-leg-selector-bar .leg-selector-control {
+        flex: 1;
+        min-width: 0;
+      }
+      .tablet-leg-selector-bar select {
+        width: 100%;
+        padding: 6px var(--spacing-sm);
+        border: 1px solid var(--border-color-default);
+        border-radius: var(--border-radius-default);
+        background: var(--color-white);
+        font-size: var(--font-size-default);
+        color: var(--font-color-default);
+        cursor: pointer;
+      }
+      .tablet-leg-selector-bar .legs-count-badge {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-semibold);
+        color: var(--brand-primary);
+        white-space: nowrap;
+      }
+
+      /* --- Test details right: full width --- */
+      .test-details-right {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      /* --- Requested Tests Datagrid: responsive columns for tablet --- */
+      .test-details-right .widget-datagrid-grid {
+        --datagrid-columns: minmax(50px, 0.3fr) minmax(140px, 2fr) minmax(100px, 0.8fr) minmax(90px, 0.7fr) 40px !important;
+      }
+      .test-details-right .td,
+      .test-details-right .th {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .test-details-right .td:nth-child(2) {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      /* --- Accordion detail grid: 2 cols on tablet instead of 3 --- */
+      .accordion-detail-grid {
+        grid-template-columns: 1fr 1fr !important;
+      }
+
+      /* --- Test detail actions: wrap buttons --- */
+      .test-detail-actions {
+        flex-wrap: wrap;
+      }
+
+      /* --- Documents section: prevent overflow --- */
+      .doc-item {
+        flex-wrap: wrap;
+      }
+      .doc-name a {
+        word-break: break-all;
+      }
+
+      /* --- Dashboard datagrid: responsive for tablet too --- */
+      #dashboard-list-view .widget-datagrid-grid {
+        --datagrid-columns:
+          minmax(70px, 0.5fr)
+          minmax(140px, 2fr)
+          minmax(80px, 0.6fr)
+          minmax(100px, 0.8fr)
+          minmax(90px, 0.7fr)
+          minmax(90px, 0.6fr)
+          minmax(90px, 0.7fr)
+          40px !important;
+      }
+      #dashboard-list-view .td,
+      #dashboard-list-view .th {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      #dashboard-list-view .td:nth-child(2) {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      /* --- DUT Details datagrid: responsive for tablet --- */
+      #tab-dut-details .widget-datagrid-grid {
+        --datagrid-columns:
+          minmax(30px, 0.2fr)
+          minmax(80px, 0.6fr)
+          minmax(120px, 1.5fr)
+          minmax(50px, 0.4fr)
+          minmax(90px, 0.8fr)
+          minmax(60px, 0.3fr)
+          minmax(60px, 0.3fr)
+          minmax(60px, 0.3fr)
+          minmax(60px, 0.3fr)
+          40px !important;
+      }
+      #tab-dut-details .td,
+      #tab-dut-details .th {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* --- Prevent overall horizontal overflow --- */
+      .main-content {
+        min-width: 0;
+        overflow-x: hidden;
+      }
+      .main-content-inner {
+        min-width: 0;
+        overflow-x: hidden;
+      }
+
+      /* --- Info sections (General Info tab): stack on tablet --- */
+      .info-sections {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* --- KPI Cards: 2-col wrap on tablet --- */
+      .card-grid {
+        flex-wrap: wrap;
+      }
+      .card-grid .kpi-card {
+        flex: 1 1 calc(50% - var(--spacing-md));
+        min-width: 200px;
+      }
+    }
+
+    /* ---- Tablet Portrait (≤ 768px) ---- */
+    @media (max-width: 768px) {
+      .main-content-inner {
+        padding: var(--spacing-xs) var(--spacing-sm);
+      }
+      .info-sections {
+        grid-template-columns: 1fr;
+      }
+      .test-details-layout {
+        grid-template-columns: 1fr;
+      }
+      .test-details-left {
+        width: 100%;
+        min-width: unset;
+        max-width: 100%;
+      }
+      .legs-card {
+        max-height: 260px;
+      }
+      .mx-listview-list {
+        flex-direction: row;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: var(--spacing-xs);
+        padding-bottom: var(--spacing-xs);
+      }
+      .mx-listview-item {
+        min-width: 200px;
+        flex-shrink: 0;
+      }
+      .accordion-detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .modal-dialog {
+        max-width: calc(100vw - 16px);
+        max-height: calc(100vh - 32px);
+        margin: 16px 8px;
+        border-radius: var(--border-radius-default);
+      }
+      .tab-numbered .tab-item {
+        font-size: var(--font-size-small);
+        padding: var(--spacing-xs) 6px;
+        white-space: nowrap;
+      }
+      .tab-numbered .tab-step-num {
+        font-size: var(--font-size-small);
+      }
+      .tab-numbered .tab-item .tab-step-num {
+        margin-right: 4px;
+      }
+      .tab-numbered {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+      }
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+      .login-card {
+        width: calc(100vw - 32px);
+        max-width: 400px;
+        padding: var(--spacing-lg);
+      }
+      .page-actions {
+        flex-wrap: wrap;
+      }
+      .btn {
+        min-height: 44px;
+      }
+      .tab-item {
+        min-height: 44px;
+      }
+      .popup-menu-item {
+        min-height: 44px;
+      }
+      .role-btn {
+        min-height: 48px;
+      }
+      .topbar-logo span {
+        display: none;
+      }
+      .breadcrumb {
+        flex-wrap: wrap;
+      }
+      .doc-item {
+        flex-wrap: wrap;
+      }
+      .doc-info {
+        min-width: calc(100% - 48px);
+      }
+      .confirmation-card {
+        padding: var(--spacing-lg);
+      }
+      .accordion-body {
+        margin: 0 var(--spacing-sm) var(--spacing-sm);
+        padding: var(--spacing-sm);
+      }
+      .datagrid-table {
+        min-width: 1000px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-backdrop" onclick="document.getElementById('sidebar').classList.remove('expanded'); this.style.display='none';"></div>
+
+  <div class="app-shell">
+    <!-- ============================================================
+         TOPBAR
+         ============================================================ -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-hamburger" onclick="toggleSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </button>
+       <div class="topbar-logo">
+  <img src="Logo.png" alt="Yazaki — YNA Testing Portal">
+</div>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-user">Jeffrey Malotke</span>
+        <button class="btn btn-default btn-sm" id="topbar-role-btn">Requester <span class="material-icons-outlined">expand_more</span></button>
+      </div>
+    </header>
+
+    <!-- ============================================================
+         APP BODY (Sidebar + Main)
+         ============================================================ -->
+    <div class="app-body">
+      <!-- Sidebar -->
+      <nav class="mx-navigationtree nav-sidebar expanded" id="sidebar">
+        <ul class="nav">
+        <li class="mx-navigationtree-has-items nav-sidebar-item active open" data-nav="test-requests">
+          <a onclick="toggleNavGroup(this.parentElement)">
+            <span class="material-icons-outlined">description</span>
+            <span class="nav-label">Test Requests</span>
+            <span class="material-icons-outlined nav-chevron">expand_more</span>
+          </a>
+          <ul class="nav nav-sub-items" id="sub-test-requests">
+            <li class="nav-sub-item active"><a onclick="navigateTo('dashboard')">Open</a></li>
+            <li class="nav-sub-item"><a>Pending Approval</a></li>
+          </ul>
+        </li>
+
+        <li class="mx-navigationtree-has-items nav-sidebar-item" data-nav="quotes">
+          <a onclick="toggleNavGroup(this.parentElement)">
+            <span class="material-icons-outlined">request_quote</span>
+            <span class="nav-label">RFQ</span>
+            <span class="material-icons-outlined nav-chevron">expand_more</span>
+          </a>
+          <ul class="nav nav-sub-items" id="sub-quotes">
+            <li class="nav-sub-item"><a>All Quotes</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-sidebar-item">
+          <a>
+            <span class="material-icons-outlined">edit_note</span>
+            <span class="nav-label">My Drafts</span>
+          </a>
+        </li>
+
+        <li class="nav-sidebar-spacer"></li>
+
+        <li class="nav-sidebar-item">
+          <a onclick="navigateTo('login')">
+            <span class="material-icons-outlined">logout</span>
+            <span class="nav-label">Sign out</span>
+          </a>
+        </li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Background wave -->
+        <div class="bg-wave">
+          <svg viewBox="0 0 1440 1024" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0H1440V580L0 290V0Z" fill="#D1ECED" opacity="0.5"/>
+            <path d="M340 0H1440V497L-17 671L340 0Z" fill="#EDF1F9" opacity="0.6"/>
+          </svg>
+        </div>
+
+        <div class="main-content-inner">
+
+          <!-- ========================================================
+               VIEW: LOGIN
+               ======================================================== -->
+          <div class="view active" id="view-login">
+            <div class="login-wrapper">
+              <div class="login-card">
+                <h2>Welcome</h2>
+                <p>Select your role to continue</p>
+                <input class="role-filter" type="text" placeholder="Filter roles...">
+                <div class="role-list">
+                  <button class="role-btn selected" onclick="navigateTo('dashboard')">
+                    <div>
+                      <div>Requester</div>
+                      <div style="font-size:var(--font-size-small);color:var(--font-color-detail);font-weight:400">Submit and track test requests</div>
+                    </div>
+                    <span class="material-icons-outlined role-chevron">chevron_right</span>
+                  </button>
+                  <button class="role-btn" onclick="navigateTo('dashboard')">
+                    <div>
+                      <div>Requester Manager</div>
+                      <div style="font-size:var(--font-size-small);color:var(--font-color-detail);font-weight:400">Approve and manage requests</div>
+                    </div>
+                    <span class="material-icons-outlined role-chevron">chevron_right</span>
+                  </button>
+                  <button class="role-btn" onclick="navigateTo('dashboard')">
+                    <div>
+                      <div>Test Manager</div>
+                      <div style="font-size:var(--font-size-small);color:var(--font-color-detail);font-weight:400">Oversee testing operations</div>
+                    </div>
+                    <span class="material-icons-outlined role-chevron">chevron_right</span>
+                  </button>
+                  <button class="role-btn" onclick="navigateTo('dashboard')">
+                    <div>
+                      <div>Operator</div>
+                      <div style="font-size:var(--font-size-small);color:var(--font-color-detail);font-weight:400">Execute tests and record results</div>
+                    </div>
+                    <span class="material-icons-outlined role-chevron">chevron_right</span>
+                  </button>
+                  <button class="role-btn" onclick="navigateTo('dashboard')">
+                    <div>
+                      <div>Fixture Designer</div>
+                      <div style="font-size:var(--font-size-small);color:var(--font-color-detail);font-weight:400">Design and manage fixtures</div>
+                    </div>
+                    <span class="material-icons-outlined role-chevron">chevron_right</span>
+                  </button>
+                  <button class="role-btn" onclick="navigateTo('dashboard')">
+                    <div>
+                      <div>Project Lead</div>
+                      <div style="font-size:var(--font-size-small);color:var(--font-color-detail);font-weight:400">Lead project coordination</div>
+                    </div>
+                    <span class="material-icons-outlined role-chevron">chevron_right</span>
+                  </button>
+                  <button class="role-btn" onclick="navigateTo('dashboard')">
+                    <div>
+                      <div>Administrator</div>
+                      <div style="font-size:var(--font-size-small);color:var(--font-color-detail);font-weight:400">System configuration</div>
+                    </div>
+                    <span class="material-icons-outlined role-chevron">chevron_right</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               VIEW: DASHBOARD
+               ======================================================== -->
+          <div class="view" id="view-dashboard">
+            <div class="page-title-bar">
+              <div>
+                <h1>Test Requests</h1>
+                <p class="subtitle">Manage and track all testing requests and quotes</p>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-link mx-link"><span class="material-icons-outlined">file_upload</span> Export</button>
+                <button class="btn btn-default" onclick="openModal('rfq')"><span class="material-icons-outlined">add</span> New RFQ</button>
+                <button class="btn btn-primary" onclick="openModal('request')"><span class="material-icons-outlined">add</span> New Request</button>
+              </div>
+            </div>
+
+            <!-- Toggle -->
+            <div class="flex-between mb-sm">
+              <div></div>
+              <div class="btn-toggle-group">
+                <button class="btn-toggle active" id="toggle-cards" onclick="toggleCardList('cards')">Cards</button>
+                <button class="btn-toggle" id="toggle-list" onclick="toggleCardList('list')">List</button>
+              </div>
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="mx-tabcontainer">
+            <ul class="nav nav-tabs tab-bar" id="dashboard-tabs">
+              <li><a role="tab" class="tab-item">All <span class="tab-badge">33</span></a></li>
+              <li><a role="tab" class="tab-item">Created <span class="tab-badge">2</span></a></li>
+              <li><a role="tab" class="tab-item">Rejected <span class="tab-badge">0</span></a></li>
+              <li><a role="tab" class="tab-item">Pending Approval <span class="tab-badge">1</span></a></li>
+              <li class="active"><a role="tab" class="tab-item">Open <span class="tab-badge">6</span></a></li>
+              <li><a role="tab" class="tab-item">Closed <span class="tab-badge">24</span></a></li>
+            </ul>
+            </div>
+
+            <!-- Card View -->
+            <div id="dashboard-cards-view">
+              <div class="card-grid">
+                <div class="card card-request" onclick="navigateTo('request-details')">
+                  <div class="card-header">
+                    <h4>TR25-139</h4>
+                    <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+                  </div>
+                  <div class="card-title-desc">2019 A123 ddd ddd ANALYSIS</div>
+                  <div class="card-body">
+                    <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - SUBARU</span></div>
+                    <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jeffrey Malotke</span></div>
+                    <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+                  </div>
+                  <div class="card-footer"><span>Analysis</span><span>RTCD 12/10/25</span></div>
+                </div>
+
+                <div class="card card-rfq" onclick="navigateTo('request-details')">
+                  <div class="card-header">
+                    <h4>RFQ26-12</h4>
+                    <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+                  </div>
+                  <div class="card-title-desc">2026 HONDA B456 CONNECTOR QUOTE</div>
+                  <div class="card-body">
+                    <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - HONDA</span></div>
+                    <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Unassigned</span></div>
+                    <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+                  </div>
+                  <div class="card-footer"><span>RFQ</span><span>RFQ 3/20/26</span></div>
+                </div>
+
+                <div class="card card-request" onclick="navigateTo('request-details')">
+                  <div class="card-header">
+                    <h4>TR25-120</h4>
+                    <span class="badge status-badge received-by-lab">Received by Lab</span>
+                  </div>
+                  <div class="card-title-desc">2019 A123 ddd ddd ANALYSIS</div>
+                  <div class="card-body">
+                    <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">STELLANTIS BU</span></div>
+                    <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jeffrey Malotke</span></div>
+                    <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+                  </div>
+                  <div class="card-footer"><span>Analysis</span><span>RTCD 9/25/25</span></div>
+                </div>
+
+                <div class="card card-request" onclick="navigateTo('request-details')">
+                  <div class="card-header">
+                    <h4>TR26-8</h4>
+                    <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+                  </div>
+                  <div class="card-title-desc">2019 A123 ddd ddd ANALYSIS</div>
+                  <div class="card-body">
+                    <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - HONDA</span></div>
+                    <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Unassigned</span></div>
+                    <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jennifer Simko</span></div>
+                  </div>
+                  <div class="card-footer"><span>Analysis</span><span>RTCD 5/13/26</span></div>
+                </div>
+
+                <div class="card card-request" onclick="navigateTo('request-details')">
+                  <div class="card-header">
+                    <h4>TR25-101</h4>
+                    <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+                  </div>
+                  <div class="card-title-desc">2019 WAYMO ddd ddd CTD CRIMP VALIDATION</div>
+                  <div class="card-body">
+                    <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - MAZDA</span></div>
+                    <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jeffrey Malotke</span></div>
+                    <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jeffrey Malotke</span></div>
+                  </div>
+                  <div class="card-footer"><span>CTD Crimp Validation</span><span>RTCD 7/15/25</span></div>
+                </div>
+
+                <div class="card card-rfq" onclick="navigateTo('request-details')">
+                  <div class="card-header">
+                    <h4>RFQ25-44</h4>
+                    <span class="badge status-badge received-by-lab">Received by Lab</span>
+                  </div>
+                  <div class="card-title-desc">2019 FORD ddd ddd WIRE PULL QUOTE</div>
+                  <div class="card-body">
+                    <div class="card-field"><span class="card-field-label">BU/FG</span><span class="card-field-value">TPNO - FORD</span></div>
+                    <div class="card-field"><span class="card-field-label">Lead</span><span class="card-field-value">Jennifer Simko</span></div>
+                    <div class="card-field"><span class="card-field-label">Requester</span><span class="card-field-value">Jennifer Simko</span></div>
+                  </div>
+                  <div class="card-footer"><span>RFQ</span><span>RFQ 6/30/25</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- List View (Datagrid) -->
+            <div id="dashboard-list-view" style="display:none">
+              <div class="widget-datagrid datagrid-wrapper">
+                <table class="table datagrid-table infinite-loading">
+                  <thead>
+                    <tr class="datagrid-header-row">
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Request #<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Description<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Type<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Status<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group filter-select-group"><select class="filter-select-input"><option value="">Select</option></select><span class="material-icons-outlined filter-select-chevron">expand_more</span></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">BU/FG<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Completion Date<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Requester<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th style="width:40px; text-align:center"><span class="material-icons-outlined" style="font-size:18px; color:var(--font-color-detail); cursor:pointer;">visibility</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr onclick="navigateTo('request-details')">
+                      <td>TR25-139</td>
+                      <td>2019 A123 ddd ddd ANALYSIS</td>
+                      <td>Analysis</td>
+                      <td><span class="badge status-badge awaiting-quote">Awaiting Quote</span></td>
+                      <td>TPNO - SUBARU</td>
+                      <td>12/10/2025</td>
+                      <td>Jeffrey Malotke</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr onclick="navigateTo('request-details')">
+                      <td>RFQ26-12</td>
+                      <td>2026 HONDA B456 CONNECTOR QUOTE</td>
+                      <td>RFQ</td>
+                      <td><span class="badge status-badge created">Created</span></td>
+                      <td>TPNO - HONDA</td>
+                      <td>3/20/2026</td>
+                      <td>Jeffrey Malotke</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr onclick="navigateTo('request-details')">
+                      <td>TR25-120</td>
+                      <td>2019 A123 ddd ddd ANALYSIS</td>
+                      <td>Analysis</td>
+                      <td><span class="badge status-badge received-by-lab">Received by Lab</span></td>
+                      <td>STELLANTIS BU</td>
+                      <td>9/25/2025</td>
+                      <td>Jeffrey Malotke</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr onclick="navigateTo('request-details')">
+                      <td>TR26-8</td>
+                      <td>2019 A123 ddd ddd ANALYSIS</td>
+                      <td>Analysis</td>
+                      <td><span class="badge status-badge waiting-deliverables">Waiting on Deliverables</span></td>
+                      <td>TPNO - HONDA</td>
+                      <td>5/13/2026</td>
+                      <td>Jennifer Simko</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr onclick="navigateTo('request-details')">
+                      <td>TR25-101</td>
+                      <td>2019 WAYMO ddd ddd CTD CRIMP VALIDATION</td>
+                      <td>CTD Crimp Validation</td>
+                      <td><span class="badge status-badge open">Open</span></td>
+                      <td>TPNO - MAZDA</td>
+                      <td>7/15/2025</td>
+                      <td>Jeffrey Malotke</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr onclick="navigateTo('request-details')">
+                      <td>RFQ25-44</td>
+                      <td>2019 FORD ddd ddd WIRE PULL QUOTE</td>
+                      <td>RFQ</td>
+                      <td><span class="badge status-badge closed">Closed</span></td>
+                      <td>TPNO - FORD</td>
+                      <td>6/30/2025</td>
+                      <td>Jennifer Simko</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr onclick="navigateTo('request-details')">
+                      <td>TR25-88</td>
+                      <td>2019 WAYMO aaa aaa ANALYSIS</td>
+                      <td>Analysis</td>
+                      <td><span class="badge status-badge test-in-progress">Test in Progress</span></td>
+                      <td>TPNO - MAZDA</td>
+                      <td>7/1/2025</td>
+                      <td>Jeffrey Malotke</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               VIEW: REQUEST DETAILS
+               ======================================================== -->
+          <div class="mx-dataview view" id="view-request-details">
+            <div class="mx-dataview-content">
+            <div class="breadcrumb">
+              <a onclick="navigateTo('dashboard')"><span class="material-icons-outlined">home</span></a>
+              <span class="breadcrumb-sep">›</span>
+              <a onclick="navigateTo('dashboard')">Request List</a>
+              <span class="breadcrumb-sep">›</span>
+              <span>TR26-6</span>
+            </div>
+
+            <div class="page-title-bar">
+              <div style="display:flex;align-items:center;gap:var(--spacing-sm)">
+                <h1>TR26-6 — 2020 A123 dd ANALYSIS</h1>
+                <span class="badge status-badge created">Created</span>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-default">View Linked Test Requests</button>
+                <button class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+
+            <!-- Detail Tabs -->
+            <div class="mx-tabcontainer">
+            <ul class="nav nav-tabs tab-bar" id="detail-tabs">
+              <li class="active"><a role="tab" class="tab-item" onclick="switchDetailTab('general-info')">General Info</a></li>
+              <li><a role="tab" class="tab-item" onclick="switchDetailTab('dut-details')">DUT Details</a></li>
+              <li><a role="tab" class="tab-item" onclick="switchDetailTab('test-details')">Requested Tests</a></li>
+            </ul>
+            </div>
+
+            <!-- TAB: General Info -->
+            <div class="tab-content tab-pane active" role="tabpanel" id="tab-general-info">
+              <div class="mx-layoutgrid info-sections">
+                <!-- General Information -->
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>General Information</h3>
+                    <button class="btn btn-sm btn-default">Edit</button>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="info-row"><span class="info-row-label">Test Request #</span><span class="info-row-value">TR26-6</span></div>
+                  <div class="info-row"><span class="info-row-label">Test Description</span><span class="info-row-value">2020 A123 dd ANALYSIS</span></div>
+                  <div class="info-row"><span class="info-row-label">Customer (OEM)</span><span class="info-row-value">A123</span></div>
+                  <div class="info-row"><span class="info-row-label">Request Type *</span><span class="info-row-value">Analysis</span></div>
+                  <div class="info-row"><span class="info-row-label">Model Year</span><span class="info-row-value"></span></div>
+                  <div class="info-row"><span class="info-row-label">Program</span><span class="info-row-value"></span></div>
+                  <div class="info-row"><span class="info-row-label">Product Type</span><span class="info-row-value">BEC</span></div>
+                  <div class="info-row"><span class="info-row-label">Product Name</span><span class="info-row-value"></span></div>
+                  <div class="info-row"><span class="info-row-label">Associated RFQ</span><span class="info-row-value"></span></div>
+                  <div class="info-row"><span class="info-row-label">UDP</span><span class="info-row-value">PDP23-001</span></div>
+                  <div class="info-row"><span class="info-row-label">BU/FG</span><span class="info-row-value">Not provided</span></div>
+                  </div>
+                </div>
+
+                <!-- Project Parameters & Fixtures -->
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>Project Parameters &amp; Fixtures</h3>
+                    <button class="btn btn-sm btn-default">Edit</button>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="form-group">
+                    <label class="control-label form-label">Maintain Vehicle Position <span class="required">*</span></label>
+                    <div class="alert alert-danger form-error-box">Vehicle position required</div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label form-label">Related to a previous request?</label>
+                    <div class="text-detail">Not specified</div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label form-label">Is fixtures required? <span class="required">*</span></label>
+                    <div class="alert alert-danger form-error-box">Fixtures required</div>
+                  </div>
+                  <div class="alert alert-warning warning-box">
+                    <span class="material-icons-outlined">warning</span>
+                    <span>If "No" is selected, samples will be recycled by the Testing Center after completion.</span>
+                  </div>
+                  </div>
+                </div>
+
+                <!-- Timing -->
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>Timing</h3>
+                    <button class="btn btn-sm btn-default">Edit</button>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="info-row"><span class="info-row-label">RTCD *</span><span class="info-row-value">TBD</span></div>
+                  <div class="alert alert-danger form-error-box">Timing required</div>
+                  </div>
+                </div>
+
+                <!-- DVPR -->
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>DVPR</h3>
+                    <button class="btn btn-sm btn-default">Add DVPR</button>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="file-link">
+                    <span>Bill Breakdown.xlsx</span>
+                    <span class="material-icons-outlined delete-icon">delete</span>
+                  </div>
+                  <div class="file-date">Uploaded 8/20/2026</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Second row -->
+              <div class="mx-layoutgrid info-sections">
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>Personal Information</h3>
+                    <button class="btn btn-sm btn-default">Edit</button>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="info-row"><span class="info-row-label">Requester</span><span class="info-row-value">Jeffrey Malotke</span></div>
+                  <div class="info-row"><span class="info-row-label">Email</span><span class="info-row-value">jeffrey.malotke@us.yazaki.com</span></div>
+                  <div class="info-row"><span class="info-row-label">Manager</span><span class="info-row-value">Not provided</span></div>
+                  <div class="info-row"><span class="info-row-label">Program Manager</span><span class="info-row-value"></span></div>
+                  </div>
+                </div>
+
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>Supporting Documents</h3>
+                    <button class="btn btn-sm btn-default">Add Docs</button>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="text-detail">Not provided</div>
+                  <div class="alert alert-info info-note">Be sure CAD files are Step files when attached. Size limit is 25 MB</div>
+                  </div>
+                </div>
+
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>CT Scan Details</h3>
+                    <button class="btn btn-sm btn-default">Edit</button>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="info-row"><span class="info-row-label">CT Scan Required?</span><span class="info-row-value">Not provided</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DUT Details & Requested Tests Cards -->
+              <div class="mx-layoutgrid info-sections" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>DUT Details</h3>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="info-row"><span class="info-row-label">Part Number</span><span class="info-row-value">7283-1180-40</span></div>
+                  <div class="info-row"><span class="info-row-label">Part Description</span><span class="info-row-value">Connector Housing</span></div>
+                  <div class="info-row"><span class="info-row-label">Quantity</span><span class="info-row-value">50</span></div>
+                  <div class="info-row"><span class="info-row-label">Material</span><span class="info-row-value">PA66 GF30</span></div>
+                  <div class="info-row"><span class="info-row-label">Supplier</span><span class="info-row-value">Yazaki Components</span></div>
+                  <div class="info-row"><span class="info-row-label">Drawing Rev</span><span class="info-row-value">Rev C</span></div>
+                  </div>
+                </div>
+
+                <div class="mx-groupbox info-section">
+                  <div class="mx-groupbox-header info-section-header">
+                    <h3>Requested Tests</h3>
+                  </div>
+                  <div class="mx-groupbox-body">
+                  <div class="info-row"><span class="info-row-label">Tests</span><span class="info-row-value">Vibration Analysis, Thermal Cycling, Salt Spray Corrosion</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB: DUT Details -->
+            <div class="tab-content tab-pane" role="tabpanel" id="tab-dut-details">
+              <div class="widget-datagrid datagrid-wrapper">
+                <table class="table datagrid-table infinite-loading">
+                  <thead>
+                    <tr class="datagrid-header-row">
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">DUT #<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Part Number<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Part Description<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Qty Received<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Material<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Supplier<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Drawing Rev<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Color<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th><div class="datagrid-filter-header"><span class="filter-header-label">Lot Number<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                      <th style="width:40px; text-align:center"><span class="material-icons-outlined" style="font-size:18px; color:var(--font-color-detail); cursor:pointer;">visibility</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>7283-1180-40</td>
+                      <td>Connector Housing</td>
+                      <td>50</td>
+                      <td>PA66 GF30</td>
+                      <td>Yazaki Components</td>
+                      <td>Rev C</td>
+                      <td>Natural</td>
+                      <td>LOT-2025-0134</td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>7114-4110-02</td>
+                      <td>Female Terminal</td>
+                      <td>200</td>
+                      <td>Brass, Tin Plated</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>CAVS-0.5-RD</td>
+                      <td>CAVS 0.5sq Wire Red</td>
+                      <td>100m</td>
+                      <td>Copper / PVC</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">visibility</span> View Details</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- TAB: Test Details (Requested Tests) -->
+            <div class="tab-content tab-pane" role="tabpanel" id="tab-test-details">
+              <!-- Tablet Leg Selector (visible only at 768–1199px via CSS) -->
+              <div class="tablet-leg-selector">
+                <div class="tablet-leg-selector-bar">
+                  <span class="leg-selector-label">Leg:</span>
+                  <div class="leg-selector-control">
+                    <select id="tablet-leg-dropdown" onchange="selectLegFromDropdown(this)">
+                      <option value="22">Leg 22 — 25-77-26 — Awaiting Quote</option>
+                      <option value="23" selected>Leg 23 — 25-77-26 — Received by Lab</option>
+                      <option value="24">Leg 24 — 25-77-26 — Test in Progress</option>
+                      <option value="25">Leg 25 — 25-77-26 — Waiting on Deliverables</option>
+                      <option value="26">Leg 26 — 25-77-26 — Open</option>
+                    </select>
+                  </div>
+                  <span class="legs-count-badge">26 Legs</span>
+                </div>
+              </div>
+
+              <div class="test-details-layout">
+                <!-- Left: Leg list -->
+                <div class="test-details-left">
+                  <div class="legs-card">
+                    <div class="legs-card-header">
+                      <h3>Number of Legs</h3>
+                      <span class="legs-count">26</span>
+                    </div>
+                    <div class="legs-card-body">
+                      <input class="form-control" type="text" placeholder="Filter Legs...">
+                      <div class="mx-listview">
+                        <ul class="mx-listview-list">
+                          <li class="mx-listview-item" onclick="selectLeg(this, 22)">
+                            <span class="leg-number-col">22</span>
+                            <div class="leg-details">
+                              <div class="leg-details-top">
+                                <span class="leg-test-id">25-77-26</span>
+                                <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+                              </div>
+                              <div class="leg-info">
+                                <span>46 hrs</span>
+                                <span class="instructions-no">Instructions : NO</span>
+                                <span>Dependent: Leg 24</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mx-listview-item selected" onclick="selectLeg(this, 23)">
+                            <span class="leg-number-col">23</span>
+                            <div class="leg-details">
+                              <div class="leg-details-top">
+                                <span class="leg-test-id">25-77-26</span>
+                                <span class="badge status-badge received-by-lab">Received by Lab</span>
+                              </div>
+                              <div class="leg-info">
+                                <span>46 hrs</span>
+                                <span class="instructions-no">Instructions : NO</span>
+                                <span>Dependent: Leg 24</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mx-listview-item" onclick="selectLeg(this, 24)">
+                            <span class="leg-number-col">24</span>
+                            <div class="leg-details">
+                              <div class="leg-details-top">
+                                <span class="leg-test-id">25-77-26</span>
+                                <span class="badge status-badge test-in-progress">Test in Progress</span>
+                              </div>
+                              <div class="leg-info">
+                                <span>46 hrs</span>
+                                <span class="instructions-no">Instructions : NO</span>
+                                <span>Dependent: Leg 24</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mx-listview-item" onclick="selectLeg(this, 25)">
+                            <span class="leg-number-col">25</span>
+                            <div class="leg-details">
+                              <div class="leg-details-top">
+                                <span class="leg-test-id">25-77-26</span>
+                                <span class="badge status-badge waiting-deliverables">Waiting on Deliverables</span>
+                              </div>
+                              <div class="leg-info">
+                                <span>46 hrs</span>
+                                <span class="instructions-no">Instructions : NO</span>
+                                <span>Dependent: Leg 24</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mx-listview-item" onclick="selectLeg(this, 26)">
+                            <span class="leg-number-col">26</span>
+                            <div class="leg-details">
+                              <div class="leg-details-top">
+                                <span class="leg-test-id">25-77-26</span>
+                                <span class="badge status-badge open">Open</span>
+                              </div>
+                              <div class="leg-info">
+                                <span>46 hrs</span>
+                                <span class="instructions-no">Instructions : NO</span>
+                                <span>Dependent: Leg 24</span>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Datagrid + Accordion -->
+                <div class="test-details-right">
+                  <div class="datagrid-wrapper mb-md">
+                    <table class="table datagrid-table infinite-loading">
+                      <thead>
+                        <tr class="datagrid-header-row">
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Sequence<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Test Description<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Status<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                          <th><div class="datagrid-filter-header"><span class="filter-header-label">Completion Date<span class="material-icons-outlined">unfold_more</span></span><span class="filter-col-group"><span class="filter-label red">Ab</span><input class="filter-text-input" placeholder="Filter Text"></span></div></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="selected">
+                          <td>1</td>
+                          <td>2019 A123 ddd ddd ANALYSIS</td>
+                          <td><span class="badge status-badge received-by-lab">Received by Lab</span></td>
+                          <td>5/13/2026</td>
+                          <td style="text-align:right">
+                            <div class="widget-popup-menu row-action-wrapper">
+                              <button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button>
+                              <div class="dropdown-menu popup-menu" role="menu">
+                                <button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Duplicate</button>
+                                <button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button>
+                                <button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>2022 WAYMO dddd ddd CTD WELD VALIDATION</td>
+                          <td><span class="badge status-badge received-by-lab">Received by Lab</span></td>
+                          <td>7/9/2025</td>
+                          <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Duplicate</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>2019 WAYMO ddd dd ANALYSIS</td>
+                          <td><span class="badge status-badge test-in-progress">Test in Progress</span></td>
+                          <td>7/17/2025</td>
+                          <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Duplicate</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>2019 WAYMO ddd ddd ANALYSIS</td>
+                          <td><span class="badge status-badge received-by-lab">Received by Lab</span></td>
+                          <td>7/7/2025</td>
+                          <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Duplicate</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td>2019 WAYMO ddd ddd CTD CRIMP VALIDATION</td>
+                          <td><span class="badge status-badge test-in-progress">Test in Progress</span></td>
+                          <td>7/15/2025</td>
+                          <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Duplicate</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                        </tr>
+                        <tr>
+                          <td>6</td>
+                          <td>2019 WAYMO aaa aaa ANALYSIS</td>
+                          <td><span class="badge status-badge received-by-lab">Received by Lab</span></td>
+                          <td>7/1/2025</td>
+                          <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Duplicate</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                        </tr>
+                        <tr>
+                          <td>7</td>
+                          <td>2019 VARIOUS ddd ddd CTD CRIMP VALIDATION</td>
+                          <td><span class="badge status-badge test-in-progress">Test in Progress</span></td>
+                          <td>7/8/2025</td>
+                          <td style="text-align:right"><div class="widget-popup-menu row-action-wrapper"><button class="row-action-btn" aria-haspopup="menu" onclick="event.stopPropagation();togglePopup(this)"><span class="material-icons-outlined">more_vert</span></button><div class="dropdown-menu popup-menu" role="menu"><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">content_copy</span> Duplicate</button><button class="popup-menu-item" role="menuitem"><span class="material-icons-outlined">edit</span> Edit</button><button class="popup-menu-item danger" role="menuitem"><span class="material-icons-outlined">delete</span> Delete</button></div></div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Test detail accordion -->
+                  <div class="accordion-item accordion-panel open" id="accordion-test-ch1">
+                    <button class="accordion-header" aria-expanded="true" onclick="toggleAccordion('accordion-test-ch1')">
+                      <div style="display:flex;align-items:center;gap:var(--spacing-sm)">
+                        <span>1- Chapter 1 Test Detail 25-77-26-1 (Failure Analysis)</span>
+                        <span class="badge status-badge test-in-progress">Test in Progress</span>
+                      </div>
+                      <span class="material-icons-outlined">expand_more</span>
+                    </button>
+                    <div class="accordion-content accordion-body">
+                      <div class="test-detail-actions">
+                        <button class="btn btn-default">Status updates</button>
+                        <button class="btn btn-default">Chapter Details</button>
+                        <button class="btn btn-primary">Resource Allocation</button>
+                      </div>
+                      <div class="accordion-detail-grid mb-md">
+                        <div><div class="detail-label">Specification</div><div class="detail-value">USCAR-2 REV B</div></div>
+                        <div><div class="detail-label">Quantity to Test</div><div class="detail-value">0</div></div>
+                        <div><div class="detail-label">Chapter Name</div><div class="detail-value">Failure Analysis</div></div>
+                        <div><div class="detail-label">RTCD</div><div class="detail-value">Jan 15, 2026</div></div>
+                        <div><div class="detail-label">Actual Start Date</div><div class="detail-value">&lt;TBD&gt;</div></div>
+                        <div><div class="detail-label">Actual End Date</div><div class="detail-value">&lt;TBD&gt;</div></div>
+                      </div>
+                      <hr style="border:none;border-top:1px solid var(--border-color-default);margin:var(--spacing-sm) 0">
+                      <h4 style="font-weight:var(--font-weight-semibold);margin-bottom:var(--spacing-sm)">Test Updates</h4>
+                      <div class="text-detail" style="text-align:center;padding:var(--spacing-md)">
+                        No updates yet.<br>
+                        <a href="#" style="color:var(--brand-secondary);text-decoration:none">+ Add Update</a>
+                      </div>
+
+                      <hr style="border:none;border-top:1px solid var(--border-color-default);margin:var(--spacing-sm) 0">
+
+                      <div class="doc-section-header">
+                        <div class="doc-section-title">
+                          <h4>Documents</h4>
+                        </div>
+                        <button class="btn btn-default btn-sm">
+                          <span class="material-icons-outlined" style="font-size:16px;vertical-align:middle;margin-right:4px">upload</span>
+                          Upload Document
+                        </button>
+                      </div>
+
+                      <div class="doc-list">
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name"><a href="#">USCAR-2_RevB_Failure_Analysis_Report.pdf</a></div>
+                            <div class="doc-meta">Uploaded by J. Malotke · Aug 14, 2026 · 2.4 MB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name"><a href="#">Chapter1_Test_Data_Log.xlsx</a></div>
+                            <div class="doc-meta">Uploaded by S. Torres · Aug 20, 2026 · 548 KB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name"><a href="#">Crimp_Cross_Section_Photo_01.png</a></div>
+                            <div class="doc-meta">Uploaded by R. Chen · Aug 27, 2026 · 1.1 MB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+
+                        <div class="doc-item">
+                          <span class="material-icons-outlined doc-icon">description</span>
+                          <div class="doc-info">
+                            <div class="doc-name"><a href="#">Failure_Analysis_Procedure_Notes.docx</a></div>
+                            <div class="doc-meta">Uploaded by J. Malotke · Sep 1, 2026 · 312 KB</div>
+                          </div>
+                          <div class="doc-actions">
+                            <a href="#" class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                            <a href="#" class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="accordion-item accordion-panel" id="accordion-test-ch2">
+                    <button class="accordion-header" aria-expanded="false" onclick="toggleAccordion('accordion-test-ch2')">
+                      <div style="display:flex;align-items:center;gap:var(--spacing-sm)">
+                        <span>2 - Chapter 2 Test Detail 25-77-26-2 (Failure Analysis)</span>
+                        <span class="badge status-badge received-by-lab">Received by Lab</span>
+                      </div>
+                      <span class="material-icons-outlined">expand_more</span>
+                    </button>
+                    <div class="accordion-content accordion-body">
+                      <div class="accordion-detail-grid">
+                        <div><div class="detail-label">Specification</div><div class="detail-value">USCAR-2 REV B</div></div>
+                        <div><div class="detail-label">Quantity to Test</div><div class="detail-value">10</div></div>
+                        <div><div class="detail-label">Chapter Name</div><div class="detail-value">Failure Analysis</div></div>
+                        <div><div class="detail-label">RTCD</div><div class="detail-value">Feb 28, 2026</div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div><!-- /mx-dataview-content -->
+          </div>
+
+          <!-- ========================================================
+               VIEW: CONFIRMATION
+               ======================================================== -->
+          <div class="view" id="view-confirmation">
+            <div class="confirmation-wrapper">
+              <div class="confirmation-card">
+                <div class="confirmation-icon">
+                  <span class="material-icons-outlined">check</span>
+                </div>
+                <h2>Confirmation</h2>
+                <p>Your request has been saved</p>
+                <div class="confirmation-ref">Reference: TR26-7</div>
+                <button class="btn btn-primary" onclick="navigateTo('dashboard')">Back to Dashboard</button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /main-content-inner -->
+      </div><!-- /main-content -->
+    </div><!-- /app-body -->
+  </div><!-- /app-shell -->
+
+  <!-- ============================================================
+       MODAL: New Request Wizard
+       ============================================================ -->
+  <div class="modal modal-overlay" id="modal-request">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h2>General Details</h2>
+        <button class="close modal-close" onclick="closeModal('request')"><span class="material-icons-outlined">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-title-block">
+          <div class="modal-type-label">Test Request</div>
+          <h3>TR26-7 — HONDA</h3>
+        </div>
+
+        <!-- Wizard step tabs -->
+        <div class="mx-tabcontainer">
+        <ul class="nav nav-tabs tab-wizard tab-numbered" id="request-wizard-tabs">
+          <li class="active" data-step="1"><a role="tab" class="tab-item"><span class="tab-step-num">1</span> General Details</a></li>
+          <li data-step="2"><a role="tab" class="tab-item"><span class="tab-step-num">2</span> Personal Details</a></li>
+          <li data-step="3"><a role="tab" class="tab-item"><span class="tab-step-num">3</span> DUT Details</a></li>
+          <li data-step="4"><a role="tab" class="tab-item"><span class="tab-step-num">4</span> Test Selection</a></li>
+          <li data-step="5"><a role="tab" class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Documents</a></li>
+        </ul>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="wizard-step active" id="request-step-1">
+          <div class="mx-layoutgrid form-2col">
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">Customer (OEM) <span class="required">*</span></label>
+                <select class="form-control form-select"><option>HONDA</option><option>FORD</option><option>SUBARU</option><option>MAZDA</option></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Model Year <span class="required">*</span></label>
+                <select class="form-control form-select"><option value="">Select year...</option><option>2025</option><option>2026</option></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Program <span class="required">*</span></label>
+                <input class="form-control form-input" type="text" placeholder="e.g. A123">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Product Type <span class="required">*</span></label>
+                <select class="form-control form-select"><option value="">Select type...</option><option>BEC</option><option>Terminal</option><option>Wire</option></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Request Type <span class="required">*</span></label>
+                <select class="form-control form-select"><option>Validation</option><option>Analysis</option></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Product Name</label>
+                <input class="form-control form-input" type="text" placeholder="e.g. SP SEALED">
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">UDP <span class="required">*</span></label>
+                <input class="form-control form-input" type="text" placeholder="Search UDP...">
+                <div class="form-helper">Can't find your UDP? Contact Gail.Lawson@yazaki.com</div>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">BU/FG <span class="required">*</span></label>
+                <select class="form-control form-select"><option value="">Select business unit...</option></select>
+                <div class="alert alert-danger form-error-box" id="request-err-bufg" style="display:none">Product type required</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="wizard-step" id="request-step-2" style="display:none">
+          <div class="mx-layoutgrid form-2col">
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">Requester Name <span class="required">*</span></label>
+                <input class="form-control form-input" type="text" value="Jeffrey Malotke">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Email <span class="required">*</span></label>
+                <input class="form-control form-input" type="email" value="jeffrey.malotke@us.yazaki.com">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Manager</label>
+                <input class="form-control form-input" type="text" placeholder="Manager name...">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Program Manager</label>
+                <input class="form-control form-input" type="text" placeholder="Program manager name...">
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">Phone</label>
+                <input class="form-control form-input" type="tel" placeholder="Phone number...">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Department</label>
+                <input class="form-control form-input" type="text" placeholder="Department...">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Location</label>
+                <select class="form-control form-select"><option>Canton, MI</option><option>El Paso, TX</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" id="request-cancel-btn" onclick="requestWizardBack()">Cancel</button>
+        <button class="btn btn-primary" id="request-next-btn" onclick="requestWizardNext()">Next: Personal Details</button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: New RFQ Wizard
+       ============================================================ -->
+  <div class="modal modal-overlay" id="modal-rfq">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h2>General Details</h2>
+        <button class="close modal-close" onclick="closeModal('rfq')"><span class="material-icons-outlined">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-title-block">
+          <div class="modal-type-label" style="color:var(--brand-secondary)">RFQ</div>
+          <h3>RFQ26-13 — HONDA</h3>
+        </div>
+
+        <!-- Wizard step tabs (teal variant) -->
+        <div class="mx-tabcontainer">
+        <ul class="nav nav-tabs tab-wizard tab-numbered teal" id="rfq-wizard-tabs">
+          <li class="active" data-step="1"><a role="tab" class="tab-item"><span class="tab-step-num">1</span> General Details</a></li>
+          <li data-step="2"><a role="tab" class="tab-item"><span class="tab-step-num">2</span> Personal Details</a></li>
+          <li data-step="3"><a role="tab" class="tab-item"><span class="tab-step-num">3</span> DUT Details</a></li>
+          <li data-step="4"><a role="tab" class="tab-item"><span class="tab-step-num">4</span> Test Selection</a></li>
+          <li data-step="5"><a role="tab" class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Documents</a></li>
+        </ul>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="wizard-step active" id="rfq-step-1">
+          <div class="mx-layoutgrid form-2col">
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">Customer (OEM) <span class="required">*</span></label>
+                <select class="form-control form-select"><option>HONDA</option><option>FORD</option><option>SUBARU</option></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Model Year <span class="required">*</span></label>
+                <select class="form-control form-select"><option value="">Select year...</option><option>2025</option><option>2026</option></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Program <span class="required">*</span></label>
+                <input class="form-control form-input" type="text" placeholder="e.g. A123">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Product Type <span class="required">*</span></label>
+                <select class="form-control form-select"><option value="">Select type...</option></select>
+                <div class="alert alert-danger form-error-box">Product type required</div>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Request Type <span class="required">*</span></label>
+                <select class="form-control form-select"><option>Validation</option><option>Analysis</option></select>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Product Name</label>
+                <input class="form-control form-input" type="text" placeholder="e.g. SP SEALED">
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">UDP <span class="required">*</span></label>
+                <input class="form-control form-input" type="text" placeholder="Search UDP...">
+                <div class="form-helper">Can't find your UDP? Contact Gail.Lawson@yazaki.com</div>
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">BU/FG <span class="required">*</span></label>
+                <select class="form-control form-select"><option value="">Select business unit...</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="wizard-step" id="rfq-step-2" style="display:none">
+          <div class="mx-layoutgrid form-2col">
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">Requester Name <span class="required">*</span></label>
+                <input class="form-control form-input" type="text" value="Jeffrey Malotke">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Email <span class="required">*</span></label>
+                <input class="form-control form-input" type="email" value="jeffrey.malotke@us.yazaki.com">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Manager</label>
+                <input class="form-control form-input" type="text" placeholder="Manager name...">
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="control-label form-label">Phone</label>
+                <input class="form-control form-input" type="tel" placeholder="Phone number...">
+              </div>
+              <div class="form-group">
+                <label class="control-label form-label">Department</label>
+                <input class="form-control form-input" type="text" placeholder="Department...">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" id="rfq-cancel-btn" onclick="rfqWizardBack()">Cancel</button>
+        <button class="btn btn-primary" id="rfq-next-btn" onclick="rfqWizardNext()">Next: DUT Details</button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: Confirmation (shared)
+       ============================================================ -->
+  <div class="modal modal-overlay" id="modal-confirmation">
+    <div class="modal-dialog" style="max-width:480px">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirmation</h2>
+        <button class="close modal-close" onclick="closeModal('confirmation')"><span class="material-icons-outlined">close</span></button>
+      </div>
+      <div class="modal-body" style="text-align:center;padding:var(--spacing-xxl) var(--spacing-md)">
+        <p id="confirmation-message" style="font-size:16px;color:var(--font-color-default)">Your request has been saved</p>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
+  <script>
+    /* ---- View Navigation ---- */
+    function navigateTo(viewId) {
+      document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+      var target = document.getElementById('view-' + viewId);
+      if (target) target.classList.add('active');
+
+      // Sidebar state
+      if (viewId === 'login') {
+        document.getElementById('sidebar').style.display = 'none';
+      } else {
+        document.getElementById('sidebar').style.display = 'flex';
+      }
+
+      // Close any open popups
+      document.querySelectorAll('.popup-menu').forEach(function(p) { p.classList.remove('visible'); });
+    }
+
+    /* ---- Sidebar Toggle ---- */
+    function toggleSidebar() {
+      var sb = document.getElementById('sidebar');
+      var bd = document.querySelector('.sidebar-backdrop');
+      sb.classList.toggle('expanded');
+      if (bd) bd.style.display = sb.classList.contains('expanded') ? 'block' : 'none';
+    }
+
+    function toggleNavGroup(el) {
+      el.classList.toggle('open');
+    }
+
+    /* ---- Card/List Toggle ---- */
+    function toggleCardList(mode) {
+      var cardsView = document.getElementById('dashboard-cards-view');
+      var listView = document.getElementById('dashboard-list-view');
+      var btnCards = document.getElementById('toggle-cards');
+      var btnList = document.getElementById('toggle-list');
+
+      if (mode === 'cards') {
+        cardsView.style.display = 'block';
+        listView.style.display = 'none';
+        btnCards.classList.add('active');
+        btnList.classList.remove('active');
+      } else {
+        cardsView.style.display = 'none';
+        listView.style.display = 'block';
+        btnCards.classList.remove('active');
+        btnList.classList.add('active');
+      }
+    }
+
+    /* ---- Detail Tab Switching ---- */
+    function switchDetailTab(tabId) {
+      // Update tab li elements
+      document.querySelectorAll('#detail-tabs > li').forEach(function(li) { li.classList.remove('active'); });
+      var clickedA = event.currentTarget;
+      clickedA.parentElement.classList.add('active');
+
+      // Update tab content
+      document.querySelectorAll('#view-request-details .tab-content').forEach(function(c) { c.classList.remove('active'); });
+      var target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+    }
+
+    /* ---- Dashboard Filter Tabs ---- */
+    document.querySelectorAll('#dashboard-tabs > li > a').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('#dashboard-tabs > li').forEach(function(li) { li.classList.remove('active'); });
+        tab.parentElement.classList.add('active');
+      });
+    });
+
+    /* ---- Accordion Toggle ---- */
+    function toggleAccordion(id) {
+      var el = document.getElementById(id);
+      el.classList.toggle('open');
+      var btn = el.querySelector('.accordion-header');
+      if (btn) btn.setAttribute('aria-expanded', el.classList.contains('open'));
+    }
+
+    /* ---- Popup Menu ---- */
+    function togglePopup(btn) {
+      var popup = btn.nextElementSibling;
+      var isVisible = popup.classList.contains('visible');
+      // Close all popups first
+      document.querySelectorAll('.popup-menu').forEach(function(p) { p.classList.remove('visible'); });
+      if (!isVisible) popup.classList.add('visible');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.row-action-wrapper')) {
+        document.querySelectorAll('.popup-menu').forEach(function(p) { p.classList.remove('visible'); });
+      }
+    });
+
+    /* ---- Leg Selection ---- */
+    function selectLeg(el, num) {
+      document.querySelectorAll('.mx-listview-item').forEach(function(i) { i.classList.remove('selected'); });
+      el.classList.add('selected');
+      var dropdown = document.getElementById('tablet-leg-dropdown');
+      if (dropdown) dropdown.value = num;
+    }
+
+    function selectLegFromDropdown(sel) {
+      var num = parseInt(sel.value, 10);
+      var items = document.querySelectorAll('.mx-listview-item');
+      items.forEach(function(item) {
+        item.classList.remove('selected');
+        if (item.getAttribute('onclick') && item.getAttribute('onclick').indexOf(', ' + num + ')') !== -1) {
+          item.classList.add('selected');
+        }
+      });
+    }
+
+    /* ---- Modal Open/Close ---- */
+    function openModal(type) {
+      document.getElementById('modal-' + type).classList.add('visible');
+      // Reset wizard to step 1
+      resetWizard(type);
+    }
+    function closeModal(type) {
+      document.getElementById('modal-' + type).classList.remove('visible');
+    }
+    function showConfirmation(message) {
+      document.getElementById('confirmation-message').textContent = message;
+      openModal('confirmation');
+    }
+
+    /* ---- Request Wizard ---- */
+    var requestStep = 1;
+    function requestWizardNext() {
+      if (requestStep < 2) {
+        requestStep++;
+        updateRequestWizard();
+      } else {
+        closeModal('request');
+        showConfirmation('Your request has been saved');
+      }
+    }
+    function requestWizardBack() {
+      if (requestStep > 1) {
+        requestStep--;
+        updateRequestWizard();
+      } else {
+        closeModal('request');
+      }
+    }
+    function updateRequestWizard() {
+      document.querySelectorAll('#request-wizard-tabs > li').forEach(function(li, i) {
+        li.classList.remove('active', 'visited');
+        if (i + 1 < requestStep) li.classList.add('visited');
+        if (i + 1 === requestStep) li.classList.add('active');
+      });
+      document.querySelectorAll('#modal-request .wizard-step').forEach(function(s) { s.style.display = 'none'; });
+      var stepEl = document.getElementById('request-step-' + requestStep);
+      if (stepEl) stepEl.style.display = 'block';
+      document.getElementById('request-cancel-btn').textContent = requestStep > 1 ? 'Back' : 'Cancel';
+      var nextLabels = ['Next: Personal Details', 'Submit Request'];
+      document.getElementById('request-next-btn').textContent = nextLabels[requestStep - 1] || 'Submit';
+    }
+
+    /* ---- RFQ Wizard ---- */
+    var rfqStep = 1;
+    function rfqWizardNext() {
+      if (rfqStep < 2) {
+        rfqStep++;
+        updateRfqWizard();
+      } else {
+        closeModal('rfq');
+        showConfirmation('Your RFQ has been saved');
+      }
+    }
+    function rfqWizardBack() {
+      if (rfqStep > 1) {
+        rfqStep--;
+        updateRfqWizard();
+      } else {
+        closeModal('rfq');
+      }
+    }
+    function updateRfqWizard() {
+      document.querySelectorAll('#rfq-wizard-tabs > li').forEach(function(li, i) {
+        li.classList.remove('active', 'visited');
+        if (i + 1 < rfqStep) li.classList.add('visited');
+        if (i + 1 === rfqStep) li.classList.add('active');
+      });
+      document.querySelectorAll('#modal-rfq .wizard-step').forEach(function(s) { s.style.display = 'none'; });
+      var stepEl = document.getElementById('rfq-step-' + rfqStep);
+      if (stepEl) stepEl.style.display = 'block';
+      document.getElementById('rfq-cancel-btn').textContent = rfqStep > 1 ? 'Back' : 'Cancel';
+      var nextLabels = ['Next: Personal Details', 'Submit RFQ'];
+      document.getElementById('rfq-next-btn').textContent = nextLabels[rfqStep - 1] || 'Submit';
+    }
+
+    function resetWizard(type) {
+      if (type === 'request') {
+        requestStep = 1;
+        updateRequestWizard();
+      } else {
+        rfqStep = 1;
+        updateRfqWizard();
+      }
+    }
+
+    /* ---- Init: hide sidebar on login ---- */
+    document.getElementById('sidebar').style.display = 'none';
+  </script>
+</body>
+</html>

@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Yazaki YNA Testing Portal — Mobile Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    /* ========================================================
+       CSS Custom Properties — Yazaki Design Tokens
+       ======================================================== */
+    :root {
+      --brand-primary: #ed1c24;
+      --brand-primary-lighter: #fff0f0;
+      --brand-primary-light: #f87578;
+      --brand-primary-dark: #a01018;
+      --brand-primary-darker: #a01018;
+      --brand-secondary: #37a0af;
+      --brand-secondary-lighter: #e1f1f3;
+      --brand-secondary-light: #9bd0d7;
+      --brand-secondary-dark: #2d8a97;
+      --brand-secondary-darker: #216069;
+      --brand-tertiary: #577aa0;
+      --brand-tertiary-lighter: #eaeef4;
+      --brand-tertiary-light: #a7bbd2;
+      --brand-tertiary-dark: #446285;
+      --brand-tertiary-darker: #31445b;
+      --gray-primary: #7c7c7c;
+      --gray-primary-lighter: #dcdcdc;
+      --gray-primary-light: #bdbdbd;
+      --gray-primary-dark: #656565;
+      --gray-primary-darker: #464646;
+      --brand-success: #4a8587;
+      --brand-success-lighter: #dcf0f0;
+      --brand-success-light: #94c6c7;
+      --brand-success-dark: #3a6c6e;
+      --brand-warning: #eca51c;
+      --brand-warning-lighter: #fff3e0;
+      --brand-warning-light: #f5d454;
+      --brand-warning-dark: #d07c0f;
+      --brand-danger: #e33f4e;
+      --brand-danger-lighter: #fde6e6;
+      --brand-danger-light: #f6abae;
+      --brand-danger-dark: #d12d44;
+      --font-color-header: #0a1325;
+      --font-color-default: #3d4350;
+      --font-color-detail: #6c717e;
+      --bg-color: #f8f8f8;
+      --bg-color-secondary: #f5f6f6;
+      --border-color-default: #ced0d3;
+      --color-white: #ffffff;
+      --brand-gradient: linear-gradient(90deg, #a01018 0%, #ed1c24 30%, #37a0af 70%, #2d8a97 100%);
+      --font-family-base: "Roboto", sans-serif;
+      --font-size-h1: 2.25rem;
+      --font-size-h2: 1.75rem;
+      --font-size-h3: 1.5rem;
+      --font-size-h4: 1.25rem;
+      --font-size-h5: 1rem;
+      --font-size-h6: 0.875rem;
+      --font-size-default: 16px;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-bold: 700;
+      --line-height-heading: 1.2;
+      --line-height-body: 1.5;
+      --icon-size-sm: 18px;
+      --icon-size-default: 20px;
+      --icon-size-xl: 48px;
+      --spacing-unit: 8px;
+      --spacing-smallest: 2px;
+      --spacing-xxs: 4px;
+      --spacing-xs: 8px;
+      --spacing-sm: 16px;
+      --spacing-md: 24px;
+      --spacing-lg: 32px;
+      --spacing-xl: 40px;
+      --spacing-xxl: 48px;
+      --border-radius-default: 4px;
+      --border-radius-small: 2px;
+      --border-radius-large: 8px;
+      --border-radius-circle: 50%;
+      --border-width-default: 1px;
+      --border-width-thick: 2px;
+      --shadow-small: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-medium: 0 2px 8px rgba(0,0,0,0.12);
+      --shadow-large: 0 4px 16px rgba(0,0,0,0.16);
+      --btn-font-size: var(--font-size-default);
+      --btn-font-weight: var(--font-weight-bold);
+      --btn-border-radius: var(--border-radius-default);
+      --btn-padding-y: var(--spacing-xs);
+      --btn-padding-x: var(--spacing-sm);
+      --btn-border-width: 1px;
+      --btn-primary-bg: var(--brand-primary);
+      --btn-primary-bg-hover: var(--brand-primary-dark);
+      --btn-primary-color: var(--color-white);
+      --btn-primary-border-color: var(--brand-primary);
+      --btn-default-bg: var(--color-white);
+      --btn-default-color: var(--font-color-header);
+      --btn-default-border-color: var(--border-color-default);
+      --btn-default-bg-hover: var(--bg-color-secondary);
+      --btn-secondary-bg: transparent;
+      --btn-secondary-color: var(--brand-primary);
+      --btn-secondary-border-color: var(--brand-primary);
+      --btn-secondary-bg-hover: var(--brand-primary);
+      --btn-secondary-color-hover: var(--color-white);
+      --form-input-padding-y: 10px;
+      --form-input-padding-x: 12px;
+      --form-input-color: var(--font-color-default);
+      --form-input-placeholder-color: var(--font-color-detail);
+      --form-input-font-size: var(--font-size-default);
+      --form-input-border-color: var(--border-color-default);
+      --form-input-border-radius: var(--border-radius-default);
+      --form-input-bg: var(--color-white);
+      --form-input-border-focus-color: var(--brand-secondary);
+      --form-label-weight: var(--font-weight-medium);
+      --form-label-size: var(--font-size-default);
+      --form-label-gutter: var(--spacing-xs);
+      --form-group-margin-bottom: var(--spacing-sm);
+      --grid-padding-right: var(--spacing-sm);
+      --grid-border-color: var(--border-color-default);
+      --grid-bg-selected: var(--brand-secondary-lighter);
+
+      /* Shorthand aliases used by component styles */
+      --border-color: var(--border-color-default);
+      --text-primary: var(--font-color-header);
+      --text-secondary: var(--font-color-detail);
+      --bg-secondary: var(--bg-color-secondary);
+      --radius-sm: var(--border-radius-small);
+      --radius-md: var(--border-radius-default);
+      --radius-lg: var(--border-radius-large);
+      --space-xs: var(--spacing-xs);
+      --space-sm: var(--spacing-sm);
+      --space-md: var(--spacing-md);
+      --space-lg: var(--spacing-lg);
+      --space-xl: var(--spacing-xl);
+      --font-size-sm: 0.875rem;
+      --font-size-body: var(--font-size-default);
+      --font-size-small: 0.875rem;
+    }
+
+    /* ========================================================
+       Reset + Base (Mobile-first)
+       ======================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html {
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      background: var(--bg-color);
+      line-height: var(--line-height-body);
+      overflow-x: hidden;
+      max-width: 100vw;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      line-height: var(--line-height-heading);
+    }
+    h1 { font-size: var(--font-size-h3); }
+    h2 { font-size: var(--font-size-h4); }
+    h3 { font-size: var(--font-size-h5); }
+    h4 { font-size: var(--font-size-h6); }
+    p { margin: 0 0 var(--spacing-xs); }
+    img { max-width: 100%; height: auto; }
+
+    /* ========================================================
+       App Shell — Mobile
+       ======================================================== */
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    /* Topbar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      background: var(--color-white);
+      border-bottom: 3px solid transparent;
+      border-image: var(--brand-gradient) 1;
+      padding: 0 var(--spacing-xs);
+      z-index: 100;
+      flex-shrink: 0;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      min-width: 0;
+    }
+    .topbar-hamburger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      background: none;
+      cursor: pointer;
+      color: var(--font-color-default);
+      font-size: var(--font-size-lg);
+      flex-shrink: 0;
+    }
+    .topbar-hamburger:hover,
+    .topbar-hamburger:active { background: var(--bg-color-secondary); }
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      margin-left: var(--spacing-xxs);
+    }
+    .topbar-logo img { height: 22px; }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      min-width: 0;
+      flex-shrink: 0;
+    }
+    .topbar-user {
+      display: none;
+    }
+    .topbar-role-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xxs);
+      padding: var(--spacing-xxs) var(--form-input-padding-y);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      background: var(--color-white);
+      color: var(--font-color-default);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .topbar-role-btn .material-icons-outlined { font-size: var(--icon-size-sm); }
+
+    /* ========================================================
+       Hamburger Drawer Nav
+       ======================================================== */
+    .drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+    }
+    .drawer-backdrop.open { display: block; }
+
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      max-width: 85vw;
+      height: 100%;
+      background: var(--color-white);
+      z-index: 210;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-large);
+    }
+    .nav-drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-sm);
+      border-bottom: 1px solid var(--border-color-default);
+      flex-shrink: 0;
+    }
+    .drawer-header img { height: 24px; }
+    .drawer-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: var(--border-radius-default);
+      background: none;
+      cursor: pointer;
+      color: var(--font-color-default);
+    }
+    .drawer-close:active { background: var(--bg-color-secondary); }
+
+    .drawer-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-xs) 0;
+    }
+    .drawer-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .drawer-nav-item a {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm);
+      color: var(--font-color-default);
+      text-decoration: none;
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-medium);
+      min-height: 44px;
+    }
+    .drawer-nav-item a:active { background: var(--bg-color-secondary); }
+    .drawer-nav-item.active a { color: var(--brand-secondary); font-weight: var(--font-weight-bold); }
+    .drawer-nav-item .material-icons-outlined { font-size: var(--font-size-lg); color: var(--gray-primary); }
+    .drawer-nav-item.active .material-icons-outlined { color: var(--brand-secondary); }
+
+    .drawer-nav-group-label {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm);
+      color: var(--font-color-default);
+      font-weight: var(--font-weight-bold);
+      font-size: var(--font-size-default);
+      min-height: 44px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .drawer-nav-group-label .nav-chevron {
+      margin-left: auto;
+      font-size: var(--icon-size-sm);
+      transition: transform 0.2s;
+    }
+    .drawer-nav-sublist {
+      list-style: none;
+      padding: 0 0 0 var(--spacing-xl);
+      margin: 0;
+    }
+    .drawer-nav-sublist a {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      min-height: 44px;
+      font-weight: var(--font-weight-normal);
+      font-size: var(--font-size-sm);
+    }
+    .drawer-footer {
+      border-top: 1px solid var(--border-color-default);
+      padding: var(--spacing-sm);
+      flex-shrink: 0;
+    }
+    .drawer-footer a {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      color: var(--font-color-detail);
+      text-decoration: none;
+      font-size: var(--font-size-default);
+      min-height: 44px;
+    }
+
+    /* ========================================================
+       Main Content Area
+       ======================================================== */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: var(--spacing-sm);
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+    }
+
+    /* Background wave pattern */
+    .bg-wave {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 15%);
+      mask-image: linear-gradient(to bottom, transparent 0%, white 15%);
+    }
+    .bg-wave svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ========================================================
+       Breadcrumb
+       ======================================================== */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-xxs);
+      font-size: var(--font-size-sm);
+      color: var(--font-color-detail);
+      margin-bottom: var(--spacing-sm);
+    }
+    .breadcrumb a {
+      color: var(--font-color-detail);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    .breadcrumb a:hover { color: var(--brand-primary); }
+    .breadcrumb .material-icons-outlined { font-size: var(--icon-size-sm); }
+    .breadcrumb-sep { color: var(--gray-primary-light); }
+
+    /* ========================================================
+       Page Title Bar — Mobile
+       ======================================================== */
+    .page-title-bar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-sm);
+    }
+    .page-title-bar h1 {
+      font-size: var(--font-size-h3);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      line-height: var(--line-height-heading);
+    }
+    .page-title-bar .subtitle {
+      font-size: var(--font-size-default);
+      color: var(--font-color-detail);
+    }
+    .page-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+    }
+
+    /* ========================================================
+       Buttons
+       ======================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-xxs);
+      padding: var(--btn-padding-y) var(--btn-padding-x);
+      font-family: var(--font-family-base);
+      font-size: var(--btn-font-size);
+      font-weight: var(--btn-font-weight);
+      border-radius: var(--btn-border-radius);
+      border: var(--btn-border-width) solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      line-height: 1.4;
+      min-height: 44px;
+    }
+    .btn .material-icons-outlined { font-size: var(--icon-size-sm); }
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-color);
+      border-color: var(--btn-primary-border-color);
+    }
+    .btn-primary:hover { background: var(--btn-primary-bg-hover); }
+    .btn-default {
+      background: var(--btn-default-bg);
+      color: var(--btn-default-color);
+      border-color: var(--btn-default-border-color);
+    }
+    .btn-default:hover { background: var(--btn-default-bg-hover); }
+    .btn-secondary {
+      background: var(--btn-secondary-bg);
+      color: var(--btn-secondary-color);
+      border-color: var(--btn-secondary-border-color);
+    }
+    .btn-secondary:hover {
+      background: var(--btn-secondary-bg-hover);
+      color: var(--btn-secondary-color-hover);
+    }
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--font-color-detail);
+      font-weight: var(--font-weight-medium);
+      padding: var(--btn-padding-y) var(--btn-padding-x);
+      min-height: 44px;
+    }
+    .btn-link:hover { color: var(--font-color-default); }
+    .btn-sm {
+      padding: var(--spacing-xxs) var(--form-input-padding-x);
+      font-size: var(--font-size-sm);
+      min-height: 44px;
+    }
+    .btn-full { width: 100%; }
+
+    /* ========================================================
+       Cards / Containers
+       ======================================================== */
+    .card {
+      background: var(--color-white);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-large);
+      padding: var(--spacing-sm);
+      box-shadow: var(--shadow-small);
+    }
+    .card + .card { margin-top: var(--spacing-xs); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-xs);
+    }
+    .card-title {
+      font-size: var(--font-size-h5);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+    }
+    .card-body { font-size: var(--font-size-default); }
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: var(--spacing-xxs) 0;
+    }
+    .card-label {
+      font-size: var(--font-size-sm);
+      color: var(--font-color-detail);
+      font-weight: var(--font-weight-medium);
+    }
+    .card-value {
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      text-align: right;
+    }
+
+    /* ========================================================
+       Status Badges
+       ======================================================== */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--spacing-smallest) var(--form-input-padding-y);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      border-radius: 20px;
+      white-space: nowrap;
+      line-height: 1.6;
+    }
+    .status-badge.created { background: var(--brand-secondary-lighter); color: var(--brand-secondary-dark); }
+    .status-badge.open { background: var(--brand-success-lighter); color: var(--brand-success-dark); }
+    .status-badge.awaiting-quote { background: var(--brand-warning-lighter); color: var(--brand-warning-dark); }
+    .status-badge.received-by-lab { background: var(--brand-primary-lighter); color: var(--brand-primary-dark); }
+    .status-badge.test-in-progress { background: var(--brand-tertiary-lighter); color: var(--brand-tertiary-dark); }
+    .status-badge.waiting-deliverables { background: var(--brand-danger-lighter); color: var(--brand-danger-dark); }
+    .status-badge.closed { background: var(--bg-color-secondary); color: var(--font-color-detail); }
+
+    /* ========================================================
+       Section Headings
+       ======================================================== */
+    .section-heading {
+      font-size: var(--font-size-h5);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-sm);
+      padding-bottom: var(--spacing-xs);
+      border-bottom: 1px solid var(--border-color-default);
+    }
+
+    /* ========================================================
+       Info Row (label/value pairs)
+       ======================================================== */
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: var(--spacing-xxs) 0;
+      gap: var(--spacing-xs);
+    }
+    .info-label {
+      font-size: var(--font-size-sm);
+      color: var(--font-color-detail);
+      font-weight: var(--font-weight-medium);
+      flex-shrink: 0;
+    }
+    .info-value {
+      font-size: var(--font-size-default);
+      color: var(--font-color-default);
+      text-align: right;
+      min-width: 0;
+      word-break: break-word;
+    }
+
+    /* ========================================================
+       Spacing Utilities
+       ======================================================== */
+    .mb-xxs { margin-bottom: var(--spacing-xxs); }
+    .mb-xs { margin-bottom: var(--spacing-xs); }
+    .mb-sm { margin-bottom: var(--spacing-sm); }
+    .mb-md { margin-bottom: var(--spacing-md); }
+    .mb-lg { margin-bottom: var(--spacing-lg); }
+    .mt-xs { margin-top: var(--spacing-xs); }
+    .mt-sm { margin-top: var(--spacing-sm); }
+    .mt-md { margin-top: var(--spacing-md); }
+    .gap-xs { gap: var(--spacing-xs); }
+    .gap-sm { gap: var(--spacing-sm); }
+
+    /* ========================================================
+       Layout Utilities
+       ======================================================== */
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .flex-col { display: flex; flex-direction: column; }
+    .text-detail { font-size: var(--font-size-sm); color: var(--font-color-detail); }
+    .text-center { text-align: center; }
+    .mobile-only { display: block; }
+    .desktop-only { display: none; }
+
+    /* ========================================================
+       Placeholder / Empty State
+       ======================================================== */
+    .empty-state {
+      text-align: center;
+      padding: var(--spacing-xxl) var(--spacing-sm);
+      color: var(--font-color-detail);
+    }
+    .empty-state .material-icons-outlined {
+      font-size: var(--icon-size-xl);
+      color: var(--gray-primary-light);
+      margin-bottom: var(--spacing-sm);
+      display: block;
+    }
+
+    /* ========================================================
+       View System (Screen Routing)
+       ======================================================== */
+    .view { display: none; position: relative; z-index: 1; }
+    .view.active { display: block; }
+
+    /* ========================================================
+       Login Screen
+       ======================================================== */
+    .login-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100dvh - 51px);
+      padding: var(--spacing-sm);
+    }
+    .login-card {
+      background: var(--color-white);
+      border-radius: var(--border-radius-large);
+      box-shadow: var(--shadow-large);
+      padding: var(--spacing-lg) var(--spacing-sm);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-card h2 {
+      font-size: var(--font-size-h4);
+      font-weight: var(--font-weight-bold);
+      color: var(--font-color-header);
+      margin-bottom: var(--spacing-xs);
+    }
+    .login-card p {
+      color: var(--font-color-detail);
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--spacing-md);
+    }
+    .role-filter {
+      width: 100%;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default);
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      margin-bottom: var(--spacing-sm);
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .role-filter:focus {
+      border-color: var(--brand-secondary);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-secondary) 25%, transparent);
+    }
+    .role-list { display: flex; flex-direction: column; gap: 0; }
+    .role-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm);
+      min-height: 48px;
+      border: 1px solid var(--border-color-default);
+      border-top: none;
+      background: var(--color-white);
+      cursor: pointer;
+      font-family: var(--font-family-base);
+      font-size: var(--font-size-default);
+      font-weight: var(--font-weight-medium);
+      color: var(--font-color-header);
+      text-align: left;
+      transition: all 0.15s;
+      width: 100%;
+    }
+    .role-btn:first-child {
+      border-top: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default) var(--border-radius-default) 0 0;
+    }
+    .role-btn:last-child {
+      border-radius: 0 0 var(--border-radius-default) var(--border-radius-default);
+    }
+    .role-btn:active {
+      background: var(--bg-color-secondary);
+    }
+    .role-btn.selected {
+      border-left: 3px solid var(--brand-primary);
+      background: var(--brand-primary-lighter);
+    }
+    .role-btn .role-chevron {
+      margin-left: auto;
+      font-size: var(--font-size-lg);
+      color: var(--font-color-detail);
+    }
+    .role-btn.selected .role-chevron {
+      color: var(--brand-primary);
+    }
+    .role-btn-desc {
+      font-size: var(--font-size-sm);
+      color: var(--font-color-detail);
+      font-weight: var(--font-weight-regular);
+    }
+
+    /* Dashboard */
+    .dashboard-actions { display: flex; flex-direction: column; gap: var(--spacing-xs); margin-bottom: var(--spacing-sm); }
+    .dashboard-actions .btn { width: 100%; justify-content: center; }
+
+    .filter-tabs {
+      display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      gap: var(--spacing-xs); padding-bottom: var(--spacing-xs);
+      scrollbar-width: none; margin-bottom: var(--spacing-sm);
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab {
+      flex-shrink: 0; padding: var(--spacing-xs) var(--spacing-sm); border-radius: 20px;
+      font-size: var(--font-size-small); font-weight: var(--font-weight-medium);
+      border: 1px solid var(--border-color-default); background: var(--bg-color-default);
+      color: var(--font-color-default); white-space: nowrap; cursor: pointer;
+      min-height: 44px; display: inline-flex; align-items: center; gap: var(--spacing-xxs);
+    }
+    .filter-tab.active { background: var(--brand-primary-lighter); color: var(--brand-primary); border-color: var(--brand-primary); }
+    .filter-tab .tab-count { font-weight: var(--font-weight-regular); opacity: 0.8; }
+
+    .btn-toggle-group { display: flex; border: 1px solid var(--border-color-default); border-radius: var(--border-radius-default); overflow: hidden; }
+    .btn-toggle {
+      padding: var(--spacing-xxs) var(--form-input-padding-x); font-size: var(--font-size-small); border: none;
+      background: var(--bg-color-default); cursor: pointer; color: var(--font-color-default);
+    }
+    .btn-toggle.active { background: var(--brand-primary-lighter); color: var(--brand-primary); }
+
+    /* Request cards */
+    .request-card {
+      background: var(--bg-color-default); border: 1px solid var(--border-color-default);
+      border-radius: var(--border-radius-default); padding: var(--spacing-sm);
+      margin-bottom: var(--spacing-xs); cursor: pointer;
+    }
+    .request-card:active { background: var(--bg-color-secondary); }
+    .request-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xxs); }
+    .request-card-header h4 { margin: 0; font-size: var(--font-size-body); font-weight: var(--font-weight-bold); }
+    .request-card-desc { font-size: var(--font-size-small); color: var(--font-color-detail); margin-bottom: var(--spacing-xs); }
+    .request-card-fields { display: flex; flex-direction: column; gap: var(--spacing-xxs); margin-bottom: var(--spacing-xs); }
+    .request-card-field { display: flex; justify-content: space-between; font-size: var(--font-size-small); }
+    .request-card-field-label { color: var(--font-color-detail); }
+    .request-card-field-value { font-weight: var(--font-weight-medium); text-align: right; }
+    .request-card-footer { display: flex; justify-content: space-between; font-size: var(--font-size-sm); color: var(--font-color-detail); padding-top: var(--spacing-xs); border-top: 1px solid var(--border-color-default); }
+
+    /* List view rows */
+    .request-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: var(--spacing-sm); border-bottom: 1px solid var(--border-color-default);
+      cursor: pointer; min-height: 44px;
+    }
+    .request-row:active { background: var(--bg-color-secondary); }
+    .request-row-left { flex: 1; }
+    .request-row-top { display: flex; align-items: center; gap: var(--spacing-xs); margin-bottom: var(--spacing-smallest); }
+    .request-row-top h4 { margin: 0; font-size: var(--font-size-body); font-weight: var(--font-weight-bold); }
+    .request-row-bottom { font-size: var(--font-size-small); color: var(--font-color-detail); }
+    .request-row .material-icons-outlined { color: var(--gray-primary); font-size: var(--font-size-lg); }
+
+    /* Detail tabs */
+    /* Section Selector — Mendix .mx-dropdown pattern */
+    .section-selector { margin-bottom: var(--spacing-sm); }
+    .section-selector-label {
+      display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
+      color: var(--font-color-detail); margin-bottom: var(--spacing-xxs); text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .mx-dropdown .form-control {
+      width: 100%; min-height: 44px; padding: 0 36px 0 var(--spacing-sm);
+      border: 1px solid var(--border-color-default); border-radius: var(--border-radius-default);
+      font-size: var(--font-size-default); font-family: var(--font-family-base);
+      font-weight: var(--font-weight-medium); color: var(--font-color-header);
+      background: var(--color-white);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%233d4350' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      box-sizing: border-box; cursor: pointer;
+    }
+    .mx-dropdown .form-control:focus {
+      outline: none; border-color: var(--brand-primary);
+      box-shadow: 0 0 0 2px rgba(237,28,36,0.12);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Leg Selector */
+    .leg-selector { background: var(--color-white); border: 1px solid var(--border-color-default); border-radius: var(--border-radius-default); padding: var(--form-input-padding-x) var(--spacing-sm); display: flex; align-items: center; justify-content: space-between; gap: var(--form-input-padding-x); margin-bottom: var(--spacing-sm); }
+    .leg-selector-info { display: flex; flex-direction: column; gap: var(--spacing-xxs); min-width: 0; flex: 1; }
+    .leg-selector-title { font-weight: var(--font-weight-bold); font-size: var(--font-size-default); color: var(--font-color-header); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .leg-selector-meta { display: flex; align-items: center; gap: var(--spacing-xs); font-size: var(--font-size-sm); color: var(--font-color-detail); flex-wrap: wrap; }
+
+    .leg-drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 299; }
+    .leg-drawer-backdrop.open { display: block; }
+    .leg-drawer { position: fixed; bottom: 0; left: 0; right: 0; max-height: 70vh; background: var(--color-white); border-radius: 20px 20px 0 0; z-index: 300; transform: translateY(100%); transition: transform 0.25s ease; display: flex; flex-direction: column; }
+    .leg-drawer.open { transform: translateY(0); }
+    .leg-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm) var(--spacing-sm) var(--form-input-padding-x); border-bottom: 1px solid var(--border-color-default); }
+    .leg-drawer-header h3 { margin: 0; font-size: var(--font-size-default); font-weight: var(--font-weight-bold); }
+    .leg-drawer-close { background: none; border: none; padding: var(--spacing-xxs); cursor: pointer; color: var(--font-color-detail); }
+    .leg-drawer-list { overflow-y: auto; padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-md); display: flex; flex-direction: column; gap: var(--form-input-padding-x); }
+    .leg-option { border: 1px solid var(--border-color-default); border-radius: var(--border-radius-default); padding: var(--form-input-padding-x) var(--spacing-sm); min-height: 44px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; background: var(--color-white); }
+    .leg-option:active { background: var(--bg-color-secondary); }
+    .leg-option.selected { border-color: var(--brand-secondary); background: rgba(55,160,175,0.04); }
+    .leg-option-left { display: flex; flex-direction: column; gap: var(--spacing-xxs); min-width: 0; flex: 1; }
+    .leg-option-name { font-weight: var(--font-weight-medium); font-size: var(--font-size-default); }
+    .leg-option-detail { font-size: var(--font-size-sm); color: var(--font-color-detail); display: flex; gap: var(--spacing-xs); flex-wrap: wrap; }
+
+    /* Sequence Cards */
+    .sequence-list-heading { font-size: var(--font-size-default); font-weight: var(--font-weight-medium); color: var(--font-color-header); margin: 0 0 var(--spacing-xs) 0; }
+    .sequence-list { display: flex; flex-direction: column; gap: var(--spacing-xs); }
+    .sequence-card { background: var(--color-white); border: 1px solid var(--border-color-default); border-radius: var(--border-radius-default); overflow: hidden; }
+    .sequence-card-header { display: flex; align-items: center; gap: var(--form-input-padding-x); padding: var(--form-input-padding-x) var(--spacing-sm); min-height: 48px; cursor: pointer; }
+    .sequence-card-header:active { background: var(--bg-color-secondary); }
+    .sequence-num { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-color-secondary); display: flex; align-items: center; justify-content: center; font-weight: var(--font-weight-bold); font-size: var(--font-size-sm); color: var(--font-color-header); flex-shrink: 0; }
+    .sequence-card-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--spacing-xxs); }
+    .sequence-card-title { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--font-color-header); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sequence-card-meta { display: flex; align-items: center; gap: var(--spacing-xs); font-size: var(--font-size-sm); color: var(--font-color-detail); }
+    .sequence-chevron { color: var(--font-color-detail); transition: transform 0.2s; flex-shrink: 0; }
+    .sequence-card.expanded .sequence-chevron { transform: rotate(180deg); }
+    .sequence-card-body { display: none; border-top: 1px solid var(--border-color-default); padding: var(--spacing-sm); }
+    .sequence-card.expanded .sequence-card-body { display: block; }
+
+    /* Chapter header inside sequence card */
+    .chapter-header { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-xs); margin-top: var(--spacing-sm); margin-bottom: var(--spacing-xs); }
+    .chapter-header-title { font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--font-color-header); }
+
+    /* Documents section inside sequence card */
+    .doc-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-xs); }
+    .doc-section-header h4 { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--font-color-header); margin: 0; }
+    .doc-list { margin-top: var(--spacing-xxs); }
+    .doc-item { display: flex; align-items: center; gap: var(--spacing-xs); padding: var(--spacing-xs) 0; border-bottom: 1px solid var(--border-color-default); }
+    .doc-item:last-child { border-bottom: none; }
+    .doc-icon { font-size: var(--font-size-lg); color: var(--font-color-detail); flex-shrink: 0; }
+    .doc-info { flex: 1; min-width: 0; }
+    .doc-name { font-size: var(--font-size-default); font-weight: var(--font-weight-medium); color: var(--font-color-header); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .doc-name a { color: inherit; text-decoration: none; }
+    .doc-name a:active { color: var(--brand-secondary); }
+    .doc-meta { font-size: var(--font-size-sm); color: var(--font-color-detail); margin-top: var(--spacing-smallest); }
+    .doc-actions { display: flex; align-items: center; gap: var(--spacing-xs); flex-shrink: 0; }
+    .doc-action-link { color: var(--font-color-detail); text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: var(--spacing-xxs); min-width: 44px; min-height: 44px; }
+    .doc-action-link:active { color: var(--brand-secondary); }
+    .doc-action-link .material-icons-outlined { font-size: var(--icon-size-sm); }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 400; }
+    .modal-overlay.open { display: flex; align-items: stretch; justify-content: stretch; }
+    .modal-dialog { width: 100%; height: 100%; background: var(--color-white); display: flex; flex-direction: column; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border-color); min-height: 48px; flex-shrink: 0; }
+    .modal-header h2 { margin: 0; font-size: var(--font-size-default); font-weight: var(--font-weight-bold); }
+    .modal-close { background: none; border: none; padding: var(--spacing-xxs); cursor: pointer; color: var(--text-secondary); }
+    .modal-body { flex: 1; overflow-y: auto; padding: var(--space-md); -webkit-overflow-scrolling: touch; }
+    .modal-footer { display: flex; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border-top: 1px solid var(--border-color); flex-shrink: 0; }
+    .modal-footer .btn { flex: 1; }
+
+    /* Wizard Steps – aligned with desktop .tab-numbered pattern */
+    .tab-numbered { display: flex; gap: var(--space-md); padding: 0 var(--space-md) var(--space-sm); overflow-x: auto; -webkit-overflow-scrolling: touch; flex-shrink: 0; list-style: none; margin: 0; }
+    .tab-numbered::-webkit-scrollbar { display: none; }
+    .tab-numbered > li { list-style: none; flex-shrink: 0; }
+    .tab-numbered .tab-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; text-decoration: none; cursor: pointer; white-space: nowrap; color: var(--text-secondary); }
+    li.active > .tab-item { color: var(--brand-primary); }
+    li.visited > .tab-item { color: var(--text-secondary); }
+    .tab-numbered.teal li.active > .tab-item { color: var(--brand-secondary); }
+    .tab-step-num { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border-color); background: var(--color-white); font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
+    li.active > .tab-item .tab-step-num { border-color: var(--brand-primary); color: var(--brand-primary); background: rgba(237,28,36,0.06); }
+    li.visited > .tab-item .tab-step-num { border-color: var(--brand-primary); background: var(--brand-primary); color: var(--color-white); }
+    .tab-numbered.teal li.active > .tab-item .tab-step-num { border-color: var(--brand-secondary); color: var(--brand-secondary); background: rgba(55,160,175,0.06); }
+    .tab-numbered.teal li.visited > .tab-item .tab-step-num { border-color: var(--brand-secondary); background: var(--brand-secondary); color: var(--color-white); }
+    .confirmation-layout { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; padding: var(--space-xl); text-align: center; }
+    .confirmation-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(76,175,80,0.12); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-md); }
+    .confirmation-icon-sm { width: 56px; height: 56px; border-radius: 50%; background: rgba(76,175,80,0.12); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-md); }
+    .confirmation-modal-body { text-align: center; padding: var(--space-xl); max-width: 320px; }
+    .wizard-heading { font-size: var(--font-size-default); font-weight: var(--font-weight-bold); margin: 0 0 var(--space-md) 0; }
+    .modal-footer-stacked { flex-direction: column; }
+    .modal-title { font-weight: var(--font-weight-bold); font-size: var(--font-size-default); }
+    .form-required-secondary { color: var(--brand-secondary); }
+
+    /* Form Fields */
+    .form-group { margin-bottom: var(--space-md); }
+    .form-label { display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--text-secondary); margin-bottom: var(--spacing-xxs); text-transform: uppercase; letter-spacing: 0.3px; }
+    .form-required { color: var(--brand-primary); }
+    .form-input, .form-select { width: 100%; min-height: 44px; padding: 0 var(--space-sm); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: var(--font-size-default); font-family: inherit; background: var(--color-white); color: var(--text-primary); box-sizing: border-box; }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 2px rgba(237,28,36,0.12); }
+    .form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+    .wizard-step { display: none; }
+    .wizard-step.active { display: block; }
+
+    .popup-anchor { position: relative; }
+    .popup-menu { position: absolute; right: 0; top: 100%; z-index: 50; background: var(--color-white); border: 1px solid var(--border-color); border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.12); min-width: 160px; padding: var(--spacing-xxs) 0; display: none; }
+    .popup-menu.visible { display: block; }
+    .popup-menu-item { display: flex; align-items: center; gap: var(--spacing-xs); padding: var(--form-input-padding-y) var(--form-input-padding-x); font-size: var(--font-size-sm); color: var(--text-primary); cursor: pointer; border: none; background: none; width: 100%; text-align: left; min-height: 44px; }
+    .popup-menu-item:active { background: var(--bg-secondary); }
+    .popup-menu-item.danger { color: var(--brand-danger); }
+
+    /* Utility classes */
+    .icon-sm { font-size: var(--icon-size-sm); }
+    .icon-btn-sm { padding: var(--spacing-xxs); min-width: 44px; min-height: 44px; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .confirmation-h2 { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); margin: 0 0 var(--spacing-sm) 0; }
+    .confirmation-subtitle { font-size: var(--font-size-default); color: var(--text-secondary); margin: 0 0 var(--spacing-xs) 0; }
+    .confirmation-ref { font-size: var(--font-size-sm); color: var(--text-secondary); margin: 0 0 var(--spacing-lg) 0; }
+    .confirmation-message { font-size: var(--font-size-default); font-weight: var(--font-weight-bold); color: var(--text-primary); margin: 0 0 var(--spacing-lg) 0; }
+    .helper-text { font-size: var(--font-size-sm); color: var(--text-secondary); margin-top: var(--spacing-xxs); }
+    .confirmation-dialog { justify-content: center; align-items: center; }
+    .btn-confirmation { max-width: 280px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- ============================================================
+         TOPBAR
+         ============================================================ -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="topbar-hamburger" onclick="toggleDrawer()">
+          <span class="material-icons-outlined">menu</span>
+        </button>
+        <div class="topbar-logo">
+          <img src="Logo.png" alt="Yazaki — YNA Testing Portal">
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-role-btn">Requester <span class="material-icons-outlined">expand_more</span></button>
+      </div>
+    </header>
+
+    <!-- ============================================================
+         HAMBURGER DRAWER
+         ============================================================ -->
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer()"></div>
+    <nav class="nav-drawer" id="navDrawer">
+      <div class="drawer-header">
+        <img src="Logo.png" alt="Yazaki">
+        <button class="drawer-close" onclick="toggleDrawer()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="drawer-nav">
+        <ul>
+          <li class="drawer-nav-item">
+            <a href="#" onclick="toggleDrawer(); navigateTo('dashboard'); return false;">
+              <span class="material-icons-outlined">home</span>
+              Home
+            </a>
+          </li>
+          <li class="drawer-nav-item">
+            <button class="drawer-nav-group-label" onclick="toggleDrawerGroup(this)">
+              <span class="material-icons-outlined">description</span>
+              Test Requests
+              <span class="material-icons-outlined nav-chevron">expand_more</span>
+            </button>
+            <ul class="drawer-nav-sublist">
+              <li class="drawer-nav-item active"><a href="#" onclick="toggleDrawer(); navigateTo('dashboard'); return false;">Open</a></li>
+              <li class="drawer-nav-item"><a href="#" onclick="toggleDrawer(); navigateTo('dashboard'); return false;">Pending Approval</a></li>
+            </ul>
+          </li>
+          <li class="drawer-nav-item">
+            <button class="drawer-nav-group-label" onclick="toggleDrawerGroup(this)">
+              <span class="material-icons-outlined">request_quote</span>
+              RFQ
+              <span class="material-icons-outlined nav-chevron">expand_more</span>
+            </button>
+            <ul class="drawer-nav-sublist">
+              <li class="drawer-nav-item"><a href="#" onclick="toggleDrawer(); navigateTo('dashboard'); return false;">All Quotes</a></li>
+              <li class="drawer-nav-item"><a href="#" onclick="toggleDrawer(); navigateTo('dashboard'); return false;">My Drafts</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="drawer-footer">
+        <a href="#" onclick="toggleDrawer(); navigateTo('login'); return false;">
+          <span class="material-icons-outlined">logout</span>
+          Sign out
+        </a>
+      </div>
+    </nav>
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+    <div class="main-content">
+      <!-- Background wave -->
+      <div class="bg-wave">
+        <svg viewBox="0 0 1440 1024" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0H1440V580L0 290V0Z" fill="#D1ECED" opacity="0.5"/>
+          <path d="M340 0H1440V497L-17 671L340 0Z" fill="#EDF1F9" opacity="0.6"/>
+        </svg>
+      </div>
+
+      <!-- ============================================================
+           VIEW: LOGIN
+           ============================================================ -->
+      <div class="view active" id="view-login">
+        <div class="login-wrapper">
+          <div class="login-card">
+            <h2>Welcome</h2>
+            <p>Select your role to continue</p>
+            <input class="role-filter" type="text" placeholder="Filter roles...">
+            <div class="role-list">
+              <button class="role-btn selected" onclick="navigateTo('dashboard')">
+                <div>
+                  <div>Requester</div>
+                  <div class="role-btn-desc">Submit and track test requests</div>
+                </div>
+                <span class="material-icons-outlined role-chevron">chevron_right</span>
+              </button>
+              <button class="role-btn" onclick="navigateTo('dashboard')">
+                <div>
+                  <div>Requester Manager</div>
+                  <div class="role-btn-desc">Approve and manage requests</div>
+                </div>
+                <span class="material-icons-outlined role-chevron">chevron_right</span>
+              </button>
+              <button class="role-btn" onclick="navigateTo('dashboard')">
+                <div>
+                  <div>Test Manager</div>
+                  <div class="role-btn-desc">Oversee testing operations</div>
+                </div>
+                <span class="material-icons-outlined role-chevron">chevron_right</span>
+              </button>
+              <button class="role-btn" onclick="navigateTo('dashboard')">
+                <div>
+                  <div>Operator</div>
+                  <div class="role-btn-desc">Execute tests and record results</div>
+                </div>
+                <span class="material-icons-outlined role-chevron">chevron_right</span>
+              </button>
+              <button class="role-btn" onclick="navigateTo('dashboard')">
+                <div>
+                  <div>Fixture Designer</div>
+                  <div class="role-btn-desc">Design and manage fixtures</div>
+                </div>
+                <span class="material-icons-outlined role-chevron">chevron_right</span>
+              </button>
+              <button class="role-btn" onclick="navigateTo('dashboard')">
+                <div>
+                  <div>Project Lead</div>
+                  <div class="role-btn-desc">Lead project coordination</div>
+                </div>
+                <span class="material-icons-outlined role-chevron">chevron_right</span>
+              </button>
+              <button class="role-btn" onclick="navigateTo('dashboard')">
+                <div>
+                  <div>Administrator</div>
+                  <div class="role-btn-desc">System configuration</div>
+                </div>
+                <span class="material-icons-outlined role-chevron">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           VIEW: DASHBOARD
+           ============================================================ -->
+      <div class="view" id="view-dashboard">
+        <div class="page-title-bar">
+          <h1>Test Requests</h1>
+          <p class="text-detail" style="margin: var(--spacing-smallest) 0 0;">Manage and track all testing requests</p>
+        </div>
+
+        <div class="dashboard-actions">
+          <button class="btn btn-primary" onclick="openModal('request')"><span class="material-icons-outlined icon-sm">add</span> New Request</button>
+          <button class="btn btn-default" onclick="openModal('rfq')"><span class="material-icons-outlined icon-sm">add</span> New RFQ</button>
+        </div>
+
+        <div class="flex-between mb-sm">
+          <div></div>
+          <div class="btn-toggle-group">
+            <button class="btn-toggle active" id="toggle-cards" onclick="toggleCardList('cards')">
+              <span class="material-icons-outlined icon-sm">grid_view</span>
+            </button>
+            <button class="btn-toggle" id="toggle-list" onclick="toggleCardList('list')">
+              <span class="material-icons-outlined icon-sm">view_list</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-tabs" id="dashboard-tabs">
+          <button class="filter-tab" onclick="switchFilterTab(this)">All <span class="tab-count">33</span></button>
+          <button class="filter-tab" onclick="switchFilterTab(this)">Created <span class="tab-count">2</span></button>
+          <button class="filter-tab" onclick="switchFilterTab(this)">Rejected <span class="tab-count">0</span></button>
+          <button class="filter-tab" onclick="switchFilterTab(this)">Pending <span class="tab-count">1</span></button>
+          <button class="filter-tab active" onclick="switchFilterTab(this)">Open <span class="tab-count">6</span></button>
+          <button class="filter-tab" onclick="switchFilterTab(this)">Closed <span class="tab-count">24</span></button>
+        </div>
+
+        <div id="dashboard-cards-view">
+          <div class="request-card" onclick="navigateTo('request-details')">
+            <div class="request-card-header">
+              <h4>TR25-139</h4>
+              <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+            </div>
+            <div class="request-card-desc">2019 A123 ddd ddd ANALYSIS</div>
+            <div class="request-card-fields">
+              <div class="request-card-field"><span class="request-card-field-label">BU/FG</span><span class="request-card-field-value">TPNO - SUBARU</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Lead</span><span class="request-card-field-value">Jeffrey Malotke</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Requester</span><span class="request-card-field-value">Jeffrey Malotke</span></div>
+            </div>
+            <div class="request-card-footer"><span>Analysis</span><span>RTCD 12/10/25</span></div>
+          </div>
+
+          <div class="request-card" onclick="navigateTo('request-details')">
+            <div class="request-card-header">
+              <h4>RFQ26-12</h4>
+              <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+            </div>
+            <div class="request-card-desc">2026 HONDA B456 CONNECTOR QUOTE</div>
+            <div class="request-card-fields">
+              <div class="request-card-field"><span class="request-card-field-label">BU/FG</span><span class="request-card-field-value">TPNO - HONDA</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Lead</span><span class="request-card-field-value">Unassigned</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Requester</span><span class="request-card-field-value">Jeffrey Malotke</span></div>
+            </div>
+            <div class="request-card-footer"><span>RFQ</span><span>RFQ 3/20/26</span></div>
+          </div>
+
+          <div class="request-card" onclick="navigateTo('request-details')">
+            <div class="request-card-header">
+              <h4>TR25-120</h4>
+              <span class="badge status-badge received-by-lab">Received by Lab</span>
+            </div>
+            <div class="request-card-desc">2019 A123 ddd ddd ANALYSIS</div>
+            <div class="request-card-fields">
+              <div class="request-card-field"><span class="request-card-field-label">BU/FG</span><span class="request-card-field-value">STELLANTIS BU</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Lead</span><span class="request-card-field-value">Jeffrey Malotke</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Requester</span><span class="request-card-field-value">Jeffrey Malotke</span></div>
+            </div>
+            <div class="request-card-footer"><span>Analysis</span><span>RTCD 9/25/25</span></div>
+          </div>
+
+          <div class="request-card" onclick="navigateTo('request-details')">
+            <div class="request-card-header">
+              <h4>TR26-8</h4>
+              <span class="badge status-badge awaiting-quote">Awaiting Quote</span>
+            </div>
+            <div class="request-card-desc">2019 A123 ddd ddd ANALYSIS</div>
+            <div class="request-card-fields">
+              <div class="request-card-field"><span class="request-card-field-label">BU/FG</span><span class="request-card-field-value">TPNO - HONDA</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Lead</span><span class="request-card-field-value">Unassigned</span></div>
+              <div class="request-card-field"><span class="request-card-field-label">Requester</span><span class="request-card-field-value">Jennifer Simko</span></div>
+            </div>
+            <div class="request-card-footer"><span>Analysis</span><span>RTCD 5/13/26</span></div>
+          </div>
+        </div>
+
+        <div id="dashboard-list-view" style="display:none;">
+          <div class="request-row" onclick="navigateTo('request-details')">
+            <div class="request-row-left">
+              <div class="request-row-top"><h4>TR25-139</h4><span class="badge status-badge awaiting-quote">Awaiting Quote</span></div>
+              <div class="request-row-bottom">TPNO - SUBARU &middot; RTCD 12/10/25</div>
+            </div>
+            <span class="material-icons-outlined">chevron_right</span>
+          </div>
+          <div class="request-row" onclick="navigateTo('request-details')">
+            <div class="request-row-left">
+              <div class="request-row-top"><h4>RFQ26-12</h4><span class="badge status-badge awaiting-quote">Awaiting Quote</span></div>
+              <div class="request-row-bottom">TPNO - HONDA &middot; RFQ 3/20/26</div>
+            </div>
+            <span class="material-icons-outlined">chevron_right</span>
+          </div>
+          <div class="request-row" onclick="navigateTo('request-details')">
+            <div class="request-row-left">
+              <div class="request-row-top"><h4>TR25-120</h4><span class="badge status-badge received-by-lab">Received by Lab</span></div>
+              <div class="request-row-bottom">STELLANTIS BU &middot; RTCD 9/25/25</div>
+            </div>
+            <span class="material-icons-outlined">chevron_right</span>
+          </div>
+          <div class="request-row" onclick="navigateTo('request-details')">
+            <div class="request-row-left">
+              <div class="request-row-top"><h4>TR26-8</h4><span class="badge status-badge awaiting-quote">Awaiting Quote</span></div>
+              <div class="request-row-bottom">TPNO - HONDA &middot; RTCD 5/13/26</div>
+            </div>
+            <span class="material-icons-outlined">chevron_right</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           VIEW: REQUEST DETAILS
+           ============================================================ -->
+      <div class="view" id="view-request-details">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <a href="#" onclick="navigateTo('dashboard'); return false;"><span class="material-icons-outlined">home</span></a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="#" onclick="navigateTo('dashboard'); return false;">Test Requests</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>TR-2025-001847</span>
+        </div>
+
+        <!-- Page Title Bar -->
+        <div class="page-title-bar">
+          <div>
+            <h1>TR-2025-001847</h1>
+            <span class="subtitle">Wire Harness Validation</span>
+          </div>
+          <div class="page-actions">
+            <span class="status-badge open">Open</span>
+          </div>
+        </div>
+
+        <!-- Section Selector — Mendix .mx-dropdown pattern -->
+        <div class="section-selector">
+          <label class="section-selector-label" for="section-select">Section</label>
+          <div class="mx-dropdown">
+            <select class="form-control" id="section-select" onchange="switchSection(this.value)">
+              <option value="general-info" selected>General Info</option>
+              <option value="dut-details">DUT Details</option>
+              <option value="test-details">Requested Tests</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tab: General Info -->
+        <div class="tab-content active" id="tab-general-info">
+          <div class="section-heading">Request Information</div>
+          <div class="card mb-sm">
+            <div class="card-row"><span class="card-label">Request ID</span><span class="card-value">TR-2025-001847</span></div>
+            <div class="card-row"><span class="card-label">Status</span><span class="card-value"><span class="status-badge open">Open</span></span></div>
+            <div class="card-row"><span class="card-label">Request Type</span><span class="card-value">Analysis</span></div>
+            <div class="card-row"><span class="card-label">Created</span><span class="card-value">Aug 12, 2025</span></div>
+            <div class="card-row"><span class="card-label">Priority</span><span class="card-value">Standard</span></div>
+          </div>
+
+          <div class="section-heading">Customer Details</div>
+          <div class="card mb-sm">
+            <div class="card-row"><span class="card-label">Requester</span><span class="card-value">Jeffrey Malotke</span></div>
+            <div class="card-row"><span class="card-label">Department</span><span class="card-value">Engineering</span></div>
+            <div class="card-row"><span class="card-label">Manager</span><span class="card-value">Jennifer Simko</span></div>
+            <div class="card-row"><span class="card-label">Email</span><span class="card-value">j.malotke@yazaki.com</span></div>
+            <div class="card-row"><span class="card-label">Phone</span><span class="card-value">(734) 555-0147</span></div>
+          </div>
+
+          <div class="section-heading">Product Details</div>
+          <div class="card mb-sm">
+            <div class="card-row"><span class="card-label">BU/FG</span><span class="card-value">TPNO - SUBARU</span></div>
+            <div class="card-row"><span class="card-label">Model Year</span><span class="card-value">2025</span></div>
+            <div class="card-row"><span class="card-label">Program</span><span class="card-value">A123</span></div>
+            <div class="card-row"><span class="card-label">Product Name</span><span class="card-value">Wire Harness Assembly</span></div>
+            <div class="card-row"><span class="card-label">Product Type</span><span class="card-value">Main Harness</span></div>
+            <div class="card-row"><span class="card-label">UDP</span><span class="card-value">UDP-2025-0847</span></div>
+          </div>
+
+          <div class="section-heading">Supporting Documents</div>
+          <div class="card mb-sm">
+            <div style="text-align:center;padding:var(--space-md);color:var(--text-secondary);font-size:var(--font-size-sm);">
+              Not provided
+            </div>
+            <div style="background:var(--bg-secondary);border-radius:var(--radius-sm);padding:var(--space-sm);margin:0 var(--space-sm) var(--space-sm);font-size:var(--font-size-sm);color:var(--text-secondary);">
+              Be sure CAD files are Step files when attached. Size limit is 25 MB
+            </div>
+          </div>
+
+          <div class="section-heading">CT Scan Details</div>
+          <div class="card mb-sm">
+            <div class="card-row"><span class="card-label">CT Scan Required?</span><span class="card-value">Not provided</span></div>
+          </div>
+
+          <div class="page-actions mb-sm">
+            <button class="btn btn-primary btn-full">
+              <span class="material-icons-outlined">edit</span> Edit Request
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab: DUT Details -->
+        <div class="tab-content" id="tab-dut-details">
+          <button class="btn btn-default btn-full mb-sm">
+            <span class="material-icons-outlined icon-sm">add</span> Add DUT
+          </button>
+
+          <div class="card mb-sm">
+            <div class="card-row flex-between">
+              <strong style="font-size:var(--font-size-body);">DUT #1</strong>
+              <div class="popup-anchor">
+                <button class="btn btn-link icon-btn-sm" onclick="event.stopPropagation(); togglePopup(this)">
+                  <span class="material-icons-outlined">more_vert</span>
+                </button>
+                <div class="popup-menu">
+                  <button class="popup-menu-item">Edit</button>
+                  <button class="popup-menu-item">View Details</button>
+                  <button class="popup-menu-item danger">Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-row"><span class="card-label">Part Number</span><span class="card-value">7283-1180-40</span></div>
+            <div class="card-row"><span class="card-label">Description</span><span class="card-value">Connector Housing</span></div>
+            <div class="card-row"><span class="card-label">Qty Received</span><span class="card-value">50</span></div>
+            <div class="card-row"><span class="card-label">Material</span><span class="card-value">PA66 GF30</span></div>
+            <div class="card-row"><span class="card-label">Supplier</span><span class="card-value">Yazaki Components</span></div>
+            <div class="card-row"><span class="card-label">Drawing Rev</span><span class="card-value">Rev C</span></div>
+            <div class="card-row"><span class="card-label">Color</span><span class="card-value">Natural</span></div>
+            <div class="card-row"><span class="card-label">Lot Number</span><span class="card-value">LOT-2025-0134</span></div>
+          </div>
+
+          <div class="card mb-sm">
+            <div class="card-row flex-between">
+              <strong style="font-size:var(--font-size-body);">DUT #2</strong>
+              <div class="popup-anchor">
+                <button class="btn btn-link icon-btn-sm" onclick="event.stopPropagation(); togglePopup(this)">
+                  <span class="material-icons-outlined">more_vert</span>
+                </button>
+                <div class="popup-menu">
+                  <button class="popup-menu-item">Edit</button>
+                  <button class="popup-menu-item">View Details</button>
+                  <button class="popup-menu-item danger">Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-row"><span class="card-label">Part Number</span><span class="card-value">7114-4110-02</span></div>
+            <div class="card-row"><span class="card-label">Description</span><span class="card-value">Female Terminal</span></div>
+            <div class="card-row"><span class="card-label">Qty Received</span><span class="card-value">200</span></div>
+            <div class="card-row"><span class="card-label">Material</span><span class="card-value">Brass, Tin Plated</span></div>
+          </div>
+
+          <div class="card mb-sm">
+            <div class="card-row flex-between">
+              <strong style="font-size:var(--font-size-body);">DUT #3</strong>
+              <div class="popup-anchor">
+                <button class="btn btn-link icon-btn-sm" onclick="event.stopPropagation(); togglePopup(this)">
+                  <span class="material-icons-outlined">more_vert</span>
+                </button>
+                <div class="popup-menu">
+                  <button class="popup-menu-item">Edit</button>
+                  <button class="popup-menu-item">View Details</button>
+                  <button class="popup-menu-item danger">Delete</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-row"><span class="card-label">Part Number</span><span class="card-value">CAVS-0.5-RD</span></div>
+            <div class="card-row"><span class="card-label">Description</span><span class="card-value">CAVS 0.5sq Wire Red</span></div>
+            <div class="card-row"><span class="card-label">Qty Received</span><span class="card-value">100m</span></div>
+            <div class="card-row"><span class="card-label">Material</span><span class="card-value">Copper / PVC</span></div>
+          </div>
+        </div>
+
+        <!-- Tab: Requested Tests (Phase 5) -->
+        <div class="tab-content" id="tab-test-details">
+
+          <!-- Leg Selector Card -->
+          <div class="leg-selector" id="leg-selector-card">
+            <div class="leg-selector-info">
+              <span class="leg-selector-title" id="leg-selector-title">Leg 23</span>
+              <div class="leg-selector-meta">
+                <span>Test ID: 25-77-26</span>
+                <span class="status-badge received-by-lab">Received by Lab</span>
+              </div>
+            </div>
+            <button class="btn btn-default" onclick="toggleLegDrawer()">Change Leg</button>
+          </div>
+
+          <!-- Leg Drawer (bottom sheet) -->
+          <div class="leg-drawer-backdrop" id="leg-drawer-backdrop" onclick="toggleLegDrawer()"></div>
+          <div class="leg-drawer" id="leg-drawer">
+            <div class="leg-drawer-header">
+              <h3>Select Leg</h3>
+              <button class="leg-drawer-close" onclick="toggleLegDrawer()"><span class="material-icons-outlined">close</span></button>
+            </div>
+            <div class="leg-drawer-list">
+              <div class="leg-option" onclick="selectLeg(this, 22, 'Leg 22', 'Awaiting Quote')" data-leg="22">
+                <div class="leg-option-left">
+                  <span class="leg-option-name">Leg 22</span>
+                  <div class="leg-option-detail"><span>25-77-26</span><span>46 hrs</span><span>Dependent: Leg 24</span></div>
+                </div>
+                <span class="status-badge awaiting-quote">Awaiting Quote</span>
+              </div>
+              <div class="leg-option selected" onclick="selectLeg(this, 23, 'Leg 23', 'Received by Lab')" data-leg="23">
+                <div class="leg-option-left">
+                  <span class="leg-option-name">Leg 23</span>
+                  <div class="leg-option-detail"><span>25-77-26</span></div>
+                </div>
+                <span class="status-badge received-by-lab">Received by Lab</span>
+              </div>
+              <div class="leg-option" onclick="selectLeg(this, 24, 'Leg 24', 'Test in Progress')" data-leg="24">
+                <div class="leg-option-left">
+                  <span class="leg-option-name">Leg 24</span>
+                  <div class="leg-option-detail"><span>25-77-26</span></div>
+                </div>
+                <span class="status-badge test-in-progress">Test in Progress</span>
+              </div>
+              <div class="leg-option" onclick="selectLeg(this, 25, 'Leg 25', 'Waiting on Deliverables')" data-leg="25">
+                <div class="leg-option-left">
+                  <span class="leg-option-name">Leg 25</span>
+                  <div class="leg-option-detail"><span>25-77-26</span></div>
+                </div>
+                <span class="status-badge waiting-deliverables">Waiting on Deliverables</span>
+              </div>
+              <div class="leg-option" onclick="selectLeg(this, 26, 'Leg 26', 'Open')" data-leg="26">
+                <div class="leg-option-left">
+                  <span class="leg-option-name">Leg 26</span>
+                  <div class="leg-option-detail"><span>25-77-26</span></div>
+                </div>
+                <span class="status-badge open">Open</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sequence Cards -->
+          <h3 class="sequence-list-heading">Sequences</h3>
+          <div class="sequence-list">
+            <div class="sequence-card" id="seq-1">
+              <div class="sequence-card-header" onclick="toggleSequence('seq-1')">
+                <span class="sequence-num">1</span>
+                <div class="sequence-card-info">
+                  <span class="sequence-card-title">2019 A123 ddd ddd ANALYSIS</span>
+                  <div class="sequence-card-meta"><span class="status-badge received-by-lab">Received by Lab</span><span>5/13/2026</span></div>
+                </div>
+                <span class="material-icons-outlined sequence-chevron">expand_more</span>
+              </div>
+              <div class="sequence-card-body">
+                <div class="card-row"><span class="card-label">Specification</span><span class="card-value">USCAR-2 REV B</span></div>
+                <div class="card-row"><span class="card-label">Qty to Test</span><span class="card-value">0</span></div>
+                <div class="card-row"><span class="card-label">RTCD</span><span class="card-value">Jan 15, 2026</span></div>
+                <div class="card-row"><span class="card-label">Actual Start</span><span class="card-value">&lt;TBD&gt;</span></div>
+                <div class="card-row"><span class="card-label">Actual End</span><span class="card-value">&lt;TBD&gt;</span></div>
+
+                <div class="chapter-header">
+                  <span class="chapter-header-title">Chapter 1: Failure Analysis</span>
+                  <span class="status-badge received-by-lab">Received by Lab</span>
+                </div>
+                <div class="doc-section-header">
+                  <h4>Documents</h4>
+                  <button class="btn btn-sm btn-primary">Upload</button>
+                </div>
+                <div class="doc-list">
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">USCAR-2_RevB_Failure_Analysis_Report.pdf</a></div>
+                      <div class="doc-meta">J. Malotke · Aug 14, 2026 · 2.4 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Chapter1_Test_Data_Log.xlsx</a></div>
+                      <div class="doc-meta">S. Torres · Aug 20, 2026 · 548 KB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">image</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Crimp_Cross_Section_Photo_01.png</a></div>
+                      <div class="doc-meta">J. Malotke · Aug 22, 2026 · 1.1 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sequence-card" id="seq-2">
+              <div class="sequence-card-header" onclick="toggleSequence('seq-2')">
+                <span class="sequence-num">2</span>
+                <div class="sequence-card-info">
+                  <span class="sequence-card-title">2022 WAYMO dddd ddd CTD WELD VALIDATION</span>
+                  <div class="sequence-card-meta"><span class="status-badge received-by-lab">Received by Lab</span><span>7/9/2025</span></div>
+                </div>
+                <span class="material-icons-outlined sequence-chevron">expand_more</span>
+              </div>
+              <div class="sequence-card-body">
+                <div class="card-row"><span class="card-label">Specification</span><span class="card-value">USCAR-2 REV B</span></div>
+                <div class="card-row"><span class="card-label">Qty to Test</span><span class="card-value">10</span></div>
+                <div class="card-row"><span class="card-label">RTCD</span><span class="card-value">Feb 20, 2026</span></div>
+                <div class="card-row"><span class="card-label">Actual Start</span><span class="card-value">Jul 1, 2025</span></div>
+                <div class="card-row"><span class="card-label">Actual End</span><span class="card-value">&lt;TBD&gt;</span></div>
+
+                <div class="chapter-header">
+                  <span class="chapter-header-title">Chapter 1: CTD Weld Validation</span>
+                  <span class="status-badge received-by-lab">Received by Lab</span>
+                </div>
+                <div class="doc-section-header">
+                  <h4>Documents</h4>
+                  <button class="btn btn-sm btn-primary">Upload</button>
+                </div>
+                <div class="doc-list">
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Weld_Validation_Procedure.pdf</a></div>
+                      <div class="doc-meta">R. Chen · Jul 28, 2026 · 1.8 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">CTD_Weld_Test_Results.xlsx</a></div>
+                      <div class="doc-meta">S. Torres · Aug 5, 2026 · 624 KB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sequence-card" id="seq-3">
+              <div class="sequence-card-header" onclick="toggleSequence('seq-3')">
+                <span class="sequence-num">3</span>
+                <div class="sequence-card-info">
+                  <span class="sequence-card-title">2019 WAYMO ddd dd ANALYSIS</span>
+                  <div class="sequence-card-meta"><span class="status-badge test-in-progress">Test in Progress</span><span>7/17/2025</span></div>
+                </div>
+                <span class="material-icons-outlined sequence-chevron">expand_more</span>
+              </div>
+              <div class="sequence-card-body">
+                <div class="card-row"><span class="card-label">Specification</span><span class="card-value">USCAR-2 REV B</span></div>
+                <div class="card-row"><span class="card-label">Qty to Test</span><span class="card-value">5</span></div>
+                <div class="card-row"><span class="card-label">RTCD</span><span class="card-value">Mar 10, 2026</span></div>
+                <div class="card-row"><span class="card-label">Actual Start</span><span class="card-value">Jul 10, 2025</span></div>
+                <div class="card-row"><span class="card-label">Actual End</span><span class="card-value">&lt;TBD&gt;</span></div>
+
+                <div class="chapter-header">
+                  <span class="chapter-header-title">Chapter 1: Analysis</span>
+                  <span class="status-badge test-in-progress">Test in Progress</span>
+                </div>
+                <div class="doc-section-header">
+                  <h4>Documents</h4>
+                  <button class="btn btn-sm btn-primary">Upload</button>
+                </div>
+                <div class="doc-list">
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Analysis_Report_Draft.pdf</a></div>
+                      <div class="doc-meta">J. Malotke · Aug 1, 2026 · 3.2 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">folder_zip</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Test_Sample_Photos.zip</a></div>
+                      <div class="doc-meta">R. Chen · Aug 10, 2026 · 8.7 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sequence-card" id="seq-4">
+              <div class="sequence-card-header" onclick="toggleSequence('seq-4')">
+                <span class="sequence-num">4</span>
+                <div class="sequence-card-info">
+                  <span class="sequence-card-title">2019 WAYMO ddd ddd ANALYSIS</span>
+                  <div class="sequence-card-meta"><span class="status-badge received-by-lab">Received by Lab</span><span>7/7/2025</span></div>
+                </div>
+                <span class="material-icons-outlined sequence-chevron">expand_more</span>
+              </div>
+              <div class="sequence-card-body">
+                <div class="card-row"><span class="card-label">Specification</span><span class="card-value">USCAR-2 REV B</span></div>
+                <div class="card-row"><span class="card-label">Qty to Test</span><span class="card-value">12</span></div>
+                <div class="card-row"><span class="card-label">RTCD</span><span class="card-value">Apr 5, 2026</span></div>
+                <div class="card-row"><span class="card-label">Actual Start</span><span class="card-value">&lt;TBD&gt;</span></div>
+                <div class="card-row"><span class="card-label">Actual End</span><span class="card-value">&lt;TBD&gt;</span></div>
+
+                <div class="chapter-header">
+                  <span class="chapter-header-title">Chapter 1: Analysis</span>
+                  <span class="status-badge received-by-lab">Received by Lab</span>
+                </div>
+                <div class="doc-section-header">
+                  <h4>Documents</h4>
+                  <button class="btn btn-sm btn-primary">Upload</button>
+                </div>
+                <div class="doc-list">
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Analysis_Procedure_Rev2.pdf</a></div>
+                      <div class="doc-meta">J. Malotke · Jul 15, 2026 · 1.5 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Sample_Prep_Log.xlsx</a></div>
+                      <div class="doc-meta">S. Torres · Jul 22, 2026 · 412 KB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sequence-card" id="seq-5">
+              <div class="sequence-card-header" onclick="toggleSequence('seq-5')">
+                <span class="sequence-num">5</span>
+                <div class="sequence-card-info">
+                  <span class="sequence-card-title">2019 WAYMO ddd ddd CTD CRIMP VALIDATION</span>
+                  <div class="sequence-card-meta"><span class="status-badge test-in-progress">Test in Progress</span><span>7/15/2025</span></div>
+                </div>
+                <span class="material-icons-outlined sequence-chevron">expand_more</span>
+              </div>
+              <div class="sequence-card-body">
+                <div class="card-row"><span class="card-label">Specification</span><span class="card-value">USCAR-2 REV B</span></div>
+                <div class="card-row"><span class="card-label">Qty to Test</span><span class="card-value">8</span></div>
+                <div class="card-row"><span class="card-label">RTCD</span><span class="card-value">May 1, 2026</span></div>
+                <div class="card-row"><span class="card-label">Actual Start</span><span class="card-value">Jul 8, 2025</span></div>
+                <div class="card-row"><span class="card-label">Actual End</span><span class="card-value">&lt;TBD&gt;</span></div>
+
+                <div class="chapter-header">
+                  <span class="chapter-header-title">Chapter 1: CTD Crimp Validation</span>
+                  <span class="status-badge test-in-progress">Test in Progress</span>
+                </div>
+                <div class="doc-section-header">
+                  <h4>Documents</h4>
+                  <button class="btn btn-sm btn-primary">Upload</button>
+                </div>
+                <div class="doc-list">
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Crimp_Validation_Report.pdf</a></div>
+                      <div class="doc-meta">R. Chen · Aug 3, 2026 · 2.1 MB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Cross_Section_Measurements.xlsx</a></div>
+                      <div class="doc-meta">S. Torres · Aug 12, 2026 · 720 KB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                  <div class="doc-item">
+                    <span class="material-icons-outlined doc-icon">description</span>
+                    <div class="doc-info">
+                      <div class="doc-name"><a href="#">Crimp_Tool_Calibration.pdf</a></div>
+                      <div class="doc-meta">J. Malotke · Aug 18, 2026 · 890 KB</div>
+                    </div>
+                    <div class="doc-actions">
+                      <a class="doc-action-link" title="Download"><span class="material-icons-outlined">download</span></a>
+                      <a class="doc-action-link" title="View"><span class="material-icons-outlined">visibility</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ============================================================
+           VIEW: CONFIRMATION
+           ============================================================ -->
+      <div class="view" id="view-confirmation">
+        <div class="confirmation-layout">
+          <div class="confirmation-icon">
+            <svg width="32" height="32" fill="none" stroke="#4caf50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 16 14 23 25 9"/></svg>
+          </div>
+          <h2 class="confirmation-h2">Confirmation</h2>
+          <p class="confirmation-subtitle">Your request has been saved</p>
+          <p class="confirmation-ref">Reference: TR26-7</p>
+          <button class="wizard-btn wizard-btn-primary btn-confirmation" onclick="navigateTo('dashboard')">Back to Dashboard</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: TEST REQUEST WIZARD
+       ============================================================ -->
+  <div class="modal-overlay" id="modal-request">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <span class="modal-title">Test Request</span>
+        <button class="btn-icon" onclick="closeModal('request')" aria-label="Close">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="4" x2="16" y2="16"/><line x1="16" y1="4" x2="4" y2="16"/></svg>
+        </button>
+      </div>
+      <ul class="nav nav-tabs tab-wizard tab-numbered" id="request-wizard-tabs" role="tablist">
+        <li class="active" data-step="1"><a role="tab" class="tab-item"><span class="tab-step-num">1</span> General Details</a></li>
+        <li data-step="2"><a role="tab" class="tab-item"><span class="tab-step-num">2</span> Personal Details</a></li>
+        <li data-step="3"><a role="tab" class="tab-item"><span class="tab-step-num">3</span> DUT Details</a></li>
+        <li data-step="4"><a role="tab" class="tab-item"><span class="tab-step-num">4</span> Test Selection</a></li>
+        <li data-step="5"><a role="tab" class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Documents</a></li>
+      </ul>
+      <div class="modal-body">
+        <!-- Step 1: General Details -->
+        <div class="wizard-step active" id="request-step-1">
+          <h3 class="wizard-heading">General Details</h3>
+          <div class="form-group">
+            <label class="form-label">Customer (OEM) <span class="form-required">*</span></label>
+            <select class="form-select">
+              <option value="">Select customer...</option>
+              <option>HONDA</option>
+              <option>FORD</option>
+              <option>SUBARU</option>
+              <option>MAZDA</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Model Year <span class="form-required">*</span></label>
+            <select class="form-select">
+              <option value="">Select year...</option>
+              <option>2025</option>
+              <option>2026</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Program</label>
+            <input class="form-input" type="text" placeholder="Enter program...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Product Type <span class="form-required">*</span></label>
+            <select class="form-select">
+              <option value="">Select type...</option>
+              <option>BEC</option>
+              <option>Terminal</option>
+              <option>Wire</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Request Type <span class="form-required">*</span></label>
+            <select class="form-select">
+              <option value="">Select type...</option>
+              <option>Validation</option>
+              <option>Analysis</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Product Name</label>
+            <input class="form-input" type="text" placeholder="Enter product name...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">UDP</label>
+            <input class="form-input" type="text" placeholder="Enter UDP...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">BU/FG</label>
+            <select class="form-select">
+              <option value="">Select BU/FG...</option>
+            </select>
+          </div>
+        </div>
+        <!-- Step 2: Personal Details -->
+        <div class="wizard-step" id="request-step-2">
+          <h3 class="wizard-heading">Personal Details</h3>
+          <div class="form-group">
+            <label class="form-label">Requester Name <span class="form-required">*</span></label>
+            <input class="form-input" type="text" value="Jeffrey Malotke">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email <span class="form-required">*</span></label>
+            <input class="form-input" type="email" value="jeffrey.malotke@us.yazaki.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Manager</label>
+            <input class="form-input" type="text" placeholder="Manager name...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Program Manager</label>
+            <input class="form-input" type="text" placeholder="Program manager name...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input class="form-input" type="tel" placeholder="Phone number...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <input class="form-input" type="text" placeholder="Department...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <select class="form-select">
+              <option>Canton, MI</option>
+              <option>El Paso, TX</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer modal-footer-stacked">
+        <button class="btn btn-primary btn-full" id="request-next-btn" onclick="requestWizardNext()">Next: Personal Details</button>
+        <button class="btn btn-default btn-full" id="request-back-btn" onclick="requestWizardBack()" style="display:none;">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: NEW RFQ WIZARD
+       ============================================================ -->
+  <div class="modal-overlay" id="modal-rfq">
+    <div class="modal-dialog">
+      <div class="modal-header" style="border-bottom-color:var(--brand-secondary);">
+        <span class="modal-title" style="color:var(--brand-secondary);">RFQ</span>
+        <button class="btn-icon" onclick="closeModal('rfq')" aria-label="Close">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="4" x2="16" y2="16"/><line x1="16" y1="4" x2="4" y2="16"/></svg>
+        </button>
+      </div>
+      <ul class="nav nav-tabs tab-wizard tab-numbered teal" id="rfq-wizard-tabs" role="tablist">
+        <li class="active" data-step="1"><a role="tab" class="tab-item"><span class="tab-step-num">1</span> General Details</a></li>
+        <li data-step="2"><a role="tab" class="tab-item"><span class="tab-step-num">2</span> Personal Details</a></li>
+        <li data-step="3"><a role="tab" class="tab-item"><span class="tab-step-num">3</span> DUT Details</a></li>
+        <li data-step="4"><a role="tab" class="tab-item"><span class="tab-step-num">4</span> Test Selection</a></li>
+        <li data-step="5"><a role="tab" class="tab-item"><span class="tab-step-num">5</span> Timing &amp; Documents</a></li>
+      </ul>
+      <div class="modal-body">
+        <div class="wizard-step active" id="rfq-step-1">
+          <h3 class="wizard-heading">General Details</h3>
+          <div class="form-group">
+            <label class="form-label">Customer (OEM) <span class="form-required-secondary">*</span></label>
+            <select class="form-select"><option value="">Select customer...</option><option>HONDA</option><option>FORD</option><option>SUBARU</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Model Year <span class="form-required-secondary">*</span></label>
+            <select class="form-select"><option value="">Select year...</option><option>2025</option><option>2026</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Program <span class="form-required-secondary">*</span></label>
+            <input class="form-input" type="text" placeholder="e.g. A123">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Product Type <span class="form-required-secondary">*</span></label>
+            <select class="form-select"><option value="">Select type...</option><option>BEC</option><option>Terminal</option><option>Wire</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Request Type <span class="form-required-secondary">*</span></label>
+            <select class="form-select"><option>Validation</option><option>Analysis</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Product Name</label>
+            <input class="form-input" type="text" placeholder="e.g. SP SEALED">
+          </div>
+          <div class="form-group">
+            <label class="form-label">UDP <span class="form-required-secondary">*</span></label>
+            <input class="form-input" type="text" placeholder="Search UDP...">
+            <div class="helper-text">Can't find your UDP? Contact Gail.Lawson@yazaki.com</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">BU/FG <span class="form-required-secondary">*</span></label>
+            <select class="form-select"><option value="">Select business unit...</option></select>
+          </div>
+        </div>
+        <div class="wizard-step" id="rfq-step-2">
+          <h3 class="wizard-heading">Personal Details</h3>
+          <div class="form-group">
+            <label class="form-label">Requester Name <span class="form-required-secondary">*</span></label>
+            <input class="form-input" type="text" value="Jeffrey Malotke">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email <span class="form-required-secondary">*</span></label>
+            <input class="form-input" type="email" value="jeffrey.malotke@us.yazaki.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Manager</label>
+            <input class="form-input" type="text" placeholder="Manager name...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Program Manager</label>
+            <input class="form-input" type="text" placeholder="Program manager name...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input class="form-input" type="tel" placeholder="Phone number...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <input class="form-input" type="text" placeholder="Department...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <select class="form-select"><option>Canton, MI</option><option>El Paso, TX</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer modal-footer-stacked">
+        <button class="btn btn-primary btn-full" id="rfq-next-btn" onclick="rfqWizardNext()">Next: Personal Details</button>
+        <button class="btn btn-default btn-full" id="rfq-back-btn" onclick="rfqWizardBack()" style="display:none;">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: CONFIRMATION
+       ============================================================ -->
+  <div class="modal-overlay" id="modal-confirmation">
+    <div class="modal-dialog confirmation-dialog">
+      <div class="confirmation-modal-body">
+        <div class="confirmation-icon-sm">
+          <svg width="28" height="28" fill="none" stroke="#4caf50" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 14 12 20 22 8"/></svg>
+        </div>
+        <p id="confirmation-message" class="confirmation-message">Your request has been saved</p>
+        <button class="btn btn-primary btn-full" onclick="closeConfirmation()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       JavaScript — Mobile Interactions
+       ============================================================ -->
+  <script>
+    function navigateTo(viewId) {
+      document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+      var target = document.getElementById('view-' + viewId);
+      if (target) target.classList.add('active');
+
+      var topbar = document.querySelector('.topbar');
+      var drawer = document.getElementById('navDrawer');
+      var backdrop = document.getElementById('drawerBackdrop');
+      var isLogin = (viewId === 'login');
+      topbar.style.display = isLogin ? 'none' : '';
+      if (isLogin) {
+        drawer.classList.remove('open');
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      window.scrollTo(0, 0);
+      document.querySelector('.main-content').scrollTop = 0;
+    }
+
+    function toggleDrawer() {
+      document.getElementById('navDrawer').classList.toggle('open');
+      document.getElementById('drawerBackdrop').classList.toggle('open');
+      document.body.style.overflow = document.getElementById('navDrawer').classList.contains('open') ? 'hidden' : '';
+    }
+
+    function toggleDrawerGroup(btn) {
+      var sublist = btn.nextElementSibling;
+      var chevron = btn.querySelector('.nav-chevron');
+      if (sublist.style.display === 'none') {
+        sublist.style.display = '';
+        chevron.textContent = 'expand_more';
+      } else {
+        sublist.style.display = 'none';
+        chevron.textContent = 'chevron_right';
+      }
+    }
+
+    function switchSection(sectionId) {
+      document.querySelectorAll('#view-request-details .tab-content').forEach(function(c) { c.classList.remove('active'); });
+      var target = document.getElementById('tab-' + sectionId);
+      if (target) target.classList.add('active');
+      var select = document.getElementById('section-select');
+      if (select && select.value !== sectionId) select.value = sectionId;
+    }
+
+    function toggleLegDrawer() {
+      document.getElementById('leg-drawer').classList.toggle('open');
+      document.getElementById('leg-drawer-backdrop').classList.toggle('open');
+      document.body.style.overflow = document.getElementById('leg-drawer').classList.contains('open') ? 'hidden' : '';
+    }
+
+    function selectLeg(el, legNum, legName, status) {
+      document.querySelectorAll('.leg-option').forEach(function(o) { o.classList.remove('selected'); });
+      el.classList.add('selected');
+      document.getElementById('leg-selector-title').textContent = legName;
+      var meta = document.querySelector('.leg-selector-meta');
+      var badge = el.querySelector('.status-badge');
+      meta.innerHTML = '<span>Test ID: 25-77-26</span>' + badge.outerHTML;
+      toggleLegDrawer();
+    }
+
+    function openModal(type) {
+      var modal = document.getElementById('modal-' + type);
+      if (modal) { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal(type) {
+      var modal = document.getElementById('modal-' + type);
+      if (modal) { modal.classList.remove('open'); document.body.style.overflow = ''; }
+    }
+    function showConfirmation(message) {
+      document.getElementById('confirmation-message').textContent = message;
+      openModal('confirmation');
+    }
+    function closeConfirmation() {
+      closeModal('confirmation');
+      navigateTo('dashboard');
+    }
+
+    function togglePopup(btn) {
+      var anchor = btn.closest('.popup-anchor');
+      var menu = anchor.querySelector('.popup-menu');
+      var wasVisible = menu.classList.contains('visible');
+      document.querySelectorAll('.popup-menu.visible').forEach(function(m) { m.classList.remove('visible'); });
+      if (!wasVisible) {
+        menu.classList.add('visible');
+        setTimeout(function() {
+          document.addEventListener('click', closeAllPopups, { once: true });
+        }, 0);
+      }
+    }
+    function closeAllPopups() {
+      document.querySelectorAll('.popup-menu.visible').forEach(function(m) { m.classList.remove('visible'); });
+    }
+
+    var requestStep = 1;
+    function requestWizardNext() {
+      if (requestStep < 2) {
+        requestStep++;
+        updateRequestWizard();
+      } else {
+        closeModal('request');
+        requestStep = 1;
+        updateRequestWizard();
+        showConfirmation('Your request has been saved');
+      }
+    }
+    function requestWizardBack() {
+      if (requestStep > 1) {
+        requestStep--;
+        updateRequestWizard();
+      } else {
+        closeModal('request');
+        requestStep = 1;
+        updateRequestWizard();
+      }
+    }
+    function updateRequestWizard() {
+      var tabs = document.querySelectorAll('#request-wizard-tabs > li');
+      tabs.forEach(function(li) {
+        var n = parseInt(li.getAttribute('data-step'));
+        li.classList.remove('active', 'visited');
+        if (n === requestStep) li.classList.add('active');
+        else if (n < requestStep) li.classList.add('visited');
+      });
+      document.getElementById('request-step-1').classList.remove('active');
+      document.getElementById('request-step-2').classList.remove('active');
+      document.getElementById('request-step-' + requestStep).classList.add('active');
+      var nextBtn = document.getElementById('request-next-btn');
+      var backBtn = document.getElementById('request-back-btn');
+      if (requestStep === 1) {
+        nextBtn.textContent = 'Next: Personal Details';
+        backBtn.style.display = 'none';
+      } else {
+        nextBtn.textContent = 'Submit Request';
+        backBtn.style.display = '';
+      }
+    }
+
+    var rfqStep = 1;
+    function rfqWizardNext() {
+      if (rfqStep < 2) { rfqStep++; updateRfqWizard(); }
+      else { closeModal('rfq'); rfqStep = 1; updateRfqWizard(); showConfirmation('Your RFQ has been saved'); }
+    }
+    function rfqWizardBack() {
+      if (rfqStep > 1) { rfqStep--; updateRfqWizard(); }
+      else { closeModal('rfq'); rfqStep = 1; updateRfqWizard(); }
+    }
+    function updateRfqWizard() {
+      document.querySelectorAll('#rfq-wizard-tabs > li').forEach(function(li) {
+        var n = parseInt(li.getAttribute('data-step'));
+        li.classList.remove('active', 'visited');
+        if (n === rfqStep) li.classList.add('active');
+        else if (n < rfqStep) li.classList.add('visited');
+      });
+      document.getElementById('rfq-step-1').classList.remove('active');
+      document.getElementById('rfq-step-2').classList.remove('active');
+      document.getElementById('rfq-step-' + rfqStep).classList.add('active');
+      var nextBtn = document.getElementById('rfq-next-btn');
+      var backBtn = document.getElementById('rfq-back-btn');
+      if (rfqStep === 1) { nextBtn.textContent = 'Next: Personal Details'; backBtn.style.display = 'none'; }
+      else { nextBtn.textContent = 'Submit RFQ'; backBtn.style.display = ''; }
+    }
+
+    function toggleSequence(id) {
+      document.getElementById(id).classList.toggle('expanded');
+    }
+
+    function switchFilterTab(btn) {
+      document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+      btn.classList.add('active');
+    }
+
+    function toggleCardList(mode) {
+      document.getElementById('toggle-cards').classList.toggle('active', mode === 'cards');
+      document.getElementById('toggle-list').classList.toggle('active', mode === 'list');
+      document.getElementById('dashboard-cards-view').style.display = mode === 'cards' ? '' : 'none';
+      document.getElementById('dashboard-list-view').style.display = mode === 'list' ? '' : 'none';
+    }
+
+    // Hide topbar on initial load (login is first view)
+    document.querySelector('.topbar').style.display = 'none';
+  </script>
+</body>
+</html>
